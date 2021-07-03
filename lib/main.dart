@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/home_screen.dart';
 
 import 'screens/login_screen.dart';
 
@@ -14,7 +15,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+      //add routes:,
+      home: HomeScreen(),
     );
   }
 }
