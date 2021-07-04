@@ -31,6 +31,9 @@ class OpeningScreen extends StatelessWidget {
                 'GeoRepair',
                 style: TextStyle(fontSize: 45),
               ),
+              SizedBox(
+                width: 10,
+              ),
               Image.asset(
                 './assets/hammer.png',
                 width: 45.96,
