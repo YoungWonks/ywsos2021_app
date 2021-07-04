@@ -83,13 +83,13 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topLeft,
+            begin: Alignment.topRight,
             end: Alignment.bottomRight,
             colors: [
               Color(0xFF97AC94),
               Color(0xFF5C745C),
-              Color(0xFFA2C08B),
-              Color(0xFF82C1D6),
+              // Color(0xFFA2C08B),
+              // Color(0xFF82C1D6),
               Color(0xFF64919F),
             ],
           ),

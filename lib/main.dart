@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
+import 'package:ywsos2021_app/screens/opening_screen.dart';
 
 import 'screens/login_screen.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       //add routes:,
-      home: HomeScreen(),
+      home: OpeningScreen(),
     );
   }
 }
