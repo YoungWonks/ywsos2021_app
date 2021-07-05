@@ -28,6 +28,7 @@ class OpeningScreen extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 'GeoRepair',
@@ -48,7 +49,7 @@ class OpeningScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: 300,
+              width: 400,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(
@@ -60,13 +61,27 @@ class OpeningScreen extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: Color(0xFF97AC94),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                  './assets/images/holding_phone.png',
-                  height: 287.73,
-                  width: 164.69,
-                ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Positioned(
+                    top: 55,
+                    left: 81,
+                    child: Image.asset(
+                      './assets/images/fire_hydrant.png',
+                      height: 160.15,
+                      width: 199.7,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      './assets/images/holding_phone.png',
+                      height: 287.73,
+                      width: 264.69,
+                    ),
+                  ),
+                ],
               ),
             ),
             Center(
@@ -88,16 +103,17 @@ class OpeningScreen extends StatelessWidget {
                   },
                   child: Text("Sign Up"),
                   style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      primary: Color(0xFF97AC94), // background
-                      onPrimary: Colors.white,
-                      padding: EdgeInsets.only(
-                          left: 41,
-                          right: 41,
-                          top: 14,
-                          bottom: 20) // foreground
-                      ),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    primary: Color(0xFF97AC94), // background
+                    onPrimary: Colors.white,
+                    padding: EdgeInsets.only(
+                      left: 41,
+                      right: 41,
+                      top: 14,
+                      bottom: 20,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   width: 16,
