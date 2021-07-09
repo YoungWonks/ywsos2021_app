@@ -5,6 +5,7 @@ import 'package:ywsos2021_app/widgets/login_form.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = '/login_screen';
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -19,28 +20,26 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   @override
-  var click = 0 ;
+  var click = 0;
 
   void GoLogOn() async {
     print("home");
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => LoginScreen()));
+        context, MaterialPageRoute(builder: (context) => LoginScreen()));
 
     setState(() {});
-    click=0;
+    click = 0;
   }
-  void GoHome() async{
+
+  void GoHome() async {
     print("home");
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => HomeScreen()));
+        context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
     setState(() {});
-    click=0;
+    click = 0;
   }
+
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
@@ -55,12 +54,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ListTile(
                   title: Text("Home Screen"),
                   leading: Icon(Icons.home),
-                  onTap: (){
+                  onTap: () {
                     print("homescreen");
                     //If Click Variable =0, Call function for home screen, set click to 1
-                    if(click==0)
-                      GoHome();
-                    click=1;
+                    if (click == 0) GoHome();
+                    click = 1;
                   },
                 ),
                 ListTile(
@@ -76,9 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   leading: Icon(Icons.login),
                   onTap: () {
                     print("Login");
-                    if(click==0)
-                      GoLogOn();
-                    click=1;
+                    if (click == 0) GoLogOn();
+                    click = 1;
                     //If Click Variable =0, Call function for home screen, set click to 1
                   },
                 ),

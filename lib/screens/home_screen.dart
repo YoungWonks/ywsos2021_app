@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/screens/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
+  static const routeName = '/home';
   @override
   _HomeScreenState createState() => _HomeScreenState();
 // const HomeScreen({Key? key}) : super(key: key);

@@ -32,7 +32,10 @@ class OpeningScreen extends StatelessWidget {
             children: [
               Text(
                 'GeoRepair',
-                style: TextStyle(fontSize: 45),
+                style: TextStyle(
+                    fontSize: 45.0,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFFFFFFFF).withOpacity(0.53)),
               ),
               SizedBox(
                 width: 10,
@@ -48,102 +51,81 @@ class OpeningScreen extends StatelessWidget {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(
-              width: 400,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: Offset(0.0, 1.0), //(x,y)
-                    blurRadius: 8.0,
-                  ),
-                ],
-                shape: BoxShape.circle,
-                color: Color(0xFF97AC94),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    top: 55,
-                    left: 81,
-                    child: Image.asset(
-                      './assets/images/fire_hydrant.png',
-                      height: 160.15,
-                      width: 199.7,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      './assets/images/holding_phone.png',
-                      height: 287.73,
-                      width: 264.69,
-                    ),
-                  ),
-                ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Image.asset(
+                './assets/images/full_image.png',
+                width: MediaQuery.of(context).size.width * 0.95,
               ),
             ),
-            Center(
-              child: Text(
-                'Click, Calculate \n and Repair',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  'Click, Calculate',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                ),
+                Text(
+                  'and Repair',
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                ),
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => RegisterScreen(),
-                      ),
-                    );
-                  },
-                  child: Text("Sign Up"),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    primary: Color(0xFF97AC94), // background
-                    onPrimary: Colors.white,
-                    padding: EdgeInsets.only(
-                      left: 41,
-                      right: 41,
-                      top: 14,
-                      bottom: 20,
-                    ),
+                OpeningButton(
+                  child: Text(
+                    "Sign In",
+                    style:
+                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
                   ),
+                  onPressed: () => Navigator.of(context)
+                      .pushReplacementNamed(LoginScreen.routeName),
                 ),
                 SizedBox(
                   width: 16,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => LoginScreen(),
-                      ),
-                    );
-                  },
-                  child: Text("Sign In"),
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      primary: Color(0xFF97AC94), // background
-                      onPrimary: Colors.white,
-                      padding: EdgeInsets.only(
-                          left: 41,
-                          right: 41,
-                          top: 14,
-                          bottom: 20) // foreground
-                      ),
+                OpeningButton(
+                  onPressed: () => Navigator.of(context)
+                      .pushReplacementNamed(RegisterScreen.routeName),
+                  child: Text(
+                    "Sign Up",
+                    style:
+                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
+                  ),
                 ),
               ],
             )
           ],
         ),
       ),
+    );
+  }
+}
+
+class OpeningButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final Widget child;
+
+  const OpeningButton({
+    Key? key,
+    required this.onPressed,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: child,
+      style: ElevatedButton.styleFrom(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          primary: Color(0xFF97AC94),
+          padding: EdgeInsets.only(
+              left: 41, right: 41, top: 14, bottom: 20) // foreground
+          ),
     );
   }
 }
