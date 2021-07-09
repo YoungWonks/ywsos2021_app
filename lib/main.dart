@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
 import 'package:ywsos2021_app/screens/opening_screen.dart';
+import 'package:ywsos2021_app/screens/register_screen.dart';
 
 import 'screens/login_screen.dart';
 
@@ -18,6 +19,11 @@ class MyApp extends StatelessWidget {
       ),
       //add routes:,
       home: OpeningScreen(),
+      routes: {
+        LoginScreen.routeName: (_) => LoginScreen(),
+        RegisterScreen.routeName: (_) => RegisterScreen(),
+        HomeScreen.routeName: (_) => HomeScreen(),
+      },
     );
   }
 }

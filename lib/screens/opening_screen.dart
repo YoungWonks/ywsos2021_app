@@ -32,7 +32,10 @@ class OpeningScreen extends StatelessWidget {
             children: [
               Text(
                 'GeoRepair',
-                style: TextStyle(fontSize: 45),
+                style: TextStyle(
+                    fontSize: 45.0,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFFFFFFFF).withOpacity(0.53)),
               ),
               SizedBox(
                 width: 10,
@@ -71,53 +74,25 @@ class OpeningScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (_) => RegisterScreen(),
-                    ),
-                  ),
-                  child: Text(
-                    "Sign Up",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15)),
-                      primary: Color(0xFF97AC94),
-                      padding: EdgeInsets.only(
-                          left: 41,
-                          right: 41,
-                          top: 14,
-                          bottom: 20) // foreground
-                      ),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                ElevatedButton(
-                  onPressed: () => Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (_) => LoginScreen(),
-                    ),
-                  ),
+                OpeningButton(
                   child: Text(
                     "Sign In",
                     style:
                         TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    primary: Color(0xFF97AC94), // background
-                    onPrimary: Colors.white,
-                    padding: EdgeInsets.only(
-                      left: 41,
-                      right: 41,
-                      top: 14,
-                      bottom: 20,
-                    ),
+                  onPressed: () => Navigator.of(context)
+                      .pushReplacementNamed(LoginScreen.routeName),
+                ),
+                SizedBox(
+                  width: 16,
+                ),
+                OpeningButton(
+                  onPressed: () => Navigator.of(context)
+                      .pushReplacementNamed(RegisterScreen.routeName),
+                  child: Text(
+                    "Sign Up",
+                    style:
+                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
                   ),
                 ),
               ],
@@ -125,6 +100,32 @@ class OpeningScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class OpeningButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final Widget child;
+
+  const OpeningButton({
+    Key? key,
+    required this.onPressed,
+    required this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: child,
+      style: ElevatedButton.styleFrom(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          primary: Color(0xFF97AC94),
+          padding: EdgeInsets.only(
+              left: 41, right: 41, top: 14, bottom: 20) // foreground
+          ),
     );
   }
 }
