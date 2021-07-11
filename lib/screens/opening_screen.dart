@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/home_screen.dart';
 import 'package:ywsos2021_app/screens/login_screen.dart';
 import 'package:ywsos2021_app/screens/register_screen.dart';
 
@@ -81,7 +82,7 @@ class OpeningScreen extends StatelessWidget {
                         TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
                   ),
                   onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(LoginScreen.routeName),
+                      .pushReplacementNamed(HomeScreen.routeName),
                 ),
                 SizedBox(
                   width: 16,
