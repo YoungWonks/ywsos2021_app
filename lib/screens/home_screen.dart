@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ywsos2021_app/widgets/carosoul_action_item.dart';
 import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
+import 'package:ywsos2021_app/widgets/dot_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -223,42 +224,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ]),
         ),
       ),
-    );
-  }
-}
-
-class DotIndicator extends StatelessWidget {
-  const DotIndicator({
-    Key? key,
-    required this.carouselItems,
-    required CarouselController controller,
-    required int current,
-  })  : _controller = controller,
-        _current = current,
-        super(key: key);
-
-  final List<Widget> carouselItems;
-  final CarouselController _controller;
-  final int _current;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: carouselItems.asMap().entries.map((entry) {
-        return GestureDetector(
-          onTap: () => _controller.animateToPage(entry.key),
-          child: Container(
-            width: 12.0,
-            height: 12.0,
-            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white
-                    .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-          ),
-        );
-      }).toList(),
     );
   }
 }
