@@ -23,47 +23,29 @@ class CarouselActionItem extends StatelessWidget {
             ],
           ),
           borderRadius: BorderRadius.circular(16)),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Column(
-            children: [
-              image,
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                title,
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFFF7FFEE),
-                  fontSize: 16.11,
-                ),
-              ),
-              Text(
-                subTitle,
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFFF7FFEE),
-                  fontSize: 9.88,
-                ),
-              ),
-            ],
-          ),
+          image,
           SizedBox(
-            width: 10,
+            height: 20,
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                FontAwesomeIcons.arrowCircleRight,
-                color: Colors.white,
-              ),
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Color(0xFFF7FFEE),
+              fontSize: 16.11,
             ),
-          )
+          ),
+          Text(
+            subTitle,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              color: Color(0xFFF7FFEE),
+              fontSize: 9.88,
+            ),
+          ),
         ],
       ),
     );
