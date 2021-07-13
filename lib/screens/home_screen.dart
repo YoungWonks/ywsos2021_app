@@ -1,99 +1,227 @@
-import 'package:ywsos2021_app/screens/home_screen.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ywsos2021_app/screens/login_screen.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ywsos2021_app/widgets/carosoul_action_item.dart';
+import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
+import 'package:ywsos2021_app/widgets/dot_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
-  static const routeName = '/home';
+  static const routeName = "/home";
+  const HomeScreen({Key? key}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
-// const HomeScreen({Key? key}) : super(key: key);
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _currentAction = 0;
+  int _currentScanned = 0;
+  CarouselController _carouselActioncontroller = CarouselController();
+  CarouselController _carouselScannedController = CarouselController();
+
+  TextEditingController _searchEditingController = TextEditingController();
+
+  final List<Widget> carouselItems = [
+    CarouselActionItem(
+      title: 'New Scan',
+      subTitle: 'You have 67 scans left',
+      image: Image.asset('./assets/images/bar_code.png'),
+    ),
+    CarouselActionItem(
+      title: 'View Gallery',
+      subTitle: 'Your storage is 65% full',
+      image: Image.asset(
+        './assets/images/file_folder.png',
+        height: 110,
+      ),
+    ),
+  ];
+
+  final List<Widget> carouselScannedItems = [
+    CarouselScannedItem(
+      title: 'Fire Hydrant',
+      subTitle: 'Scanned 6 days ago',
+      image: Image.asset(
+        './assets/images/fire_hydrant.png',
+        height: 110,
+      ),
+    ),
+    CarouselScannedItem(
+      title: 'Fire Hydrant',
+      subTitle: 'Scanned 9 days ago',
+      image: Image.asset(
+        './assets/images/fire_hydrant.png',
+        height: 110,
+      ),
+    ),
+  ];
+
   @override
-  var click = 0;
-
-  void GoLogOn() async {
-    print("home");
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginScreen()));
-
-    setState(() {});
-    click = 0;
-  }
-
-  void GoHome() async {
-    print("home");
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
-
-    setState(() {});
-    click = 0;
+  void dispose() {
+    _searchEditingController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: Drawer(
-        child: Container(
-          color: Colors.blueAccent,
-          child: ListView(
-            children: [
-              ListTile(
-                title: Text("Options"),
-              ),
-              ListTile(
-                title: Text("Home Screen"),
-                leading: Icon(Icons.home),
-                onTap: () {
-                  print("homescreen");
-                  //If Click Variable =0, Call function for home screen, set click to 1
-                  if (click == 0) GoHome();
-                  click = 1;
-                },
-              ),
-              ListTile(
-                title: Text("Add a Complaint"),
-                leading: Icon(Icons.error),
-                onTap: () {
-                  print("Complaint");
-                  //If Click Variable =0, Call function for home screen, set click to 1
-                },
-              ),
-              ListTile(
-                title: Text("Login"),
-                leading: Icon(Icons.login),
-                onTap: () {
-                  print("Login");
-                  if (click == 0) GoLogOn();
-                  click = 1;
-                  //If Click Variable =0, Call function for home screen, set click to 1
-                },
-              ),
-            ],
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF97AC94),
+            Color(0xFF5C745C),
+            // Color(0xFFA2C08B),
+            // Color(0xFF82C1D6),
+            Color(0xFF64919F),
+          ],
         ),
       ),
-      appBar: AppBar(
-        title: Text("Home"),
-        // actions: [
-        //   IconButton(
-        //     onPr
-        // ],
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF97AC94),
-              Color(0xFF5C745C),
-              // Color(0xFFA2C08B),
-              // Color(0xFF82C1D6),
-              Color(0xFF64919F),
-            ],
-          ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        drawer: Drawer(),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          actions: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  'TATA',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14.0,
+                      color: Colors.black),
+                ),
+                Text(
+                  'Personal profile',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 9.0,
+                    color: Colors.white.withOpacity(0.77),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Image.asset(
+              './assets/images/profile_pic.png',
+              width: 55,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(22.0),
+          child: ListView(children: [
+            Row(
+              children: [
+                Text(
+                  'GeoRepair',
+                  style: TextStyle(
+                      fontSize: 45.0,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFFFFFFFF)),
+                ),
+                SizedBox(
+                  width: 18.52,
+                ),
+                Image.asset(
+                  './assets/hammer.png',
+                  width: 45.96,
+                  height: 44.35,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            CupertinoSearchTextField(
+              itemColor: Colors.white,
+              style: TextStyle(color: Colors.white),
+              placeholder: 'What are you searching for?',
+              placeholderStyle: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w400,
+                fontStyle: FontStyle.italic,
+                fontSize: 17.0,
+              ),
+              controller: _searchEditingController,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF9DB68E),
+                      Colors.white.withOpacity(0.56),
+                      Color(0xFF64919F).withOpacity(0.71),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(16)),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Text(
+              'Actions',
+              style: TextStyle(
+                fontSize: 19.77,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            CarouselSlider(
+              items: carouselItems,
+              options: CarouselOptions(onPageChanged: (index, reason) {
+                setState(() {
+                  _currentAction = index;
+                });
+              }),
+              carouselController: _carouselActioncontroller,
+            ),
+            DotIndicator(
+                carouselItems: carouselItems,
+                controller: _carouselActioncontroller,
+                current: _currentAction),
+            SizedBox(
+              height: 16,
+            ),
+            Text(
+              'Recently Scanned Items',
+              style: TextStyle(
+                fontSize: 19.77,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            CarouselSlider(
+              items: carouselScannedItems,
+              options: CarouselOptions(onPageChanged: (index, reason) {
+                setState(() {
+                  _currentScanned = index;
+                });
+              }),
+            ),
+            DotIndicator(
+              carouselItems: carouselScannedItems,
+              controller: _carouselScannedController,
+              current: _currentScanned,
+            ),
+          ]),
         ),
       ),
     );

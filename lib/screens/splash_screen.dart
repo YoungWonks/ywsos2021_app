@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ywsos2021_app/screens/home_screen.dart';
-import 'package:ywsos2021_app/screens/login_screen.dart';
-import 'package:ywsos2021_app/screens/register_screen.dart';
-import 'package:ywsos2021_app/widgets/opening_button.dart';
+import 'package:gradient_widgets/gradient_widgets.dart';
 
-class OpeningScreen extends StatelessWidget {
-  const OpeningScreen({Key? key}) : super(key: key);
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,31 +70,23 @@ class OpeningScreen extends StatelessWidget {
                 ),
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OpeningButton(
-                  child: Text(
-                    "Sign In",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
+            SizedBox(
+              height: 16,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(16),
                   ),
-                  onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(LoginScreen.routeName),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                OpeningButton(
-                  onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(RegisterScreen.routeName),
-                  child: Text(
-                    "Sign Up",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
+                  child: GradientProgressIndicator(
+                    gradient: LinearGradient(colors: [
+                      // Color(0xFF97B88D),
+                      Color(0xFFACC9AE),
+                      Color(0xFF649197),
+                    ]),
                   ),
                 ),
-              ],
+              ),
             )
           ],
         ),
