@@ -1,11 +1,15 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ywsos2021_app/widgets/carosoul_action_item.dart';
 import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
 import 'package:ywsos2021_app/widgets/dot_indicator.dart';
+
+enum Urgency {
+  reallyUrgent,
+  kindOfUrgent,
+  notUrgent,
+}
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -18,7 +22,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentAction = 0;
   int _currentScanned = 0;
-  CarouselController _carouselActioncontroller = CarouselController();
+  CarouselController _carouselActionController = CarouselController();
   CarouselController _carouselScannedController = CarouselController();
 
   TextEditingController _searchEditingController = TextEditingController();
@@ -43,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
     CarouselScannedItem(
       title: 'Fire Hydrant',
       subTitle: 'Scanned 6 days ago',
+      urgency: Urgency.reallyUrgent,
       image: Image.asset(
         './assets/images/fire_hydrant.png',
         height: 110,
@@ -51,6 +56,16 @@ class _HomeScreenState extends State<HomeScreen> {
     CarouselScannedItem(
       title: 'Fire Hydrant',
       subTitle: 'Scanned 9 days ago',
+      urgency: Urgency.kindOfUrgent,
+      image: Image.asset(
+        './assets/images/fire_hydrant.png',
+        height: 110,
+      ),
+    ),
+    CarouselScannedItem(
+      title: 'Fire Hydrant',
+      subTitle: 'Scanned 9 days ago',
+      urgency: Urgency.notUrgent,
       image: Image.asset(
         './assets/images/fire_hydrant.png',
         height: 110,
@@ -189,11 +204,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   _currentAction = index;
                 });
               }),
-              carouselController: _carouselActioncontroller,
+              carouselController: _carouselActionController,
             ),
             DotIndicator(
                 carouselItems: carouselItems,
-                controller: _carouselActioncontroller,
+                controller: _carouselActionController,
                 current: _currentAction),
             SizedBox(
               height: 16,

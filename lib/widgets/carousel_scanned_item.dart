@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/home_screen.dart';
 
 class CarouselScannedItem extends StatelessWidget {
   final String title;
   final String subTitle;
   final Widget image;
+  final Urgency urgency;
   const CarouselScannedItem({
     Key? key,
     required this.title,
     required this.subTitle,
     required this.image,
+    required this.urgency,
   }) : super(key: key);
 
   @override
@@ -52,10 +55,45 @@ class CarouselScannedItem extends StatelessWidget {
                 height: 15,
               ),
               image,
+              SizedBox(
+                height: 20,
+              ),
+              urgencyWidget(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Widget urgencyWidget() {
+    if (urgency == Urgency.reallyUrgent) {
+      return Text(
+        'Needs Urgent Repair',
+        style: TextStyle(
+          color: Color(0xFFD72F25),
+          fontSize: 9.0,
+          fontWeight: FontWeight.w700,
+        ),
+      );
+    } else if (urgency == Urgency.kindOfUrgent) {
+      return Text(
+        'Needs Repair',
+        style: TextStyle(
+          color: Color(0xFFDDE11F),
+          fontSize: 9.0,
+          fontWeight: FontWeight.w700,
+        ),
+      );
+    } else {
+      return Text(
+        'Doesn\'t need repair',
+        style: TextStyle(
+          color: Color(0xFF9AEF7D),
+          fontSize: 9.0,
+          fontWeight: FontWeight.w700,
+        ),
+      );
+    }
   }
 }
