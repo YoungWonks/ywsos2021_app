@@ -1,11 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:ywsos2021_app/screens/home_screen.dart';
 
 class CarouselScannedItem extends StatelessWidget {
   final String title;
   final String subTitle;
-  final Widget image;
-  final Urgency urgency;
+  final Uint8List image;
+  final String? urgency;
   const CarouselScannedItem({
     Key? key,
     required this.title,
@@ -17,7 +18,7 @@ class CarouselScannedItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 139,
+      width: 100,
       height: 199,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -54,7 +55,10 @@ class CarouselScannedItem extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-              image,
+              Image.memory(
+                image,
+                height: 110,
+              ),
               SizedBox(
                 height: 20,
               ),
@@ -67,7 +71,7 @@ class CarouselScannedItem extends StatelessWidget {
   }
 
   Widget urgencyWidget() {
-    if (urgency == Urgency.reallyUrgent) {
+    if (urgency == 'Really Urgent') {
       return Text(
         'Needs Urgent Repair',
         style: TextStyle(
@@ -76,7 +80,7 @@ class CarouselScannedItem extends StatelessWidget {
           fontWeight: FontWeight.w700,
         ),
       );
-    } else if (urgency == Urgency.kindOfUrgent) {
+    } else if (urgency == 'Kind of Urgent') {
       return Text(
         'Needs Repair',
         style: TextStyle(
