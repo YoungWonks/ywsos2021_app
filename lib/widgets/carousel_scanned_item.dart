@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/home_screen.dart';
 
 class CarouselScannedItem extends StatelessWidget {
   final String title;
@@ -55,6 +56,7 @@ class CarouselScannedItem extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
+
               Image.memory(
                 image,
                 height: 110,

@@ -3,15 +3,21 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/widgets/carosoul_action_item.dart';
+import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
+import 'package:ywsos2021_app/widgets/dot_indicator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:ywsos2021_app/models/scan.dart';
 import 'package:ywsos2021_app/models/urgency.dart';
 import 'package:ywsos2021_app/providers/scans.dart';
 import 'package:ywsos2021_app/screens/take_picture_screen.dart';
-import 'package:ywsos2021_app/widgets/carosoul_action_item.dart';
-import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
-import 'package:ywsos2021_app/widgets/dot_indicator.dart';
+
+enum Urgency {
+  reallyUrgent,
+  kindOfUrgent,
+  notUrgent,
+}
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -45,8 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     ),
   ];
-
-  final List<Widget> carouselScannedItems = [];
 
   @override
   void dispose() {
@@ -200,6 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 10,
               ),
+
               Container(
                 height: 210,
                 child: PageView.builder(
