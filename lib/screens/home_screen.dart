@@ -22,12 +22,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late File _storedImage;
-
   int _currentAction = 0;
-  int _currentScanned = 0;
   CarouselController _carouselActionController = CarouselController();
-  CarouselController _carouselScannedController = CarouselController();
 
   TextEditingController _searchEditingController = TextEditingController();
 
@@ -218,11 +214,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-              // DotIndicator(
-              //   carouselItems: Provider.of<Scans>(context).scans,
-              //   controller: _carouselScannedController,
-              //   current: _currentScanned,
-              // ),
             ]),
           ),
         ),
