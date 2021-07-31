@@ -60,12 +60,13 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
                       onPressed: () async {
                         try {
                           final image = await _controller.takePicture();
+                          final convertedImage = await image.readAsBytes();
 
                           // If the picture was taken, display it on a new screen.
                           await showDialog(
                             context: context,
                             builder: (context) {
-                              return AddScanDialog(image: image);
+                              return AddScanDialog(image: convertedImage);
                             },
                           );
                         } catch (e) {

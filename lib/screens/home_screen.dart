@@ -9,7 +9,6 @@ import 'package:ywsos2021_app/widgets/dot_indicator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:ywsos2021_app/models/scan.dart';
-import 'package:ywsos2021_app/models/urgency.dart';
 import 'package:ywsos2021_app/providers/scans.dart';
 import 'package:ywsos2021_app/screens/take_picture_screen.dart';
 
@@ -204,7 +203,6 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 10,
               ),
-
               Container(
                 height: 210,
                 child: PageView.builder(

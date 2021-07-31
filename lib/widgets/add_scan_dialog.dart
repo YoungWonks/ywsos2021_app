@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
@@ -8,7 +10,7 @@ import 'package:ywsos2021_app/providers/scans.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
 
 class AddScanDialog extends StatefulWidget {
-  final XFile image;
+  final Uint8List image;
 
   AddScanDialog({Key? key, required this.image}) : super(key: key);
 
@@ -29,11 +31,16 @@ class _AddScanDialogState extends State<AddScanDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return StatefulBuilder(
-      builder: (context, setState) => AlertDialog(
+    return StatefulBuilder(builder: (context, setState) {
+      return AlertDialog(
         content: SingleChildScrollView(
           child: Column(
             children: [
+              Container(
+                width: 120,
+                height: 100,
+                child: Image.memory(widget.image),
+              ),
               TextFormField(
                 controller: _titleController,
                 decoration: InputDecoration(hintText: 'Title'),
@@ -61,11 +68,10 @@ class _AddScanDialogState extends State<AddScanDialog> {
                     Scan(
                       title: _titleController.text,
                       scanDate: Jiffy(DateTime.now()).fromNow(),
-                      fileContents: await widget.image.readAsBytes(),
+                      fileContents: widget.image,
                       urgency: valueItem.toString(),
-                      id: ObjectId(),
                       upVote: 0,
-                      scanPosition: ScanPosition(100, 120),
+                      scanPosition: ScanPosition(lat: 100, long: 120),
                     ),
                   );
                   Navigator.of(context)
@@ -76,7 +82,7 @@ class _AddScanDialogState extends State<AddScanDialog> {
             ],
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
