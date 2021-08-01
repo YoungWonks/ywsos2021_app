@@ -50,57 +50,64 @@ class OpeningScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Image.asset(
-                './assets/images/full_image.png',
-                width: MediaQuery.of(context).size.width * 0.95,
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+        body: CustomScrollView(slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  'Click, Calculate',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
-                ),
-                Text(
-                  'and Repair',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OpeningButton(
-                  child: Text(
-                    "Sign In",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
-                  ),
-                  onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(LoginScreen.routeName),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                OpeningButton(
-                  onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(RegisterScreen.routeName),
-                  child: Text(
-                    "Sign Up",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Image.asset(
+                    './assets/images/full_image.png',
+                    width: MediaQuery.of(context).size.width * 0.95,
                   ),
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Click, Calculate',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                    ),
+                    Text(
+                      'and Repair',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    OpeningButton(
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20.0),
+                      ),
+                      onPressed: () => Navigator.of(context)
+                          .pushReplacementNamed(HomeScreen.routeName),
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    OpeningButton(
+                      onPressed: () => Navigator.of(context)
+                          .pushReplacementNamed(RegisterScreen.routeName),
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20.0),
+                      ),
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+        ]),
       ),
     );
   }

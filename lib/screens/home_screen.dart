@@ -1,9 +1,16 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/widgets/carosoul_action_item.dart';
 import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
 import 'package:ywsos2021_app/widgets/dot_indicator.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:ywsos2021_app/models/scan.dart';
+import 'package:ywsos2021_app/providers/scans.dart';
+import 'package:ywsos2021_app/screens/take_picture_screen.dart';
 
 enum Urgency {
   reallyUrgent,
@@ -21,53 +28,24 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentAction = 0;
-  int _currentScanned = 0;
   CarouselController _carouselActionController = CarouselController();
-  CarouselController _carouselScannedController = CarouselController();
 
   TextEditingController _searchEditingController = TextEditingController();
 
   final List<Widget> carouselItems = [
     CarouselActionItem(
+      onTap: (context) =>
+          Navigator.of(context).pushNamed(TakePictureScreen.routeName),
       title: 'New Scan',
       subTitle: 'You have 67 scans left',
       image: Image.asset('./assets/images/bar_code.png'),
     ),
     CarouselActionItem(
+      onTap: (context) {},
       title: 'View Gallery',
       subTitle: 'Your storage is 65% full',
       image: Image.asset(
         './assets/images/file_folder.png',
-        height: 110,
-      ),
-    ),
-  ];
-
-  final List<Widget> carouselScannedItems = [
-    CarouselScannedItem(
-      title: 'Fire Hydrant',
-      subTitle: 'Scanned 6 days ago',
-      urgency: Urgency.reallyUrgent,
-      image: Image.asset(
-        './assets/images/fire_hydrant.png',
-        height: 110,
-      ),
-    ),
-    CarouselScannedItem(
-      title: 'Fire Hydrant',
-      subTitle: 'Scanned 9 days ago',
-      urgency: Urgency.kindOfUrgent,
-      image: Image.asset(
-        './assets/images/fire_hydrant.png',
-        height: 110,
-      ),
-    ),
-    CarouselScannedItem(
-      title: 'Fire Hydrant',
-      subTitle: 'Scanned 9 days ago',
-      urgency: Urgency.notUrgent,
-      image: Image.asset(
-        './assets/images/fire_hydrant.png',
         height: 110,
       ),
     ),
@@ -81,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final scans = Provider.of<Scans>(context);
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -140,103 +119,106 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(22.0),
-          child: ListView(children: [
-            Row(
-              children: [
-                Text(
-                  'GeoRepair',
-                  style: TextStyle(
-                      fontSize: 45.0,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFFFFFFFF)),
-                ),
-                SizedBox(
-                  width: 18.52,
-                ),
-                Image.asset(
-                  './assets/hammer.png',
-                  width: 45.96,
-                  height: 44.35,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            CupertinoSearchTextField(
-              itemColor: Colors.white,
-              style: TextStyle(color: Colors.white),
-              placeholder: 'What are you searching for?',
-              placeholderStyle: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w400,
-                fontStyle: FontStyle.italic,
-                fontSize: 17.0,
-              ),
-              controller: _searchEditingController,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xFF9DB68E),
-                      Colors.white.withOpacity(0.56),
-                      Color(0xFF64919F).withOpacity(0.71),
-                    ],
+          child: SingleChildScrollView(
+            child: Column(children: [
+              Row(
+                children: [
+                  Text(
+                    'GeoRepair',
+                    style: TextStyle(
+                        fontSize: 45.0,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFFFFFFFF)),
                   ),
-                  borderRadius: BorderRadius.circular(16)),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            Text(
-              'Actions',
-              style: TextStyle(
-                fontSize: 19.77,
-                fontWeight: FontWeight.w600,
+                  SizedBox(
+                    width: 18.52,
+                  ),
+                  Image.asset(
+                    './assets/hammer.png',
+                    width: 45.96,
+                    height: 44.35,
+                  ),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            CarouselSlider(
-              items: carouselItems,
-              options: CarouselOptions(onPageChanged: (index, reason) {
-                setState(() {
-                  _currentAction = index;
-                });
-              }),
-              carouselController: _carouselActionController,
-            ),
-            DotIndicator(
-                carouselItems: carouselItems,
-                controller: _carouselActionController,
-                current: _currentAction),
-            SizedBox(
-              height: 16,
-            ),
-            Text(
-              'Recently Scanned Items',
-              style: TextStyle(
-                fontSize: 19.77,
-                fontWeight: FontWeight.w600,
+              SizedBox(
+                height: 16,
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            CarouselSlider(
-              items: carouselScannedItems,
-              options: CarouselOptions(onPageChanged: (index, reason) {
-                setState(() {
-                  _currentScanned = index;
-                });
-              }),
-            ),
-            DotIndicator(
-              carouselItems: carouselScannedItems,
-              controller: _carouselScannedController,
-              current: _currentScanned,
-            ),
-          ]),
+              CupertinoSearchTextField(
+                itemColor: Colors.white,
+                style: TextStyle(color: Colors.white),
+                placeholder: 'What are you searching for?',
+                placeholderStyle: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 17.0,
+                ),
+                controller: _searchEditingController,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF9DB68E),
+                        Colors.white.withOpacity(0.56),
+                        Color(0xFF64919F).withOpacity(0.71),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(16)),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                'Actions',
+                style: TextStyle(
+                  fontSize: 19.77,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              CarouselSlider(
+                items: carouselItems,
+                options: CarouselOptions(onPageChanged: (index, reason) {
+                  setState(() {
+                    _currentAction = index;
+                  });
+                }),
+                carouselController: _carouselActionController,
+              ),
+              DotIndicator(
+                  carouselItems: carouselItems,
+                  controller: _carouselActionController,
+                  current: _currentAction),
+              SizedBox(
+                height: 16,
+              ),
+              Text(
+                'Recently Scanned Items',
+                style: TextStyle(
+                  fontSize: 19.77,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: 210,
+                child: PageView.builder(
+                  itemCount: scans.scans.length,
+                  itemBuilder: (context, index) {
+                    return CarouselScannedItem(
+                      title: scans.scans[index].title,
+                      subTitle: scans.scans[index].scanDate,
+                      image: scans.scans[index].fileContents,
+                      urgency: scans.scans[index].urgency,
+                    );
+                  },
+                ),
+              ),
+            ]),
+          ),
         ),
       ),
     );
