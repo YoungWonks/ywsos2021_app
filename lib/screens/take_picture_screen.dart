@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/splash_screen.dart';
 import 'package:ywsos2021_app/widgets/add_scan_dialog.dart';
 
 class TakePictureScreen extends StatefulWidget {
@@ -34,11 +35,15 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final deviceRatio = size.width / size.height;
     return Scaffold(
-      // extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Color(0x44000000),
+        backgroundColor: Colors.black,
+        elevation: 0,
       ),
+      backgroundColor: Colors.black,
       // You must wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner until the
       // controller has finished initializing.
@@ -49,13 +54,15 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
             // If the Future is complete, display the preview.
             return Stack(
               children: [
-                Center(
+                Align(
+                  alignment: Alignment.center,
                   child: CameraPreview(_controller),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                Container(
+                  margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.width / 20),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
                     child: FloatingActionButton(
                       onPressed: () async {
                         try {
@@ -94,11 +101,12 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
                     ),
                   ),
                 ),
+                // Spacer(),
               ],
             );
           } else {
             // Otherwise, display a loading indicator.
-            return Center(child: CircularProgressIndicator());
+            return SplashScreen();
           }
         },
       ),

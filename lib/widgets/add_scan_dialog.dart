@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:objectid/objectid.dart';
@@ -48,11 +47,7 @@ class _AddScanDialogState extends State<AddScanDialog> {
               DropdownButton<String>(
                 value: valueItem,
                 onChanged: (String? newValue) {
-                  setState(() {
-                    valueItem = newValue;
-                  });
-                  debugPrint(newValue);
-                  // debugPrint(valueItem);
+                  setState(() {});
                 },
                 items:
                     urgencyItems.map<DropdownMenuItem<String>>((String value) {
@@ -66,8 +61,9 @@ class _AddScanDialogState extends State<AddScanDialog> {
                 onPressed: () async {
                   Provider.of<Scans>(context, listen: false).addScan(
                     Scan(
+                      id: null,
                       title: _titleController.text,
-                      scanDate: Jiffy(DateTime.now()).fromNow(),
+                      scanDate: DateTime.now().toIso8601String(),
                       fileContents: widget.image,
                       urgency: valueItem.toString(),
                       upVote: 0,
