@@ -10,35 +10,35 @@ class Scans extends ChangeNotifier {
   List<Scan> get scans => [..._scans];
 
   Future<void> getScansFromRadius() async {
-    var url = 'http://localhost:8000/api/scans/all';
-    try {
-      final response = await http.post(Uri.parse(url), body: {
-        "radius": 1,
-      });
-      final extractedData =
-          json.decode(response.body) as List<Map<String, dynamic>>?;
-      if (extractedData == null) {
-        return;
-      }
-      final List<Scan> loadedScans = [];
-      extractedData.forEach((scan) {
-        loadedScans.add(
-          Scan(
-            id: scan['_id'],
-            fileContents: scan['filename'],
-            upVote: scan['upvote'],
-            scanPosition: scan['position'],
-            scanDate: scan['scandate'],
-            title: scan['title'],
-            urgency: scan['urgency'],
-          ),
-        );
-      });
-      _scans = loadedScans;
-      notifyListeners();
-    } catch (e) {
-      print(e);
+    final rangeJson = {"range": 1};
+    final response = await http.post(
+      Uri.parse('http://10.0.2.2:5000/api/scans/all'),
+      body: json.encode(rangeJson),
+      headers: {"Content-Type": "application/json"},
+    );
+
+    final extractedData = json.decode(response.body);
+    if (extractedData == null) {
+      return;
     }
+    final List<Scan> loadedScans = [];
+    extractedData['repairs'].forEach((scan) {
+      loadedScans.add(
+        Scan(
+          id: scan['_id'],
+          fileContents: scan['filename'],
+          upVote: scan['upvote'],
+          lat: scan['lat'],
+          long: scan['long'],
+          scanDate: scan['scandate'],
+          title: scan['title'],
+          urgency: scan['urgency'],
+        ),
+      );
+    });
+    _scans = loadedScans;
+    print('All Scans: $_scans');
+    notifyListeners();
   }
 
   void addScan(Scan scanItem) {

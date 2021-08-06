@@ -67,7 +67,8 @@ class _AddScanDialogState extends State<AddScanDialog> {
                       fileContents: widget.image,
                       urgency: valueItem.toString(),
                       upVote: 0,
-                      scanPosition: ScanPosition(lat: 100, long: 120),
+                      lat: 100,
+                      long: 100,
                     ),
                   );
                   Navigator.of(context)

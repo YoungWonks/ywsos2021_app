@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/screens/add_photo_gallery_screen.dart';
 import 'package:ywsos2021_app/widgets/carosoul_action_item.dart';
 import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
+import 'package:ywsos2021_app/widgets/custom_drawer.dart';
 import 'package:ywsos2021_app/widgets/dot_indicator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -36,8 +37,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final TextStyle drawerTextStyle = TextStyle(
-      fontWeight: FontWeight.w700, color: Colors.white, fontSize: 37.0);
+  Future<void> _refreshScans(BuildContext context) async {
+    await Provider.of<Scans>(context, listen: false).getScansFromRadius();
+  }
 
   final List<Widget> carouselItems = [
     CarouselActionItem(
@@ -67,8 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    _refreshScans(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final scans = Provider.of<Scans>(context);
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -85,100 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: Drawer(
-          child: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF97AC94),
-                  Color(0xFF5C745C),
-                  // Color(0xFFA2C08B),
-                  // Color(0xFF82C1D6),
-                  Color(0xFF64919F),
-                ],
-              ),
-            ),
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  child: Row(
-                    children: [
-                      Text(
-                        'GeoRepair',
-                        style: drawerTextStyle,
-                      ),
-                      SizedBox(
-                        width: 18.0,
-                      ),
-                      Image.asset(
-                        './assets/hammer.png',
-                        width: 45.96,
-                        height: 44.35,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 32,
-                ),
-                ListTile(
-                  leading: Image.asset(
-                    './assets/images/profile_pic.png',
-                    width: 64,
-                  ),
-                  title: Text(
-                    'Account',
-                    style: drawerTextStyle,
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.photo_size_select_actual,
-                    size: 64,
-                    color: Color(0xFFDFF6D8),
-                  ),
-                  title: Text(
-                    'Gallery',
-                    style: drawerTextStyle,
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.settings,
-                    size: 64,
-                    color: Color(0xFFDFF6D8),
-                  ),
-                  title: Text(
-                    'Settings',
-                    style: drawerTextStyle,
-                  ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                ListTile(
-                  leading: Icon(
-                    Icons.logout,
-                    color: Color(0xFFDFF6D8),
-                    size: 64,
-                  ),
-                  title: Text(
-                    'Sign Out',
-                    style: drawerTextStyle,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        drawer: CustomDrawer(),
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -315,20 +229,23 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                height: 210,
-                child: PageView.builder(
-                  itemCount: scans.scans.length,
-                  itemBuilder: (context, index) {
-                    return CarouselScannedItem(
-                      title: scans.scans[index].title,
-                      subTitle: scans.scans[index].scanDate,
-                      image: scans.scans[index].fileContents,
-                      urgency: scans.scans[index].urgency,
-                    );
-                  },
-                ),
-              ),
+              Consumer<Scans>(builder: (ctx, scans, child) {
+                // _refreshScans(ctx);
+                return Container(
+                  height: 210,
+                  child: PageView.builder(
+                    itemCount: scans.scans.length,
+                    itemBuilder: (context, index) {
+                      return CarouselScannedItem(
+                        title: scans.scans[index].title,
+                        subTitle: scans.scans[index].scanDate,
+                        image: scans.scans[index].fileContents,
+                        urgency: scans.scans[index].urgency,
+                      );
+                    },
+                  ),
+                );
+              }),
             ]),
           ),
         ),
