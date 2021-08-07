@@ -19,6 +19,7 @@ class AddScanDialog extends StatefulWidget {
 
 class _AddScanDialogState extends State<AddScanDialog> {
   final TextEditingController _titleController = TextEditingController();
+  final TextEditingController? _descController = TextEditingController();
 
   final List<String> urgencyItems = [
     'Really Urgent',
@@ -44,10 +45,16 @@ class _AddScanDialogState extends State<AddScanDialog> {
                 controller: _titleController,
                 decoration: InputDecoration(hintText: 'Title'),
               ),
+              TextFormField(
+                controller: _descController,
+                decoration: InputDecoration(hintText: 'Description (Optional)'),
+              ),
               DropdownButton<String>(
                 value: valueItem,
                 onChanged: (String? newValue) {
-                  setState(() {});
+                  setState(() {
+                    valueItem = newValue;
+                  });
                 },
                 items:
                     urgencyItems.map<DropdownMenuItem<String>>((String value) {
@@ -69,6 +76,8 @@ class _AddScanDialogState extends State<AddScanDialog> {
                       upVote: 0,
                       lat: 100,
                       long: 100,
+                      description: _descController!.text,
+                      fileName: 'jfaljd',
                     ),
                   );
                   Navigator.of(context)

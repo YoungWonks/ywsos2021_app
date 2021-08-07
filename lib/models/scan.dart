@@ -19,8 +19,12 @@ class Scan {
   final String scanDate;
   final String title;
   final String urgency;
+  final String fileName;
+  final String? description;
 
   Scan({
+    required this.description,
+    required this.fileName,
     required this.lat,
     required this.long,
     required this.id,
