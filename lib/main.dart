@@ -6,6 +6,7 @@ import 'package:ywsos2021_app/screens/home_screen.dart';
 import 'package:ywsos2021_app/screens/opening_screen.dart';
 import 'package:ywsos2021_app/screens/register_screen.dart';
 import 'package:ywsos2021_app/screens/splash_screen.dart';
+
 import 'package:ywsos2021_app/screens/take_picture_screen.dart';
 
 import 'screens/login_screen.dart';
