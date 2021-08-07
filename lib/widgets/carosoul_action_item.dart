@@ -17,7 +17,7 @@ class CarouselActionItem extends StatelessWidget {
     return InkWell(
       onTap: () => onTap(context),
       child: Container(
-        width: 250,
+        padding: EdgeInsets.symmetric(horizontal: 23),
         decoration: BoxDecoration(
             // color: Colors.white,
             gradient: LinearGradient(

@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/add_photo_gallery_screen.dart';
 import 'package:ywsos2021_app/widgets/carosoul_action_item.dart';
 import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
+import 'package:ywsos2021_app/widgets/custom_drawer.dart';
 import 'package:ywsos2021_app/widgets/dot_indicator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +22,7 @@ enum Urgency {
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
+
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
@@ -32,6 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   TextEditingController _searchEditingController = TextEditingController();
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Future<void> _refreshScans(BuildContext context) async {
+    await Provider.of<Scans>(context, listen: false).getScansFromRadius();
+  }
+
   final List<Widget> carouselItems = [
     CarouselActionItem(
       onTap: (context) =>
@@ -41,7 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
       image: Image.asset('./assets/images/bar_code.png'),
     ),
     CarouselActionItem(
-      onTap: (context) {},
+      onTap: (context) {
+        Navigator.of(context).pushNamed(AddPhotoGalleryScreen.routeName);
+      },
       title: 'View Gallery',
       subTitle: 'Your storage is 65% full',
       image: Image.asset(
@@ -58,8 +69,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    _refreshScans(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final scans = Provider.of<Scans>(context);
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -75,10 +91,20 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       child: Scaffold(
+        key: _scaffoldKey,
+        drawer: CustomDrawer(),
         backgroundColor: Colors.transparent,
-        drawer: Drawer(),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
+          leading: InkWell(
+              onTap: () {
+                if (_scaffoldKey.currentState!.isDrawerOpen) {
+                  _scaffoldKey.currentState!.openEndDrawer();
+                } else {
+                  _scaffoldKey.currentState!.openDrawer();
+                }
+              },
+              child: Image.asset('./assets/images/drawer_icon.png')),
           elevation: 0,
           centerTitle: true,
           actions: [
@@ -203,20 +229,23 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 10,
               ),
-              Container(
-                height: 210,
-                child: PageView.builder(
-                  itemCount: scans.scans.length,
-                  itemBuilder: (context, index) {
-                    return CarouselScannedItem(
-                      title: scans.scans[index].title,
-                      subTitle: scans.scans[index].scanDate,
-                      image: scans.scans[index].fileContents,
-                      urgency: scans.scans[index].urgency,
-                    );
-                  },
-                ),
-              ),
+              Consumer<Scans>(builder: (ctx, scans, child) {
+                // _refreshScans(ctx);
+                return Container(
+                  height: 210,
+                  child: PageView.builder(
+                    itemCount: scans.scans.length,
+                    itemBuilder: (context, index) {
+                      return CarouselScannedItem(
+                        title: scans.scans[index].title,
+                        subTitle: scans.scans[index].scanDate,
+                        image: scans.scans[index].fileContents,
+                        urgency: scans.scans[index].urgency,
+                      );
+                    },
+                  ),
+                );
+              }),
             ]),
           ),
         ),
