@@ -30,6 +30,10 @@ class _AddPhotoGalleryScreenState extends State<AddPhotoGalleryScreen> {
     });
   }
 
+  _turnImageToBytes(XFile file) async {
+    return await file.readAsBytes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +56,8 @@ class _AddPhotoGalleryScreenState extends State<AddPhotoGalleryScreen> {
                 child: _image != null
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(50),
-                        child: Image.file(
-                          File(_image!.path),
+                        child: Image.memory(
+                          _turnImageToBytes(_image!),
                           width: 100,
                           height: 100,
                           fit: BoxFit.fitHeight,
