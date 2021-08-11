@@ -238,7 +238,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemBuilder: (context, index) {
                       return CarouselScannedItem(
                         title: scans.scans[index].title,
-                        subTitle: scans.scans[index].scanDate,
+                        subTitle: scans.scans[index].scanDate.toString(),
                         image: scans.scans[index].fileContents,
                         urgency: scans.scans[index].urgency,
                       );

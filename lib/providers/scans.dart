@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/models/scan.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,8 +30,7 @@ class Scans extends ChangeNotifier {
               id: scan['_id'],
               fileContents: scan['fileContents'],
               upVote: scan['upvote'],
-              lat: scan['lat'],
-              long: scan['long'],
+              position: scan['position'],
               scanDate: scan['scandate'],
               title: scan['title'],
               urgency: scan['urgency'],
@@ -39,7 +39,7 @@ class Scans extends ChangeNotifier {
         );
       });
       _scans = loadedScans;
-      print('All Scans: $_scans');
+      // print('All Scans: $_scans');
       notifyListeners();
     } catch (e) {
       print(e);
@@ -47,33 +47,43 @@ class Scans extends ChangeNotifier {
   }
 
   void addScan(Scan scanItem) async {
-    var url = "http://10.0.2.2:5000/api/scans/all";
+    String url = "http://10.0.2.2:5000/api/scans/add";
+    String imageUrl = "http://10.0.2.2:5000/api/scans/upload";
     try {
+      var request = http.MultipartRequest("POST", Uri.parse(imageUrl));
+      request.files.add(http.MultipartFile.fromBytes(
+        'image',
+        scanItem.fileContents,
+      ));
+      var res = await request.send();
+      var imageResponse = await res.stream.bytesToString();
       final response = await http.post(Uri.parse(url),
           body: json.encode({
-            "url": scanItem.fileContents,
-            "lat": scanItem.lat,
-            "long": scanItem.long,
-            "filename": scanItem.fileName,
-            "scandate": scanItem.scanDate,
+            // "url": scanItem.fileContents,
+            "position": scanItem.position, // ex: [2, 23.5]
+            // "filename": scanItem.fileName,
             "title": scanItem.title,
             "urgency": scanItem.urgency,
             "descript": scanItem.description,
+            "imageid": json.decode(imageResponse)['imageId']
           }));
+
+
+
       final newScan = new Scan(
         description: scanItem.description,
         fileContents: scanItem.fileContents,
         fileName: scanItem.fileName,
-        id: json.decode(response.body)['repairs']['_id'],
-        lat: scanItem.lat,
-        long: scanItem.long,
-        scanDate: scanItem.scanDate,
+        id: json.decode(response.body)['_id'],
+        position: scanItem.position,
         title: scanItem.title,
         upVote: scanItem.upVote,
         urgency: scanItem.urgency,
       );
       _scans.add(newScan);
       notifyListeners();
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

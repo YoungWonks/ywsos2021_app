@@ -14,23 +14,23 @@ class Scan {
   final String? id;
   final Uint8List fileContents;
   final int upVote;
-  final double lat;
-  final double long;
-  final String scanDate;
+  final List<double> position;
+  final String? scanDate;
   final String title;
-  final String urgency;
   final String fileName;
+  final String urgency;
   final String? description;
 
+  // [2, 23.5]
+
   Scan({
-    required this.description,
+    this.description,
     required this.fileName,
-    required this.lat,
-    required this.long,
-    required this.id,
+    required this.position,
+    this.id,
     required this.fileContents,
     required this.upVote,
-    required this.scanDate,
+    this.scanDate,
     required this.title,
     required this.urgency,
   });
