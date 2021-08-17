@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ywsos2021_app/screens/home_screen.dart';
 
+import '../screens/home_screen.dart';
 import 'build_input_decoration.dart';
 
 class LoginForm extends StatelessWidget {

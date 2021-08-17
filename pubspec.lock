@@ -345,13 +345,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
-  intl:
-    dependency: transitive
-    description:
-      name: intl
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.17.0"
   io:
     dependency: transitive
     description:
@@ -359,13 +352,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
-  jiffy:
-    dependency: "direct main"
-    description:
-      name: jiffy
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.1.0"
   js:
     dependency: transitive
     description:
@@ -422,13 +408,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  objectid:
-    dependency: "direct main"
-    description:
-      name: objectid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   package_config:
     dependency: transitive
     description:
@@ -616,6 +595,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0"
+  timeago:
+    dependency: "direct main"
+    description:
+      name: timeago
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.0"
   timing:
     dependency: transitive
     description:

@@ -1,7 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:ywsos2021_app/screens/splash_screen.dart';
-import 'package:ywsos2021_app/widgets/add_scan_dialog.dart';
+
+import 'splash_screen.dart';
+import '../widgets/add_scan_dialog.dart';
 
 class TakePictureScreen extends StatefulWidget {
   static const routeName = '/take-picture';

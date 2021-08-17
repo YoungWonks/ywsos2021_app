@@ -1,12 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:objectid/objectid.dart';
 import 'package:provider/provider.dart';
-import 'package:ywsos2021_app/models/scan.dart';
-import 'package:ywsos2021_app/providers/scans.dart';
-import 'package:ywsos2021_app/screens/home_screen.dart';
+
+import '../models/scan.dart';
+import '../providers/scans.dart';
+import '../screens/home_screen.dart';
 
 class AddScanDialog extends StatefulWidget {
   final Uint8List image;
@@ -19,7 +18,7 @@ class AddScanDialog extends StatefulWidget {
 
 class _AddScanDialogState extends State<AddScanDialog> {
   final TextEditingController _titleController = TextEditingController();
-  final TextEditingController? _descController = TextEditingController();
+  final TextEditingController _descController = TextEditingController();
 
   final List<String> urgencyItems = [
     'Really Urgent',
@@ -75,7 +74,7 @@ class _AddScanDialogState extends State<AddScanDialog> {
                       urgency: valueItem.toString(),
                       upVote: 0,
                       position: [12, 43.56],
-                      description: _descController!.text,
+                      description: _descController.text,
                       fileName: 'jfaljd',
                     ),
                   );

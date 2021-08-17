@@ -1,24 +1,15 @@
-import 'dart:io';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ywsos2021_app/screens/add_photo_gallery_screen.dart';
-import 'package:ywsos2021_app/widgets/carosoul_action_item.dart';
-import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
-import 'package:ywsos2021_app/widgets/custom_drawer.dart';
-import 'package:ywsos2021_app/widgets/dot_indicator.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:ywsos2021_app/models/scan.dart';
-import 'package:ywsos2021_app/providers/scans.dart';
-import 'package:ywsos2021_app/screens/take_picture_screen.dart';
 
-enum Urgency {
-  reallyUrgent,
-  kindOfUrgent,
-  notUrgent,
-}
+import 'add_photo_gallery_screen.dart';
+import '../widgets/carosoul_action_item.dart';
+import '../widgets/carousel_scanned_item.dart';
+import '../widgets/custom_drawer.dart';
+import '../widgets/dot_indicator.dart';
+import '../providers/scans.dart';
+import 'take_picture_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -46,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: (context) =>
           Navigator.of(context).pushNamed(TakePictureScreen.routeName),
       title: 'New Scan',
-      subTitle: 'You have 67 scans left',
+      subTitle: '',
       image: Image.asset('./assets/images/bar_code.png'),
     ),
     CarouselActionItem(
@@ -54,12 +45,48 @@ class _HomeScreenState extends State<HomeScreen> {
         Navigator.of(context).pushNamed(AddPhotoGalleryScreen.routeName);
       },
       title: 'View Gallery',
-      subTitle: 'Your storage is 65% full',
+      subTitle: '',
       image: Image.asset(
         './assets/images/file_folder.png',
         height: 110,
       ),
     ),
+    CarouselActionItem(
+      onTap: (context) {
+        Navigator.of(context).pushNamed(AddPhotoGalleryScreen.routeName);
+      },
+      title: 'Share',
+      subTitle: '',
+      image: Icon(
+        Icons.share,
+        color: Colors.white.withOpacity(.6),
+        size: 110,
+      ),
+    ),
+    CarouselActionItem(
+        onTap: (context) {
+          Navigator.of(context).pushNamed(AddPhotoGalleryScreen.routeName);
+        },
+        title: 'Edit Profile',
+        subTitle: '',
+        image: Icon(
+          Icons.person,
+          color: Colors.white.withOpacity(.6),
+          size: 110,
+        )),
+    CarouselActionItem(
+      title: 'Logout',
+      subTitle: '',
+      image: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Icon(
+          Icons.logout,
+          size: 80,
+          color: Colors.white.withOpacity(.6),
+        ),
+      ),
+      onTap: (context) {},
+    )
   ];
 
   @override
@@ -68,11 +95,11 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    _refreshScans(context);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   _refreshScans(context);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +257,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 10,
               ),
               Consumer<Scans>(builder: (ctx, scans, child) {
-                // _refreshScans(ctx);
+                _refreshScans(ctx);
                 return Container(
                   height: 210,
                   child: PageView.builder(
