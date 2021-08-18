@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ywsos2021_app/widgets/create_account_form.dart';
-import 'package:ywsos2021_app/widgets/login_form.dart';
-import 'package:ywsos2021_app/screens/home_screen.dart';
+
+import '../widgets/create_account_form.dart';
+import '../widgets/login_form.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login_screen';

@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ywsos2021_app/models/scan.dart';
 import 'package:http/http.dart' as http;
+
+import '../models/scan.dart';
 
 class Scans extends ChangeNotifier {
   List<Scan> _scans = [];
@@ -55,8 +56,8 @@ class Scans extends ChangeNotifier {
         'image',
         scanItem.fileContents,
       ));
-      var res = await request.send();
-      var imageResponse = await res.stream.bytesToString();
+      final res = await request.send();
+      final imageResponse = await res.stream.bytesToString();
       final response = await http.post(Uri.parse(url),
           body: json.encode({
             // "url": scanItem.fileContents,
@@ -68,12 +69,13 @@ class Scans extends ChangeNotifier {
             "imageid": json.decode(imageResponse)['imageId']
           }));
 
+      final date = DateTime.now().millisecondsSinceEpoch;
 
-
-      final newScan = new Scan(
+      final newScan = Scan(
         description: scanItem.description,
         fileContents: scanItem.fileContents,
         fileName: scanItem.fileName,
+        scanDate: date.toString(),
         id: json.decode(response.body)['_id'],
         position: scanItem.position,
         title: scanItem.title,

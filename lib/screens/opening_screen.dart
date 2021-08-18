@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ywsos2021_app/screens/home_screen.dart';
-import 'package:ywsos2021_app/screens/login_screen.dart';
-import 'package:ywsos2021_app/screens/register_screen.dart';
-import 'package:ywsos2021_app/widgets/opening_button.dart';
+
+import 'home_screen.dart';
+import 'register_screen.dart';
+import '../widgets/opening_button.dart';
 
 class OpeningScreen extends StatelessWidget {
   const OpeningScreen({Key? key}) : super(key: key);
