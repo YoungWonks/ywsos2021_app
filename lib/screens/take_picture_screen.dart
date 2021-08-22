@@ -37,7 +37,6 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final deviceRatio = size.width / size.height;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -107,7 +106,9 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
             );
           } else {
             // Otherwise, display a loading indicator.
-            return SplashScreen();
+            return Center(
+              child: CircularProgressIndicator(),
+            );
           }
         },
       ),

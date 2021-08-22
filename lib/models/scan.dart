@@ -11,27 +11,26 @@ import 'dart:typed_data';
 // }
 
 class Scan {
-  final String? id;
+  final String id;
   final Uint8List fileContents;
+  final Map<String, dynamic> position;
   final int upVote;
-  final List<double> position;
-  final String? scanDate;
+  final String date;
   final String title;
-  final String fileName;
-  final String urgency;
-  final String? description;
+  final String des;
+  final int urgency;
+
+  Scan({
+    required this.id,
+    required this.fileContents,
+    required this.position,
+    required this.upVote,
+    required this.date,
+    required this.title,
+    required this.des,
+    required this.urgency,
+  });
 
   // [2, 23.5]
 
-  Scan({
-    this.description,
-    required this.fileName,
-    required this.position,
-    this.id,
-    required this.fileContents,
-    required this.upVote,
-    this.scanDate,
-    required this.title,
-    required this.urgency,
-  });
 }
