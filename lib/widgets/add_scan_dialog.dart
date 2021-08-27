@@ -20,13 +20,9 @@ class _AddScanDialogState extends State<AddScanDialog> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
 
-  final List<String> urgencyItems = [
-    'Really Urgent',
-    'Kind of Urgent',
-    'Not Urgent'
-  ];
+  int? valueItem = 1;
 
-  String? valueItem = 'Really Urgent';
+  List urgencyRange = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   @override
   Widget build(BuildContext context) {
@@ -48,35 +44,28 @@ class _AddScanDialogState extends State<AddScanDialog> {
                 controller: _descController,
                 decoration: InputDecoration(hintText: 'Description (Optional)'),
               ),
-              DropdownButton<String>(
+              DropdownButton<int>(
                 value: valueItem,
-                onChanged: (String? newValue) {
+                onChanged: (int? newValue) {
                   setState(() {
                     valueItem = newValue;
                   });
                 },
-                items:
-                    urgencyItems.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
+                items: urgencyRange.map<DropdownMenuItem<int>>((value) {
+                  return DropdownMenuItem<int>(
+                    child: Text(value.toString()),
                     value: value,
-                    child: Text(value),
                   );
                 }).toList(),
               ),
               ElevatedButton(
                 onPressed: () async {
                   Provider.of<Scans>(context, listen: false).addScan(
-                    Scan(
-                      id: null,
-                      title: _titleController.text,
-                      scanDate: DateTime.now().toIso8601String(),
-                      fileContents: widget.image,
-                      urgency: valueItem.toString(),
-                      upVote: 0,
-                      position: [12, 43.56],
-                      description: _descController.text,
-                      fileName: 'jfaljd',
-                    ),
+                    title: _titleController.text,
+                    fileContents: widget.image,
+                    urgency: valueItem,
+                    position: [12, 43.56],
+                    description: _descController.text,
                   );
                   Navigator.of(context)
                       .pushReplacementNamed(HomeScreen.routeName);
