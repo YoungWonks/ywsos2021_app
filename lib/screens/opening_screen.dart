@@ -90,7 +90,7 @@ class OpeningScreen extends StatelessWidget {
                 ),
                 OpeningButton(
                   onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(RegisterScreen.routeName),
+                      .pushReplacementNamed(CreateAccountScreen.routeName),
                   child: Text(
                     "Sign Up",
                     style:

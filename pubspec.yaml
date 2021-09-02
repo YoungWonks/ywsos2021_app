@@ -29,6 +29,8 @@ dependencies:
   hexcolor: ^2.0.4
   dots_indicator: ^2.0.0
   gradient_widgets: ^0.6.0
+  google_fonts: ^2.1.0
+  flutter_secure_storage: ^4.2.1
 
 dev_dependencies:
   flutter_test:
