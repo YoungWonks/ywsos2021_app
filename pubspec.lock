@@ -162,6 +162,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+
   convert:
     dependency: transitive
     description:
@@ -176,6 +177,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.1+4"
+
   crypto:
     dependency: transitive
     description:
@@ -225,6 +227,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.1.2"
+
   fixnum:
     dependency: transitive
     description:
@@ -232,11 +235,21 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+
   flutter:
     dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
+
+  flutter_secure_storage:
+    dependency: "direct main"
+    description:
+      name: flutter_secure_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.2.1"
+
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -244,6 +257,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
+
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -261,6 +275,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "9.1.0"
+
+  google_fonts:
+    dependency: "direct main"
+    description:
+      name: google_fonts
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+
   freezed:
     dependency: "direct dev"
     description:
@@ -330,6 +353,23 @@ packages:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
+
+    version: "2.0.4"
+  http:
+    dependency: transitive
+    description:
+      name: http
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.13.3"
+  http_parser:
+    dependency: transitive
+    description:
+      name: http_parser
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0"
+
     version: "0.8.2"
   image_picker_for_web:
     dependency: transitive
@@ -423,6 +463,7 @@ packages:
     source: hosted
     version: "1.8.0"
   path_provider:
+
     dependency: "direct main"
     description:
       name: path_provider
@@ -435,14 +476,18 @@ packages:
       name: path_provider_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.2"
+
   path_provider_macos:
     dependency: transitive
     description:
       name: path_provider_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+
+    version: "2.0.2"
+
+
   path_provider_platform_interface:
     dependency: transitive
     description:
@@ -456,7 +501,8 @@ packages:
       name: path_provider_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.3"
+
   pedantic:
     dependency: transitive
     description:
@@ -478,6 +524,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
+
   pool:
     dependency: transitive
     description:
@@ -485,6 +532,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.5.0"
+
   process:
     dependency: transitive
     description:
@@ -492,6 +540,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.3"
+
   provider:
     dependency: "direct main"
     description:
@@ -623,6 +672,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+
   watcher:
     dependency: transitive
     description:
@@ -651,6 +701,10 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
+sdks:
+  dart: ">=2.13.0 <3.0.0"
+  flutter: ">=2.0.1"
+
   yaml:
     dependency: transitive
     description:
@@ -658,6 +712,3 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
-sdks:
-  dart: ">=2.13.0 <3.0.0"
-  flutter: ">=2.0.0"

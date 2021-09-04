@@ -1,6 +1,12 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
+import 'package:ywsos2021_app/screens/home_screen.dart';
+import 'package:ywsos2021_app/screens/opening_screen.dart';
+import 'package:ywsos2021_app/screens/register_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+
 import 'providers/scans.dart';
 import 'screens/add_photo_gallery_screen.dart';
 import 'screens/home_screen.dart';
@@ -22,6 +28,9 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           primarySwatch: Colors.blue,
+          textTheme: GoogleFonts.interTextTheme(
+          Theme.of(context).textTheme,
+        ),
         ),
         home: OpeningScreen(),
         routes: {

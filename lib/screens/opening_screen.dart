@@ -63,6 +63,7 @@ class OpeningScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.95,
                   ),
                 ),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -88,7 +89,7 @@ class OpeningScreen extends StatelessWidget {
                             fontWeight: FontWeight.w700, fontSize: 20.0),
                       ),
                       onPressed: () => Navigator.of(context)
-                          .pushReplacementNamed(HomeScreen.routeName),
+                          .pushReplacementNamed(LoginScreen.routeName),
                     ),
                     SizedBox(
                       width: 16,
