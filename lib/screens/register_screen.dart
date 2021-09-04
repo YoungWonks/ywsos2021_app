@@ -3,21 +3,23 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+
 import 'package:ywsos2021_app/widgets/create_account_form.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ywsos2021_app/widgets/login_form.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
 
-class CreateAccountScreen extends StatefulWidget {
+
+class RegisterScreen extends StatefulWidget {
   static const routeName = '/register_screen';
 
-  const CreateAccountScreen({Key? key}) : super(key: key);
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  _CreateAccountScreenState createState() => _CreateAccountScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _CreateAccountScreenState extends State<CreateAccountScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   bool isCreateAccountClicked = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -33,7 +35,7 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
   void GotoRegister() async {
     print("home");
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => CreateAccountScreen()));
+        context, MaterialPageRoute(builder: (context) => RegisterScreen()));
 
     setState(() {});
     click = 0;

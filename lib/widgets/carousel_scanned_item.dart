@@ -1,9 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
-class CarouselScannedItem extends StatelessWidget {
+class CarouselScannedItem extends StatefulWidget {
   final String title;
   final String subTitle;
-  final Widget image;
+  final Uint8List image;
   const CarouselScannedItem({
     Key? key,
     required this.title,
@@ -12,9 +14,14 @@ class CarouselScannedItem extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _CarouselScannedItemState createState() => _CarouselScannedItemState();
+}
+
+class _CarouselScannedItemState extends State<CarouselScannedItem> {
+  @override
   Widget build(BuildContext context) {
     return Container(
-      width: 139,
+      width: 100,
       height: 199,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -34,14 +41,14 @@ class CarouselScannedItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                title,
+                widget.title,
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 13.0,
                 ),
               ),
               Text(
-                subTitle,
+                widget.subTitle,
                 style: TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 8.0,
@@ -51,7 +58,13 @@ class CarouselScannedItem extends StatelessWidget {
               SizedBox(
                 height: 15,
               ),
-              image,
+              Image.memory(
+                widget.image,
+                height: 110,
+              ),
+              SizedBox(
+                height: 20,
+              ),
             ],
           ),
         ),

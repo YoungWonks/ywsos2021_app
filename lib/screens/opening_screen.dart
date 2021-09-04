@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:ywsos2021_app/screens/home_screen.dart';
-import 'package:ywsos2021_app/screens/login_screen.dart';
-import 'package:ywsos2021_app/screens/register_screen.dart';
-import 'package:ywsos2021_app/widgets/opening_button.dart';
+
+import 'home_screen.dart';
+import 'register_screen.dart';
+import '../widgets/opening_button.dart';
 
 class OpeningScreen extends StatelessWidget {
   const OpeningScreen({Key? key}) : super(key: key);
@@ -50,57 +50,65 @@ class OpeningScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Image.asset(
-                './assets/images/full_image.png',
-                width: MediaQuery.of(context).size.width * 0.95,
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+        body: CustomScrollView(slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
-                  'Click, Calculate',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
-                ),
-                Text(
-                  'and Repair',
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                OpeningButton(
-                  child: Text(
-                    "Sign In",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
-                  ),
-                  onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(LoginScreen.routeName),
-                ),
-                SizedBox(
-                  width: 16,
-                ),
-                OpeningButton(
-                  onPressed: () => Navigator.of(context)
-                      .pushReplacementNamed(CreateAccountScreen.routeName),
-                  child: Text(
-                    "Sign Up",
-                    style:
-                        TextStyle(fontWeight: FontWeight.w700, fontSize: 20.0),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Image.asset(
+                    './assets/images/full_image.png',
+                    width: MediaQuery.of(context).size.width * 0.95,
                   ),
                 ),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Click, Calculate',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                    ),
+                    Text(
+                      'and Repair',
+                      style:
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    OpeningButton(
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20.0),
+                      ),
+                      onPressed: () => Navigator.of(context)
+                          .pushReplacementNamed(LoginScreen.routeName),
+                    ),
+                    SizedBox(
+                      width: 16,
+                    ),
+                    OpeningButton(
+                      onPressed: () => Navigator.of(context)
+                          .pushReplacementNamed(RegisterScreen.routeName),
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700, fontSize: 20.0),
+                      ),
+                    ),
+                  ],
+                )
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+        ]),
       ),
     );
   }
