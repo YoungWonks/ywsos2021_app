@@ -6,7 +6,6 @@ import 'package:ywsos2021_app/screens/opening_screen.dart';
 import 'package:ywsos2021_app/screens/register_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 import 'providers/scans.dart';
 import 'screens/add_photo_gallery_screen.dart';
 import 'screens/home_screen.dart';
@@ -29,10 +28,10 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
           textTheme: GoogleFonts.interTextTheme(
-          Theme.of(context).textTheme,
+            Theme.of(context).textTheme,
+          ),
         ),
-        ),
-        home: OpeningScreen(),
+        home: HomeScreen(),
         routes: {
           LoginScreen.routeName: (_) => LoginScreen(),
           RegisterScreen.routeName: (_) => RegisterScreen(),
