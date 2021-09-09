@@ -12,10 +12,12 @@ class Scans extends ChangeNotifier {
 
   List<Scan> get scans => [..._scans];
 
+  final starterUrl = 'http://10.0.2.2:5000';
+
   void getScans() async {
     final rangeJson = {"range": 100};
     final response = await http.post(
-      Uri.parse('http://10.0.2.2:5000/api/scans/all'),
+      Uri.parse('$starterUrl/api/scans/all'),
       body: json.encode(rangeJson),
       headers: {
         "Content-Type": "application/json",
@@ -30,17 +32,14 @@ class Scans extends ChangeNotifier {
     }
     final List<Scan> loadedScans = [];
     await Future.forEach(extractedData['repairs'], (dynamic scan) async {
-      final imageResponse = await http
-          .get(Uri.parse('http://10.0.2.2:5000${scan['url']}'), headers: {
+      final imageResponse =
+          await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
         // "Content-Type": 'application/json',
         // "Token":
         //     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjExZDkyODI4YjgzNzhmMTY0NTUxMzQyIiwiZXhwIjoxNjI5NTE4MzI2fQ.tB7KqXIIIdVHgm9A1aoBpEcjL9i4sJL1azjY96suLrc"
       });
       // print('http://10.0.2.2:5000${scan['url']}');
       // final extractedImageResponse = json.decode(imageResponse.body);
-
-      print(scan['description']);
-
       final Scan newScan = Scan(
         date: scan['scandate'],
         des: scan['description'],
@@ -66,8 +65,8 @@ class Scans extends ChangeNotifier {
       required String? description,
       required int? urgency,
       required Uint8List fileContents}) async {
-    String url = "http://10.0.2.2:5000/api/scans/add";
-    String imageUrl = "http://10.0.2.2:5000/api/scans/upload";
+    String url = "$starterUrl/api/scans/add";
+    String imageUrl = "$starterUrl/api/scans/upload";
     try {
       var request = http.MultipartRequest("POST", Uri.parse(imageUrl));
       request.files.add(http.MultipartFile.fromBytes(

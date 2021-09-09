@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/login_screen.dart';
 
-import 'home_screen.dart';
 import 'register_screen.dart';
 import '../widgets/opening_button.dart';
 

@@ -1,14 +1,10 @@
-
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/login_screen.dart';
 
 import 'package:ywsos2021_app/widgets/create_account_form.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:ywsos2021_app/widgets/login_form.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
-
 
 class RegisterScreen extends StatefulWidget {
   static const routeName = '/register_screen';
@@ -26,13 +22,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
-  final TextEditingController _confirmPasswordController= TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _nameTextController = TextEditingController();
-  @override
+
   var click = 0;
   var serverurl = "https://08a9-76-174-190-168.ngrok.io/";
 
-  void GotoRegister() async {
+  void gotoRegister() async {
     print("home");
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => RegisterScreen()));
@@ -41,7 +38,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     click = 0;
   }
 
-  void GoHome() async {
+  void goHome() async {
     print("home");
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => HomeScreen()));
@@ -50,20 +47,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
     click = 0;
   }
 
-  void PostRegister() async{
+  void postRegister() async {
     print("posting register info");
     print(_nameTextController.text);
     print(_emailTextController.text);
     print(_passwordTextController.text);
-    var header = {"Content-Type":"application/json;charset=UTF-8"};
-    var body = {"username":_nameTextController.text,"email":_emailTextController.text,"password":_passwordTextController.text};
-    var response = await http.post(Uri.parse("${serverurl}api/auth/signup"),headers: header,body: jsonEncode(body));
+    var header = {"Content-Type": "application/json;charset=UTF-8"};
+    var body = {
+      "username": _nameTextController.text,
+      "email": _emailTextController.text,
+      "password": _passwordTextController.text
+    };
+    var response = await http.post(Uri.parse("${serverurl}api/auth/signup"),
+        headers: header, body: jsonEncode(body));
     print(response.statusCode);
-
-
   }
+
   final Shader linearGradient = LinearGradient(
-    colors: <Color>[Color.fromRGBO(177,222,186,1.0), Color.fromRGBO(135,175,187,0.71)],
+    colors: <Color>[
+      Color.fromRGBO(177, 222, 186, 1.0),
+      Color.fromRGBO(135, 175, 187, 0.71)
+    ],
   ).createShader(Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
 
   Widget build(BuildContext context) {
@@ -122,7 +126,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       fontSize: 46.78,
                       fontFamily: "Inter",
                       fontWeight: FontWeight.w700,
-
                     ),
                   ),
                   Padding(
@@ -160,17 +163,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                           child: CreateAccountForm(
-                            formKey: _formKey,
-                            emailTextController: _emailTextController,
-                            passwordTextController: _passwordTextController,
-                            confirmPasswordController: _confirmPasswordController,
-                            nameTextController: _nameTextController,
-                            onSubmit:() async{
-                              print("submitted");
-                              PostRegister();
-                            }
-
-                          ),
+                              formKey: _formKey,
+                              emailTextController: _emailTextController,
+                              passwordTextController: _passwordTextController,
+                              confirmPasswordController:
+                                  _confirmPasswordController,
+                              nameTextController: _nameTextController,
+                              onSubmit: () async {
+                                print("submitted");
+                                postRegister();
+                              }),
                         ),
                       ),
                     ),
@@ -188,20 +190,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+                        },
                           child: Text(
-                            'Log In Here!',
-                            style: new TextStyle(
-                                fontSize: 21.0,
-                                // fontWeight: FontWeight.bold,
-                                foreground: Paint()..shader = linearGradient),
-                          )
-                      ),
+                        'Log In Here!',
+                        style: new TextStyle(
+                            fontSize: 21.0,
+                            // fontWeight: FontWeight.bold,
+                            foreground: Paint()..shader = linearGradient),
+                      )),
                     ],
                   ),
                 ],
               ),
               //   Column(
-              //   children: [  
+              //   children: [
               //
               //     Column(children: [
               //       Text(

@@ -1,15 +1,11 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/register_screen.dart';
 
-import 'package:hexcolor/hexcolor.dart';
-import 'package:ywsos2021_app/widgets/create_account_form.dart';
 import 'package:ywsos2021_app/widgets/login_form.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
 import 'package:http/http.dart' as http;
-
-
-
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login_screen';
@@ -29,28 +25,28 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordTextController = TextEditingController();
   @override
   var click = 0;
-  var serverurl = "https://08a9-76-174-190-168.ngrok.io/";
+  var serverurl = "10.0.2.2:5000/";
 
-  void PostRegister() async{
+  void PostRegister() async {
     print("posting register info");
     print(_emailTextController.text);
     print(_passwordTextController.text);
-    var header = {"Content-Type":"application/json;charset=UTF-8"};
-    var body = {"email":_emailTextController.text,"password":_passwordTextController.text};
+    var header = {"Content-Type": "application/json;charset=UTF-8"};
+    var body = {
+      "email": _emailTextController.text,
+      "password": _passwordTextController.text
+    };
     print(body);
-    var response = await http.post(Uri.parse("${serverurl}api/auth/token"),headers: header,body: jsonEncode(body));
+    var response = await http.post(Uri.parse("${serverurl}api/auth/token"),
+        headers: header, body: jsonEncode(body));
     print(response.body);
     var decodedresponse = jsonDecode(response.body);
-    if(decodedresponse["error"]=="0"){
+    if (decodedresponse["error"] == "0") {
       await _secureStorage.write(key: "token", value: decodedresponse["token"]);
       Navigator.pushNamed(context, '/home');
-
-    }
-    else{
+    } else {
       print(decodedresponse["message"]);
     }
-
-
   }
 
   void GoLogOn() async {
@@ -84,10 +80,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 Color(0xFF64919F),
                 Color(0xFF5C745C),
                 Color(0xFF97AC94),
-
-                // Color(0xFFA2C08B),
-                // Color(0xFF82C1D6),
-                // Color(0xFF64919F),
               ],
             ),
           ),
@@ -127,7 +119,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontSize: 46.78,
                       fontFamily: "Inter",
                       fontWeight: FontWeight.w700,
-
                     ),
                   ),
                   Padding(
@@ -168,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             formKey: _formKey,
                             emailTextController: _emailTextController,
                             passwordTextController: _passwordTextController,
-                            onSubmit:PostRegister,
+                            onSubmit: PostRegister,
                           ),
                         ),
                       ),
@@ -179,14 +170,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                          child: Text("New to GeoRepair?"),
+                        child: Text("New to GeoRepair?"),
                       ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      GestureDetector(child: Text("Create an Account Here."))
+                      GestureDetector(
+                        child: Text("Create an Account Here."),
+                        onTap:() {
+                          Navigator.of(context)
+                              .pushReplacementNamed(RegisterScreen.routeName);
+                        }
+                      )
                     ],
                   ),
                 ],

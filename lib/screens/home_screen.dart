@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final scans = Provider.of<Scans>(context);
+    // final scans = Provider.of<Scans>(context);
     return loading == true
         ? SplashScreen()
         : Container(
@@ -211,16 +211,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Container(
                       height: 210,
-                      child: PageView.builder(
-                        itemCount: scans.scans.length,
-                        itemBuilder: (context, index) {
-                          return CarouselScannedItem(
-                            title: scans.scans[index].title,
-                            subTitle: scans.scans[index].des.toString(),
-                            image: scans.scans[index].fileContents,
-                          );
-                        },
-                      ),
+                      child: Consumer<Scans>(builder: (context, scans, child) {
+                        return CarouselSlider.builder(
+                          options: CarouselOptions(),
+                          itemCount: scans.scans.length,
+                          itemBuilder: (context, index, realIndex) {
+                            return CarouselScannedItem(
+                              title: scans.scans[index].title,
+                              image: scans.scans[index].fileContents,
+                              subTitle: scans.scans[index].des,
+                            );
+                          },
+                        );
+                      }),
                     ),
                   ]),
                 ),
