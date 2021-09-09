@@ -4,10 +4,12 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../models/scan.dart';
 
 class Scans extends ChangeNotifier {
+  final _secureStorage = FlutterSecureStorage();
   List<Scan> _scans = [];
 
   List<Scan> get scans => [..._scans];
@@ -16,6 +18,7 @@ class Scans extends ChangeNotifier {
 
   void getScans() async {
     final rangeJson = {"range": 100};
+    var token = await _secureStorage.read(key: "token");
     final response = await http.post(
       Uri.parse('$starterUrl/api/scans/all'),
       body: json.encode(rangeJson),
