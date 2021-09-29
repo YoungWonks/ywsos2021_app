@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/scan.dart';
 import '../providers/scans.dart';
 import '../screens/home_screen.dart';
 
@@ -19,6 +18,7 @@ class AddScanDialog extends StatefulWidget {
 class _AddScanDialogState extends State<AddScanDialog> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   int? valueItem = 1;
 
@@ -38,11 +38,30 @@ class _AddScanDialogState extends State<AddScanDialog> {
               ),
               TextFormField(
                 controller: _titleController,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'You need to put something';
+                  }
+                },
                 decoration: InputDecoration(hintText: 'Title'),
               ),
               TextFormField(
                 controller: _descController,
                 decoration: InputDecoration(hintText: 'Description (Optional)'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'You need to put something';
+                  }
+                },
+              ),
+              TextFormField(
+                controller: _addressController,
+                decoration: InputDecoration(hintText: 'Address'),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'You need to put something';
+                  }
+                },
               ),
               DropdownButton<int>(
                 value: valueItem,
@@ -63,8 +82,9 @@ class _AddScanDialogState extends State<AddScanDialog> {
                   Provider.of<Scans>(context, listen: false).addScan(
                     title: _titleController.text,
                     fileContents: widget.image,
+                    address: _addressController.text,
                     urgency: valueItem,
-                    position: [12, 43.56],
+                    // position: [12, 43.56],
                     description: _descController.text,
                   );
                   Navigator.of(context)

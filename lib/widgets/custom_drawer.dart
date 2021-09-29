@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/add_photo_gallery_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   final TextStyle drawerTextStyle = TextStyle(
@@ -57,15 +58,21 @@ class CustomDrawer extends StatelessWidget {
             SizedBox(
               height: 16,
             ),
-            ListTile(
-              leading: Icon(
-                Icons.photo_size_select_actual,
-                size: 64,
-                color: Color(0xFFDFF6D8),
-              ),
-              title: Text(
-                'Gallery',
-                style: drawerTextStyle,
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(AddPhotoGalleryScreen.routeName);
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.photo_size_select_actual,
+                  size: 64,
+                  color: Color(0xFFDFF6D8),
+                ),
+                title: Text(
+                  'Gallery',
+                  style: drawerTextStyle,
+                ),
               ),
             ),
             SizedBox(

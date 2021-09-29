@@ -2,16 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:ywsos2021_app/utils/variables.dart';
 
-import 'add_photo_gallery_screen.dart';
-import '../widgets/carosoul_action_item.dart';
+import '../utils/variables.dart';
 import '../widgets/carousel_scanned_item.dart';
 import '../widgets/custom_drawer.dart';
 import '../widgets/dot_indicator.dart';
 import '../providers/scans.dart';
 import 'splash_screen.dart';
-import 'take_picture_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -149,30 +146,30 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       height: 16,
                     ),
-                    CupertinoSearchTextField(
-                      itemColor: Colors.white,
-                      style: TextStyle(color: Colors.white),
-                      placeholder: 'What are you searching for?',
-                      placeholderStyle: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontStyle: FontStyle.italic,
-                        fontSize: 17.0,
-                      ),
-                      controller: _searchEditingController,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Color(0xFF9DB68E),
-                              Colors.white.withOpacity(0.56),
-                              Color(0xFF64919F).withOpacity(0.71),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(16)),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
+                    // CupertinoSearchTextField(
+                    //   itemColor: Colors.white,
+                    //   style: TextStyle(color: Colors.white),
+                    //   placeholder: 'What are you searching for?',
+                    //   placeholderStyle: TextStyle(
+                    //     color: Colors.white,
+                    //     fontWeight: FontWeight.w400,
+                    //     fontStyle: FontStyle.italic,
+                    //     fontSize: 17.0,
+                    //   ),
+                    //   controller: _searchEditingController,
+                    //   decoration: BoxDecoration(
+                    //       gradient: LinearGradient(
+                    //         colors: [
+                    //           Color(0xFF9DB68E),
+                    //           Colors.white.withOpacity(0.56),
+                    //           Color(0xFF64919F).withOpacity(0.71),
+                    //         ],
+                    //       ),
+                    //       borderRadius: BorderRadius.circular(16)),
+                    // ),
+                    // SizedBox(
+                    //   height: 16,
+                    // ),
                     Text(
                       'Actions',
                       style: TextStyle(
@@ -185,11 +182,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     CarouselSlider(
                       items: carouselItems,
-                      options: CarouselOptions(onPageChanged: (index, reason) {
-                        setState(() {
-                          _currentAction = index;
-                        });
-                      }),
+                      options: CarouselOptions(
+                        enableInfiniteScroll: false,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _currentAction = index;
+                          });
+                        },
+                      ),
                       carouselController: _carouselActionController,
                     ),
                     DotIndicator(
@@ -213,7 +213,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 210,
                       child: Consumer<Scans>(builder: (context, scans, child) {
                         return CarouselSlider.builder(
-                          options: CarouselOptions(),
+                          options: CarouselOptions(
+                            enableInfiniteScroll: false,
+                          ),
                           itemCount: scans.scans.length,
                           itemBuilder: (context, index, realIndex) {
                             return CarouselScannedItem(

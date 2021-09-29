@@ -8,11 +8,11 @@ import 'package:http_parser/http_parser.dart';
 import '../models/scan.dart';
 
 class Scans extends ChangeNotifier {
-  List<Scan> _scans = [];
+  List<Scan>? _scans = [];
 
-  List<Scan> get scans => [..._scans];
+  List<Scan> get scans => [..._scans!];
 
-  final starterUrl = 'http://10.0.2.2:5000';
+  final starterUrl = 'http://127.0.0.1:5000';
 
   void getScans() async {
     final rangeJson = {"range": 100};
@@ -60,10 +60,10 @@ class Scans extends ChangeNotifier {
   }
 
   void addScan(
-      {required List<double> position,
-      required String title,
+      {required String title,
       required String? description,
       required int? urgency,
+      required String address,
       required Uint8List fileContents}) async {
     String url = "$starterUrl/api/scans/add";
     String imageUrl = "$starterUrl/api/scans/upload";
@@ -83,10 +83,10 @@ class Scans extends ChangeNotifier {
       final imageResponse = await res.stream.bytesToString();
       await http.post(Uri.parse(url),
           body: json.encode({
-            "position": position, // ex: [2, 23.5]
             "title": title,
             "urgency": urgency,
             "des": description,
+            "address": address,
             "filename": json.decode(imageResponse)['filename']
           }),
           headers: {
