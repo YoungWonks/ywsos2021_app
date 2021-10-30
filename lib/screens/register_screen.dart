@@ -27,7 +27,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameTextController = TextEditingController();
 
   var click = 0;
-  var serverurl = "https://08a9-76-174-190-168.ngrok.io/";
+  var serverurl = "http://10.0.2.2:5000/";
+
 
   void postRegister() async {
     print("posting register info");
@@ -172,17 +173,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
+
                           onTap: () {
                             Navigator.of(context)
                                 .pushReplacementNamed(LoginScreen.routeName);
                           },
                           child: Text(
                             'Log In Here!',
-                            style: new TextStyle(
+                            style:  TextStyle(
                                 fontSize: 21.0,
                                 // fontWeight: FontWeight.bold,
                                 foreground: Paint()..shader = linearGradient),
                           )),
+
                     ],
                   ),
                 ],

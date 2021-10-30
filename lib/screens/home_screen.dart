@@ -216,6 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           options: CarouselOptions(
                             enableInfiniteScroll: false,
                           ),
+
                           itemCount: scans.scans.length,
                           itemBuilder: (context, index, realIndex) {
                             return CarouselScannedItem(

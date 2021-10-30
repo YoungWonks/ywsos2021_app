@@ -4,25 +4,30 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../models/scan.dart';
 
 class Scans extends ChangeNotifier {
-  List<Scan>? _scans = [];
+
+  final _secureStorage = FlutterSecureStorage();
+  List<Scan> _scans = [];
 
   List<Scan> get scans => [..._scans!];
 
-  final starterUrl = 'http://127.0.0.1:5000';
+  //final starterUrl = 'http://127.0.0.1:5000';
+
+  final starterUrl = 'http://10.0.2.2:5000';
 
   void getScans() async {
     final rangeJson = {"range": 100};
+    var token = await _secureStorage.read(key: "token");
     final response = await http.post(
       Uri.parse('$starterUrl/api/scans/all'),
       body: json.encode(rangeJson),
       headers: {
         "Content-Type": "application/json",
-        "Token":
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjExZDkyODI4YjgzNzhmMTY0NTUxMzQyIiwiZXhwIjoxNjI5NTE4MzI2fQ.tB7KqXIIIdVHgm9A1aoBpEcjL9i4sJL1azjY96suLrc"
+        "Token": token
       },
     );
 
@@ -34,9 +39,8 @@ class Scans extends ChangeNotifier {
     await Future.forEach(extractedData['repairs'], (dynamic scan) async {
       final imageResponse =
           await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
-        // "Content-Type": 'application/json',
-        // "Token":
-        //     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjExZDkyODI4YjgzNzhmMTY0NTUxMzQyIiwiZXhwIjoxNjI5NTE4MzI2fQ.tB7KqXIIIdVHgm9A1aoBpEcjL9i4sJL1azjY96suLrc"
+//          "Content-Type": 'application/json',
+         "Token": token
       });
       // print('http://10.0.2.2:5000${scan['url']}');
       // final extractedImageResponse = json.decode(imageResponse.body);
@@ -67,6 +71,7 @@ class Scans extends ChangeNotifier {
       required Uint8List fileContents}) async {
     String url = "$starterUrl/api/scans/add";
     String imageUrl = "$starterUrl/api/scans/upload";
+    var token = await _secureStorage.read(key: "token");
     try {
       var request = http.MultipartRequest("POST", Uri.parse(imageUrl));
       request.files.add(http.MultipartFile.fromBytes(
@@ -76,8 +81,7 @@ class Scans extends ChangeNotifier {
         contentType: MediaType('image', 'jpeg'),
       ));
       request.headers.addAll({
-        "Token":
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjExZDkyODI4YjgzNzhmMTY0NTUxMzQyIiwiZXhwIjoxNjI5NTk0NTYxfQ.tLlYkSPsznhHMyUfMH26pzuVll7TeZfQrl3N6Cp1nlA"
+        "Token": token
       });
       final res = await request.send();
       final imageResponse = await res.stream.bytesToString();
@@ -100,8 +104,7 @@ class Scans extends ChangeNotifier {
           // }
           headers: {
             "Content-Type": "application/json",
-            "Token":
-                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjExZDkyODI4YjgzNzhmMTY0NTUxMzQyIiwiZXhwIjoxNjI5NTE4MzI2fQ.tB7KqXIIIdVHgm9A1aoBpEcjL9i4sJL1azjY96suLrc"
+            "Token": token
           });
 
       getScans();
