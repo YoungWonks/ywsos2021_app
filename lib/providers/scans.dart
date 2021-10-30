@@ -30,7 +30,7 @@ class Scans extends ChangeNotifier {
     if (extractedData == null) {
       return;
     }
-    final List<Scan> loadedScans = [];
+    final List<Scan>? loadedScans = [];
     await Future.forEach(extractedData['repairs'], (dynamic scan) async {
       final imageResponse =
           await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
@@ -45,13 +45,13 @@ class Scans extends ChangeNotifier {
         des: scan['description'],
         fileContents: imageResponse.bodyBytes,
         id: scan['id'],
-        position: scan['position'],
+        address: scan['position'],
         title: scan['title'],
         upVote: scan['upvote'],
         urgency: scan['urgency'],
       );
 
-      loadedScans.add(newScan);
+      loadedScans?.add(newScan);
     });
 
     _scans = loadedScans;
@@ -82,13 +82,22 @@ class Scans extends ChangeNotifier {
       final res = await request.send();
       final imageResponse = await res.stream.bytesToString();
       await http.post(Uri.parse(url),
-          body: json.encode({
-            "title": title,
-            "urgency": urgency,
-            "des": description,
-            "address": address,
-            "filename": json.decode(imageResponse)['filename']
-          }),
+          body: json.encode(
+            Scan.adding(
+              title: title,
+              urgency: urgency!.toInt(),
+              address: address,
+              des: description.toString(),
+              fileContents: fileContents,
+            ),
+          ),
+          // {
+          //   "title": title,
+          //   "urgency": urgency,
+          //   "des": description,
+          //   "address": address,
+          //   "filename": json.decode(imageResponse)['filename']
+          // }
           headers: {
             "Content-Type": "application/json",
             "Token":

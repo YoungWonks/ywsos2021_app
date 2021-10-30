@@ -29,24 +29,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   var click = 0;
   var serverurl = "https://08a9-76-174-190-168.ngrok.io/";
 
-  void gotoRegister() async {
-    print("home");
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => RegisterScreen()));
-
-    setState(() {});
-    click = 0;
-  }
-
-  void goHome() async {
-    print("home");
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => HomeScreen()));
-
-    setState(() {});
-    click = 0;
-  }
-
   void postRegister() async {
     print("posting register info");
     print(_nameTextController.text);
@@ -190,16 +172,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-                        },
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacementNamed(LoginScreen.routeName);
+                          },
                           child: Text(
-                        'Log In Here!',
-                        style: new TextStyle(
-                            fontSize: 21.0,
-                            // fontWeight: FontWeight.bold,
-                            foreground: Paint()..shader = linearGradient),
-                      )),
+                            'Log In Here!',
+                            style: new TextStyle(
+                                fontSize: 21.0,
+                                // fontWeight: FontWeight.bold,
+                                foreground: Paint()..shader = linearGradient),
+                          )),
                     ],
                   ),
                 ],

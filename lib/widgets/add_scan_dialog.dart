@@ -84,7 +84,6 @@ class _AddScanDialogState extends State<AddScanDialog> {
                     fileContents: widget.image,
                     address: _addressController.text,
                     urgency: valueItem,
-                    // position: [12, 43.56],
                     description: _descController.text,
                   );
                   Navigator.of(context)
