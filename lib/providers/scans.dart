@@ -27,7 +27,7 @@ class Scans extends ChangeNotifier {
       body: json.encode(rangeJson),
       headers: {
         "Content-Type": "application/json",
-        "Token": token
+        "Token": token.toString()
       },
     );
 
@@ -40,7 +40,7 @@ class Scans extends ChangeNotifier {
       final imageResponse =
           await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
 //          "Content-Type": 'application/json',
-         "Token": token
+         "Token": token.toString()
       });
       // print('http://10.0.2.2:5000${scan['url']}');
       // final extractedImageResponse = json.decode(imageResponse.body);
@@ -81,7 +81,7 @@ class Scans extends ChangeNotifier {
         contentType: MediaType('image', 'jpeg'),
       ));
       request.headers.addAll({
-        "Token": token
+        "Token": token.toString()
       });
       final res = await request.send();
       final imageResponse = await res.stream.bytesToString();
@@ -104,7 +104,7 @@ class Scans extends ChangeNotifier {
           // }
           headers: {
             "Content-Type": "application/json",
-            "Token": token
+            "Token": token.toString()
           });
 
       getScans();
