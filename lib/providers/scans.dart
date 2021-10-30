@@ -9,10 +9,13 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/scan.dart';
 
 class Scans extends ChangeNotifier {
+
   final _secureStorage = FlutterSecureStorage();
   List<Scan> _scans = [];
 
-  List<Scan> get scans => [..._scans];
+  List<Scan> get scans => [..._scans!];
+
+  //final starterUrl = 'http://127.0.0.1:5000';
 
   final starterUrl = 'http://10.0.2.2:5000';
 
@@ -24,8 +27,7 @@ class Scans extends ChangeNotifier {
       body: json.encode(rangeJson),
       headers: {
         "Content-Type": "application/json",
-        "Token":
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjExZDkyODI4YjgzNzhmMTY0NTUxMzQyIiwiZXhwIjoxNjI5NTE4MzI2fQ.tB7KqXIIIdVHgm9A1aoBpEcjL9i4sJL1azjY96suLrc"
+        "Token": token
       },
     );
 
@@ -33,13 +35,12 @@ class Scans extends ChangeNotifier {
     if (extractedData == null) {
       return;
     }
-    final List<Scan> loadedScans = [];
+    final List<Scan>? loadedScans = [];
     await Future.forEach(extractedData['repairs'], (dynamic scan) async {
       final imageResponse =
           await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
-        // "Content-Type": 'application/json',
-        // "Token":
-        //     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjExZDkyODI4YjgzNzhmMTY0NTUxMzQyIiwiZXhwIjoxNjI5NTE4MzI2fQ.tB7KqXIIIdVHgm9A1aoBpEcjL9i4sJL1azjY96suLrc"
+//          "Content-Type": 'application/json',
+         "Token": token
       });
       // print('http://10.0.2.2:5000${scan['url']}');
       // final extractedImageResponse = json.decode(imageResponse.body);
@@ -48,13 +49,13 @@ class Scans extends ChangeNotifier {
         des: scan['description'],
         fileContents: imageResponse.bodyBytes,
         id: scan['id'],
-        position: scan['position'],
+        address: scan['position'],
         title: scan['title'],
         upVote: scan['upvote'],
         urgency: scan['urgency'],
       );
 
-      loadedScans.add(newScan);
+      loadedScans?.add(newScan);
     });
 
     _scans = loadedScans;
@@ -63,13 +64,14 @@ class Scans extends ChangeNotifier {
   }
 
   void addScan(
-      {required List<double> position,
-      required String title,
+      {required String title,
       required String? description,
       required int? urgency,
+      required String address,
       required Uint8List fileContents}) async {
     String url = "$starterUrl/api/scans/add";
     String imageUrl = "$starterUrl/api/scans/upload";
+    var token = await _secureStorage.read(key: "token");
     try {
       var request = http.MultipartRequest("POST", Uri.parse(imageUrl));
       request.files.add(http.MultipartFile.fromBytes(
@@ -79,23 +81,30 @@ class Scans extends ChangeNotifier {
         contentType: MediaType('image', 'jpeg'),
       ));
       request.headers.addAll({
-        "Token":
-            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjExZDkyODI4YjgzNzhmMTY0NTUxMzQyIiwiZXhwIjoxNjI5NTk0NTYxfQ.tLlYkSPsznhHMyUfMH26pzuVll7TeZfQrl3N6Cp1nlA"
+        "Token": token
       });
       final res = await request.send();
       final imageResponse = await res.stream.bytesToString();
       await http.post(Uri.parse(url),
-          body: json.encode({
-            "position": position, // ex: [2, 23.5]
-            "title": title,
-            "urgency": urgency,
-            "des": description,
-            "filename": json.decode(imageResponse)['filename']
-          }),
+          body: json.encode(
+            Scan.adding(
+              title: title,
+              urgency: urgency!.toInt(),
+              address: address,
+              des: description.toString(),
+              fileContents: fileContents,
+            ),
+          ),
+          // {
+          //   "title": title,
+          //   "urgency": urgency,
+          //   "des": description,
+          //   "address": address,
+          //   "filename": json.decode(imageResponse)['filename']
+          // }
           headers: {
             "Content-Type": "application/json",
-            "Token":
-                "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNjExZDkyODI4YjgzNzhmMTY0NTUxMzQyIiwiZXhwIjoxNjI5NTE4MzI2fQ.tB7KqXIIIdVHgm9A1aoBpEcjL9i4sJL1azjY96suLrc"
+            "Token": token
           });
 
       getScans();

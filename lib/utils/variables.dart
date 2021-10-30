@@ -15,7 +15,7 @@ final List<Widget> carouselItems = [
     onTap: (context) {
       Navigator.of(context).pushNamed(AddPhotoGalleryScreen.routeName);
     },
-    title: 'View Gallery',
+    title: 'Gallery',
     subTitle: '',
     image: Image.asset(
       './assets/images/file_folder.png',
