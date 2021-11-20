@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ywsos2021_app/models/scan.dart';
 
 import '../utils/variables.dart';
 import '../widgets/carousel_scanned_item.dart';
@@ -27,12 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void _refreshScans(BuildContext context) {
-    Provider.of<Scans>(context, listen: false).getScans();
-    setState(() {
-      loading = false;
-    });
-  }
+  late Future futureScans;
 
   @override
   void dispose() {
@@ -44,194 +40,196 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    _refreshScans(context);
+    futureScans = Provider.of<Scans>(context, listen: false).getScans();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final scans = Provider.of<Scans>(context);
-    return loading == true
-        ? SplashScreen()
-        : Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xFF97AC94),
-                  Color(0xFF5C745C),
-                  // Color(0xFFA2C08B),
-                  // Color(0xFF82C1D6),
-                  Color(0xFF64919F),
-                ],
-              ),
-            ),
-            child: Scaffold(
-              key: _scaffoldKey,
-              drawer: CustomDrawer(),
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                backgroundColor: Colors.transparent,
-                leading: InkWell(
-                    onTap: () {
-                      if (_scaffoldKey.currentState!.isDrawerOpen) {
-                        _scaffoldKey.currentState!.openEndDrawer();
-                      } else {
-                        _scaffoldKey.currentState!.openDrawer();
-                      }
-                    },
-                    child: Image.asset('./assets/images/drawer_icon.png')),
-                elevation: 0,
-                centerTitle: true,
-                actions: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        'TATA',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14.0,
-                            color: Colors.black),
-                      ),
-                      Text(
-                        'Personal profile',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 9.0,
-                          color: Colors.white.withOpacity(0.77),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Image.asset(
-                    './assets/images/profile_pic.png',
-                    width: 55,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ),
-              body: Padding(
-                padding: const EdgeInsets.all(22.0),
-                child: SingleChildScrollView(
-                  child: Column(children: [
-                    Row(
-                      children: [
-                        Text(
-                          'GeoRepair',
-                          style: TextStyle(
-                              fontSize: 45.0,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFFFFFFFF)),
-                        ),
-                        SizedBox(
-                          width: 18.52,
-                        ),
-                        Image.asset(
-                          './assets/hammer.png',
-                          width: 45.96,
-                          height: 44.35,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    // CupertinoSearchTextField(
-                    //   itemColor: Colors.white,
-                    //   style: TextStyle(color: Colors.white),
-                    //   placeholder: 'What are you searching for?',
-                    //   placeholderStyle: TextStyle(
-                    //     color: Colors.white,
-                    //     fontWeight: FontWeight.w400,
-                    //     fontStyle: FontStyle.italic,
-                    //     fontSize: 17.0,
-                    //   ),
-                    //   controller: _searchEditingController,
-                    //   decoration: BoxDecoration(
-                    //       gradient: LinearGradient(
-                    //         colors: [
-                    //           Color(0xFF9DB68E),
-                    //           Colors.white.withOpacity(0.56),
-                    //           Color(0xFF64919F).withOpacity(0.71),
-                    //         ],
-                    //       ),
-                    //       borderRadius: BorderRadius.circular(16)),
-                    // ),
-                    // SizedBox(
-                    //   height: 16,
-                    // ),
-                    Text(
-                      'Actions',
-                      style: TextStyle(
-                        fontSize: 19.77,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    CarouselSlider(
-                      items: carouselItems,
-                      options: CarouselOptions(
-                        enableInfiniteScroll: false,
-                        onPageChanged: (index, reason) {
-                          setState(() {
-                            _currentAction = index;
-                          });
-                        },
-                      ),
-                      carouselController: _carouselActionController,
-                    ),
-                    DotIndicator(
-                        carouselItems: carouselItems,
-                        controller: _carouselActionController,
-                        current: _currentAction),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      'Recently Scanned Items',
-                      style: TextStyle(
-                        fontSize: 19.77,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: 210,
-                      child: Consumer<Scans>(builder: (context, scans, child) {
-                        return CarouselSlider.builder(
-                          options: CarouselOptions(
-                            enableInfiniteScroll: false,
-                          ),
+    final scans = Provider.of<Scans>(context).scans;
 
-                          itemCount: scans.scans.length,
-                          itemBuilder: (context, index, realIndex) {
-                            return CarouselScannedItem(
-                              title: scans.scans[index].title,
-                              image: scans.scans[index].fileContents,
-                              subTitle: scans.scans[index].des,
-                            );
-                          },
-                        );
-                      }),
-                    ),
-                  ]),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF97AC94),
+            Color(0xFF5C745C),
+            // Color(0xFFA2C08B),
+            // Color(0xFF82C1D6),
+            Color(0xFF64919F),
+          ],
+        ),
+      ),
+      child: Scaffold(
+        key: _scaffoldKey,
+        drawer: CustomDrawer(),
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          leading: InkWell(
+              onTap: () {
+                if (_scaffoldKey.currentState!.isDrawerOpen) {
+                  _scaffoldKey.currentState!.openEndDrawer();
+                } else {
+                  _scaffoldKey.currentState!.openDrawer();
+                }
+              },
+              child: Image.asset('./assets/images/drawer_icon.png')),
+          elevation: 0,
+          centerTitle: true,
+          actions: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 10,
                 ),
-              ),
+                Text(
+                  'TATA',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14.0,
+                      color: Colors.black),
+                ),
+                Text(
+                  'Personal profile',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 9.0,
+                    color: Colors.white.withOpacity(0.77),
+                  ),
+                ),
+              ],
             ),
-          );
+            SizedBox(
+              width: 15,
+            ),
+            Image.asset(
+              './assets/images/profile_pic.png',
+              width: 55,
+            ),
+            SizedBox(
+              width: 10,
+            ),
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(22.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'GeoRepair',
+                      style: TextStyle(
+                          fontSize: 45.0,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFFFFFFFF)),
+                    ),
+                    SizedBox(
+                      width: 18.52,
+                    ),
+                    Image.asset(
+                      './assets/hammer.png',
+                      width: 45.96,
+                      height: 44.35,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                // CupertinoSearchTextField(
+                //   itemColor: Colors.white,
+                //   style: TextStyle(color: Colors.white),
+                //   placeholder: 'What are you searching for?',
+                //   placeholderStyle: TextStyle(
+                //     color: Colors.white,
+                //     fontWeight: FontWeight.w400,
+                //     fontStyle: FontStyle.italic,
+                //     fontSize: 17.0,
+                //   ),
+                //   controller: _searchEditingController,
+                //   decoration: BoxDecoration(
+                //       gradient: LinearGradient(
+                //         colors: [
+                //           Color(0xFF9DB68E),
+                //           Colors.white.withOpacity(0.56),
+                //           Color(0xFF64919F).withOpacity(0.71),
+                //         ],
+                //       ),
+                //       borderRadius: BorderRadius.circular(16)),
+                // ),
+                // SizedBox(
+                //   height: 16,
+                // ),
+                Text(
+                  'Actions',
+                  style: TextStyle(
+                    fontSize: 19.77,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                CarouselSlider(
+                  items: carouselItems,
+                  options: CarouselOptions(
+                    enableInfiniteScroll: false,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentAction = index;
+                      });
+                    },
+                  ),
+                  carouselController: _carouselActionController,
+                ),
+                DotIndicator(
+                  carouselItems: carouselItems,
+                  controller: _carouselActionController,
+                  current: _currentAction,
+                ),
+                SizedBox(
+                  height: 16,
+                ),
+                Text(
+                  'Recently Scanned Items',
+                  style: TextStyle(
+                    fontSize: 19.77,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                FutureBuilder(
+                    future: futureScans,
+                    builder: (context, snapshot) {
+                      return Container(
+                          height: 210,
+                          child: CarouselSlider.builder(
+                            options: CarouselOptions(
+                              enableInfiniteScroll: false,
+                            ),
+                            itemCount: scans.length,
+                            itemBuilder: (context, index, realIndex) {
+                              return CarouselScannedItem(
+                                title: scans[index].title,
+                                image: scans[index].fileContents,
+                                subTitle: scans[index].des,
+                              );
+                            },
+                          ));
+                    }),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -20,13 +20,13 @@ class Scan {
   final String des;
   final int urgency;
 
-  Scan.adding({
-    required this.title,
-    required this.urgency,
-    required this.address,
-    required this.des,
-    required this.fileContents,
-  });
+  // Scan.adding({
+  //   required this.title,
+  //   required this.urgency,
+  //   required this.address,
+  //   required this.des,
+  //   required this.fileContents,
+  // });
 
   Scan({
     required this.id,

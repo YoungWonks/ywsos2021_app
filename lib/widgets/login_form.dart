@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
 import 'package:flutter/cupertino.dart';
 
-
 import '../screens/home_screen.dart';
 import 'build_input_decoration.dart';
+
 class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailTextController;
@@ -13,24 +13,18 @@ class LoginForm extends StatefulWidget {
   final Function onSubmit;
 
   LoginForm({
-
     Key? key,
-    required  this.formKey,
-    required  this.emailTextController,
+    required this.formKey,
+    required this.emailTextController,
     required this.passwordTextController,
     required this.onSubmit,
-
-  }):
-        super(key: key);
+  }) : super(key: key);
 
   @override
   _LoginFormState createState() => _LoginFormState();
-
 }
 
-
 class _LoginFormState extends State<LoginForm> {
-  
   // LoginForm({
   //   Key? key,
   //   required GlobalKey<FormState> formKey,
@@ -45,9 +39,6 @@ class _LoginFormState extends State<LoginForm> {
   // final TextEditingController _emailTextController;
   // final TextEditingController _passwordTextController;
   // final Function onSubmit;
-
-  
-
 
   @override
   Widget build(BuildContext context) {
@@ -139,8 +130,8 @@ class _LoginFormState extends State<LoginForm> {
                         // decoration:
                         //     buildInputDecoration(label: 'Enter Password', hintText: ''),
                         decoration: InputDecoration(
-                          // border: UnderlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(r, g, b, opacity))),
-                          border: InputBorder.none,
+                            // border: UnderlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(r, g, b, opacity))),
+                            border: InputBorder.none,
                             hintText: "Password",
                             hintStyle: TextStyle(
                                 color: Colors.white, fontFamily: "Inter")),
@@ -162,7 +153,7 @@ class _LoginFormState extends State<LoginForm> {
                       ),
                       gradient: LinearGradient(
                         colors: [
-                         Color.fromRGBO(151, 184, 141, 1),
+                          Color.fromRGBO(151, 184, 141, 1),
                           Color.fromRGBO(172, 201, 174, 1),
                           Color.fromRGBO(100, 145, 155, 1),
                         ],
@@ -175,14 +166,14 @@ class _LoginFormState extends State<LoginForm> {
           ),
 
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [Text("Forgot Password?")],
           ),
           SizedBox(
             height: 20,
           ),
           GestureDetector(
-            onTap: (){
+            onTap: () {
               widget.onSubmit();
             },
             child: Container(
@@ -202,31 +193,31 @@ class _LoginFormState extends State<LoginForm> {
           SizedBox(
             height: 20,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('./assets/images/line.png'),
-              Text("  OR  "),
-              Image.asset('./assets/images/line.png'),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(7.0),
-                child: Image.asset('./assets/images/facebook.png'),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(7.0),
-                child: Image.asset("./assets/images/google.png"),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(7.0),
-                child: Image.asset("./assets/images/linkedin.png"),
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Image.asset('./assets/images/line.png'),
+          //     Text("  OR  "),
+          //     Image.asset('./assets/images/line.png'),
+          //   ],
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.center,
+          //   children: [
+          //     Padding(
+          //       padding: const EdgeInsets.all(7.0),
+          //       child: Image.asset('./assets/images/facebook.png'),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.all(7.0),
+          //       child: Image.asset("./assets/images/google.png"),
+          //     ),
+          //     Padding(
+          //       padding: const EdgeInsets.all(7.0),
+          //       child: Image.asset("./assets/images/linkedin.png"),
+          //     ),
+          //   ],
+          // ),
 
           // Stack(
           //   children:[

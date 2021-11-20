@@ -9,38 +9,35 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/scan.dart';
 
 class Scans extends ChangeNotifier {
-
   final _secureStorage = FlutterSecureStorage();
   List<Scan> _scans = [];
 
-  List<Scan> get scans => [..._scans!];
+  List<Scan> get scans => [..._scans];
 
   //final starterUrl = 'http://127.0.0.1:5000';
 
   final starterUrl = 'http://10.0.2.2:5000';
 
-  void getScans() async {
+  Future<void> getScans() async {
     final rangeJson = {"range": 100};
     var token = await _secureStorage.read(key: "token");
     final response = await http.post(
       Uri.parse('$starterUrl/api/scans/all'),
       body: json.encode(rangeJson),
-      headers: {
-        "Content-Type": "application/json",
-        "Token": token
-      },
+      headers: {"content-type": "application/json", "TOKEN": token.toString()},
     );
 
     final extractedData = json.decode(response.body);
-    if (extractedData == null) {
+    print('DATA!: $extractedData');
+    if (extractedData == null || extractedData["error"] >= 1) {
       return;
     }
     final List<Scan>? loadedScans = [];
-    await Future.forEach(extractedData['repairs'], (dynamic scan) async {
+    await Future.forEach(extractedData, (dynamic scan) async {
       final imageResponse =
           await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
 //          "Content-Type": 'application/json',
-         "Token": token
+        "TOKEN": token.toString()
       });
       // print('http://10.0.2.2:5000${scan['url']}');
       // final extractedImageResponse = json.decode(imageResponse.body);
@@ -58,7 +55,7 @@ class Scans extends ChangeNotifier {
       loadedScans?.add(newScan);
     });
 
-    _scans = loadedScans;
+    _scans = loadedScans!;
 
     notifyListeners();
   }
@@ -80,31 +77,20 @@ class Scans extends ChangeNotifier {
         filename: 'filename',
         contentType: MediaType('image', 'jpeg'),
       ));
-      request.headers.addAll({
-        "Token": token
-      });
+      request.headers.addAll({"Token": token.toString()});
       final res = await request.send();
       final imageResponse = await res.stream.bytesToString();
       await http.post(Uri.parse(url),
-          body: json.encode(
-            Scan.adding(
-              title: title,
-              urgency: urgency!.toInt(),
-              address: address,
-              des: description.toString(),
-              fileContents: fileContents,
-            ),
-          ),
-          // {
-          //   "title": title,
-          //   "urgency": urgency,
-          //   "des": description,
-          //   "address": address,
-          //   "filename": json.decode(imageResponse)['filename']
-          // }
+          body: json.encode({
+            "title": title,
+            "urgency": urgency,
+            "des": description,
+            // "address": address,
+            "filename": json.decode(imageResponse)['filename']
+          }),
           headers: {
-            "Content-Type": "application/json",
-            "Token": token
+            "content-type": "application/json",
+            "token": token.toString()
           });
 
       getScans();
