@@ -47,7 +47,7 @@ class _AddScanDialogState extends State<AddScanDialog> {
               ),
               TextFormField(
                 controller: _descController,
-                decoration: InputDecoration(hintText: 'Description (Optional)'),
+                decoration: InputDecoration(hintText: 'Position'),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'You need to put something';

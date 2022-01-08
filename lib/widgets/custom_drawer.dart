@@ -45,14 +45,37 @@ class CustomDrawer extends StatelessWidget {
             SizedBox(
               height: 32,
             ),
-            ListTile(
-              leading: Image.asset(
-                './assets/images/profile_pic.png',
-                width: 64,
+            InkWell(
+              onTap: () {},
+              child: ListTile(
+                leading: Image.asset(
+                  './assets/images/profile_pic.png',
+                  width: 64,
+                ),
+                title: Text(
+                  'Account',
+                  style: drawerTextStyle,
+                ),
               ),
-              title: Text(
-                'Account',
-                style: drawerTextStyle,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushNamed(AddPhotoGalleryScreen.routeName);
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.upload,
+                  size: 64,
+                  color: Color(0xFFDFF6D8),
+                ),
+                title: Text(
+                  'Upload',
+                  style: drawerTextStyle,
+                ),
               ),
             ),
             SizedBox(
@@ -73,20 +96,6 @@ class CustomDrawer extends StatelessWidget {
                   'Gallery',
                   style: drawerTextStyle,
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.settings,
-                size: 64,
-                color: Color(0xFFDFF6D8),
-              ),
-              title: Text(
-                'Settings',
-                style: drawerTextStyle,
               ),
             ),
             SizedBox(

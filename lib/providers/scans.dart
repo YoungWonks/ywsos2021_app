@@ -19,17 +19,20 @@ class Scans extends ChangeNotifier {
   final starterUrl = 'http://10.0.2.2:5000';
 
   Future<void> getScans() async {
-    final rangeJson = {"range": 100};
+    final rangeJson = {
+      "range": 100,
+      "userId": await _secureStorage.read(key: "token")
+    };
     var token = await _secureStorage.read(key: "token");
     final response = await http.post(
-      Uri.parse('$starterUrl/api/scans/all'),
+      Uri.parse('$starterUrl/api/scans/'),
       body: json.encode(rangeJson),
       headers: {"content-type": "application/json", "TOKEN": token.toString()},
     );
 
     final extractedData = json.decode(response.body);
     print('DATA!: $extractedData');
-    if (extractedData == null || extractedData["error"] >= 1) {
+    if (extractedData == null || extractedData['error'] != null) {
       return;
     }
     final List<Scan>? loadedScans = [];
@@ -77,7 +80,7 @@ class Scans extends ChangeNotifier {
         filename: 'filename',
         contentType: MediaType('image', 'jpeg'),
       ));
-      request.headers.addAll({"Token": token.toString()});
+      request.headers.addAll({"TOKEN": token.toString()});
       final res = await request.send();
       final imageResponse = await res.stream.bytesToString();
       await http.post(Uri.parse(url),
@@ -85,12 +88,12 @@ class Scans extends ChangeNotifier {
             "title": title,
             "urgency": urgency,
             "des": description,
-            // "address": address,
+            "position": address,
             "filename": json.decode(imageResponse)['filename']
           }),
           headers: {
             "content-type": "application/json",
-            "token": token.toString()
+            "TOKEN": token.toString()
           });
 
       getScans();
