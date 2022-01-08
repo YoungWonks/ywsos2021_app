@@ -1,7 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 
-import 'splash_screen.dart';
 import '../widgets/add_scan_dialog.dart';
 
 class TakePictureScreen extends StatefulWidget {
@@ -36,7 +35,6 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(

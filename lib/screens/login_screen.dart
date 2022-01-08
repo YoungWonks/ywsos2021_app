@@ -23,17 +23,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
-  @override
-  var click = 0;
-  var serverurl = "10.0.2.2:5000/";
 
-  void PostRegister() async {
+  var click = 0;
+  var serverurl = "http://10.0.2.2:5000/";
+
+  void postRegister() async {
     print("posting register info");
     print(_emailTextController.text);
     print(_passwordTextController.text);
     var header = {"Content-Type": "application/json;charset=UTF-8"};
     var body = {
-      "email": _emailTextController.text,
+      "username": _emailTextController.text,
       "password": _passwordTextController.text
     };
     print(body);
@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var decodedresponse = jsonDecode(response.body);
     if (decodedresponse["error"] == "0") {
       await _secureStorage.write(key: "token", value: decodedresponse["token"]);
-      Navigator.pushNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/home');
     } else {
       print(decodedresponse["message"]);
     }
@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             formKey: _formKey,
                             emailTextController: _emailTextController,
                             passwordTextController: _passwordTextController,
-                            onSubmit: PostRegister,
+                            onSubmit: postRegister,
                           ),
                         ),
                       ),
@@ -178,12 +178,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-                        child: Text("Create an Account Here."),
-                        onTap:() {
-                          Navigator.of(context)
-                              .pushReplacementNamed(RegisterScreen.routeName);
-                        }
-                      )
+                          child: Text("Create an Account Here."),
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushReplacementNamed(RegisterScreen.routeName);
+                          })
                     ],
                   ),
                 ],
