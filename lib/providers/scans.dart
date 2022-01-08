@@ -41,6 +41,7 @@ class Scans extends ChangeNotifier {
           await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
 //          "Content-Type": 'application/json',
         "TOKEN": token.toString()
+
       });
       // print('http://10.0.2.2:5000${scan['url']}');
       // final extractedImageResponse = json.decode(imageResponse.body);
