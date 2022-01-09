@@ -1,8 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../screens/home_screen.dart';
-import 'build_input_decoration.dart';
 class CreateAccountForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailTextController;
@@ -12,28 +9,20 @@ class CreateAccountForm extends StatefulWidget {
   final Function onSubmit;
 
   CreateAccountForm({
-
     Key? key,
-    required  this.formKey,
-    required  this.emailTextController,
+    required this.formKey,
+    required this.emailTextController,
     required this.passwordTextController,
     required this.nameTextController,
     required this.confirmPasswordController,
     required this.onSubmit,
-
-  }):
-        super(key: key);
-
+  }) : super(key: key);
 
   @override
   _CreateAccountFormState createState() => _CreateAccountFormState();
 }
 
 class _CreateAccountFormState extends State<CreateAccountForm> {
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -181,7 +170,7 @@ class _CreateAccountFormState extends State<CreateAccountForm> {
                         // decoration:
                         //     buildInputDecoration(label: 'Enter Password', hintText: ''),
                         decoration: InputDecoration(
-                          // border: UnderlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(r, g, b, opacity))),
+                            // border: UnderlineInputBorder(borderSide: BorderSide(color: Color.fromRGBO(r, g, b, opacity))),
                             border: InputBorder.none,
                             hintText: "Password",
                             hintStyle: TextStyle(
@@ -227,7 +216,7 @@ class _CreateAccountFormState extends State<CreateAccountForm> {
             height: 20,
           ),
           GestureDetector(
-            onTap:(){
+            onTap: () {
               widget.onSubmit();
             },
             child: Container(

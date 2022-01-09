@@ -19,17 +19,20 @@ class Scans extends ChangeNotifier {
   final starterUrl = 'http://10.0.2.2:5000';
 
   Future<void> getScans() async {
-    final rangeJson = {"range": 100};
+    final rangeJson = {
+      "range": 100,
+      "userId": await _secureStorage.read(key: "token")
+    };
     var token = await _secureStorage.read(key: "token");
     final response = await http.post(
-      Uri.parse('$starterUrl/api/scans/all'),
+      Uri.parse('$starterUrl/api/scans/'),
       body: json.encode(rangeJson),
       headers: {"content-type": "application/json", "TOKEN": token.toString()},
     );
 
     final extractedData = json.decode(response.body);
     print('DATA!: $extractedData');
-    if (extractedData == null || extractedData["error"] >= 1) {
+    if (extractedData == null || extractedData['error'] != null) {
       return;
     }
     final List<Scan>? loadedScans = [];
@@ -86,13 +89,12 @@ class Scans extends ChangeNotifier {
             "title": title,
             "urgency": urgency,
             "des": description,
-            // "address": address,
+            "position": address,
             "filename": json.decode(imageResponse)['filename']
           }),
           headers: {
             "content-type": "application/json",
             "TOKEN": token.toString()
-
           });
 
       getScans();

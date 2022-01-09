@@ -27,9 +27,10 @@ class DotIndicator extends StatelessWidget {
             height: 12.0,
             margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
             decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white
-                    .withOpacity(_current == entry.key ? 0.9 : 0.4)),
+              shape: BoxShape.circle,
+              color:
+                  Colors.white.withOpacity(_current == entry.key ? 0.9 : 0.4),
+            ),
           ),
         );
       }).toList(),
