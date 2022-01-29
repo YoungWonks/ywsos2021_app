@@ -27,8 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameTextController = TextEditingController();
 
   var click = 0;
-  var serverurl = "http://10.0.2.2:5000/";
-
+  var serverurl = "https://georepair.herokuapp.com/";
 
   void postRegister() async {
     print("posting register info");
@@ -173,19 +172,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       GestureDetector(
-
                           onTap: () {
                             Navigator.of(context)
                                 .pushReplacementNamed(LoginScreen.routeName);
                           },
                           child: Text(
                             'Log In Here!',
-                            style:  TextStyle(
+                            style: TextStyle(
                                 fontSize: 21.0,
                                 // fontWeight: FontWeight.bold,
                                 foreground: Paint()..shader = linearGradient),
                           )),
-
                     ],
                   ),
                 ],
