@@ -38,10 +38,10 @@ final List<Widget> carouselItems = [
       onTap: (context) {
         Navigator.of(context).pushNamed(AddPhotoGalleryScreen.routeName);
       },
-      title: 'Edit Profile',
+      title: 'Dashboard',
       subTitle: '',
       image: Icon(
-        Icons.person,
+        Icons.dashboard,
         color: Colors.white.withOpacity(.6),
         size: 110,
       )),

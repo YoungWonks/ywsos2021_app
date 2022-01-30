@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordTextController = TextEditingController();
 
   var click = 0;
-  var serverurl = "http://10.0.2.2:5000/";
+  var serverurl = "https://georepair.herokuapp.com/";
 
   void postRegister() async {
     print("posting register info");

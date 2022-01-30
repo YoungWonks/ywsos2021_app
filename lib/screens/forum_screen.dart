@@ -1,34 +1,30 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ywsos2021_app/models/scan.dart';
-
-import '../utils/variables.dart';
-import '../widgets/carousel_scanned_item.dart';
+import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
 import '../widgets/custom_drawer.dart';
-import '../widgets/dot_indicator.dart';
 import '../providers/scans.dart';
-import 'splash_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  static const routeName = "/home";
-
-  const HomeScreen({Key? key}) : super(key: key);
+class ForumScreen extends StatefulWidget {
+  static const routeName = "/forum";
+  const ForumScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _ForumScreenState createState() => _ForumScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int _currentAction = 0;
-  CarouselController _carouselActionController = CarouselController();
-
+class _ForumScreenState extends State<ForumScreen> {
   TextEditingController _searchEditingController = TextEditingController();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  late Future futureScans;
+  Future? futureScans;
+  late List<Scan> scans;
 
   @override
   void dispose() {
@@ -39,15 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
   bool loading = true;
 
   @override
-  void initState() {
-    futureScans = Provider.of<Scans>(context, listen: false).getUserScans();
-    super.initState();
+  void didChangeDependencies() {
+    futureScans = Provider.of<Scans>(context, listen: false).getScans();
+    scans = Provider.of<Scans>(context).scans;
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    final scans = Provider.of<Scans>(context).userScans;
-
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -142,71 +137,65 @@ class _HomeScreenState extends State<HomeScreen> {
                 SizedBox(
                   height: 16,
                 ),
-                Text(
-                  'Actions',
-                  style: TextStyle(
-                    fontSize: 19.77,
-                    fontWeight: FontWeight.w600,
+                CupertinoSearchTextField(
+                  itemColor: Colors.white,
+                  style: TextStyle(color: Colors.white),
+                  placeholder: 'What scan are you searching for?',
+                  placeholderStyle: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 17.0,
                   ),
+                  controller: _searchEditingController,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF9DB68E),
+                        Colors.white.withOpacity(0.56),
+                        Color(0xFF64919F).withOpacity(0.71),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  onChanged: (value) {
+                    final allScans =
+                        Provider.of<Scans>(context, listen: false).scans;
+                    scans = allScans.where((scan) {
+                      final titleLower = scan.title.toLowerCase();
+                      final searchLower = value.toLowerCase();
+
+                      return titleLower.contains(searchLower);
+                    }).toList();
+
+                    setState(() {});
+                  },
                 ),
                 SizedBox(
                   height: 16,
-                ),
-                CarouselSlider(
-                  items: carouselItems,
-                  options: CarouselOptions(
-                    enableInfiniteScroll: false,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentAction = index;
-                      });
-                    },
-                  ),
-                  carouselController: _carouselActionController,
-                ),
-                DotIndicator(
-                  carouselItems: carouselItems,
-                  controller: _carouselActionController,
-                  current: _currentAction,
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  'Recently Scanned Items',
-                  style: TextStyle(
-                    fontSize: 19.77,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
                 ),
                 FutureBuilder(
-                    future: futureScans,
-                    builder: (context, snapshot) {
-                      return Container(
-                          height: 210,
-                          child: CarouselSlider.builder(
-                            options: CarouselOptions(
-                              enableInfiniteScroll: false,
+                  future: futureScans,
+                  builder: (context, snapshot) {
+                    return SingleChildScrollView(
+                      child: ListView.builder(
+                        itemCount: scans.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CarouselScannedItem(
+                              title: scans[index].title,
+                              subTitle: scans[index].des.toString(),
+                              image: scans[index].fileContents,
+                              daysAgo: scans[index].date.toString(),
                             ),
-                            itemCount: scans.length,
-                            itemBuilder: (context, index, realIndex) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CarouselScannedItem(
-                                  title: scans[index].title,
-                                  image: scans[index].fileContents,
-                                  subTitle: scans[index].des != null
-                                      ? scans[index].des.toString()
-                                      : '',
-                                  daysAgo: scans[index].date.toString(),
-                                ),
-                              );
-                            },
-                          ));
-                    }),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),

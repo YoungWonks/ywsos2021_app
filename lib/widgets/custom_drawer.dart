@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/screens/add_photo_gallery_screen.dart';
+import 'package:ywsos2021_app/screens/forum_screen.dart';
+import 'package:ywsos2021_app/screens/home_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   final TextStyle drawerTextStyle = TextStyle(
@@ -64,7 +66,7 @@ class CustomDrawer extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.of(context)
-                    .pushNamed(AddPhotoGalleryScreen.routeName);
+                    .pushReplacementNamed(AddPhotoGalleryScreen.routeName);
               },
               child: ListTile(
                 leading: Icon(
@@ -84,7 +86,7 @@ class CustomDrawer extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.of(context)
-                    .pushNamed(AddPhotoGalleryScreen.routeName);
+                    .pushReplacementNamed(ForumScreen.routeName);
               },
               child: ListTile(
                 leading: Icon(
@@ -101,15 +103,38 @@ class CustomDrawer extends StatelessWidget {
             SizedBox(
               height: 16,
             ),
-            ListTile(
-              leading: Icon(
-                Icons.logout,
-                color: Color(0xFFDFF6D8),
-                size: 64,
+            InkWell(
+              onTap: () {},
+              child: ListTile(
+                leading: Icon(
+                  Icons.logout,
+                  color: Color(0xFFDFF6D8),
+                  size: 64,
+                ),
+                title: Text(
+                  'Sign Out',
+                  style: drawerTextStyle,
+                ),
               ),
-              title: Text(
-                'Sign Out',
-                style: drawerTextStyle,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(HomeScreen.routeName);
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.home,
+                  color: Color(0xFFDFF6D8),
+                  size: 64,
+                ),
+                title: Text(
+                  'Home',
+                  style: drawerTextStyle,
+                ),
               ),
             ),
           ],

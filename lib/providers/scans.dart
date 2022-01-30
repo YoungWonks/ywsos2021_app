@@ -10,23 +10,20 @@ import '../models/scan.dart';
 
 class Scans extends ChangeNotifier {
   final _secureStorage = FlutterSecureStorage();
+  List<Scan> _userScans = [];
   List<Scan> _scans = [];
 
+  List<Scan> get userScans => [..._userScans];
   List<Scan> get scans => [..._scans];
 
   //final starterUrl = 'http://127.0.0.1:5000';
 
-  final starterUrl = 'http://10.0.2.2:5000';
+  final starterUrl = 'https://georepair.herokuapp.com';
 
-  Future<void> getScans() async {
-    final rangeJson = {
-      "range": 100,
-      "userId": await _secureStorage.read(key: "token")
-    };
+  Future<void> getUserScans() async {
     var token = await _secureStorage.read(key: "token");
     final response = await http.post(
-      Uri.parse('$starterUrl/api/scans/'),
-      body: json.encode(rangeJson),
+      Uri.parse('$starterUrl/api/scans/gallery'),
       headers: {"content-type": "application/json", "TOKEN": token.toString()},
     );
 
@@ -36,7 +33,51 @@ class Scans extends ChangeNotifier {
       return;
     }
     final List<Scan>? loadedScans = [];
-    await Future.forEach(extractedData, (dynamic scan) async {
+    await Future.forEach(extractedData['repairs'], (dynamic scan) async {
+      final imageResponse =
+          await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
+//          "Content-Type": 'application/json',
+        "TOKEN": token.toString()
+      });
+      // print('http://10.0.2.2:5000${scan['url']}');
+      // final extractedImageResponse = json.decode(imageResponse.body);
+      final Scan newScan = Scan(
+        date: scan['scandate'],
+        des: scan['des'],
+        fileContents: imageResponse.bodyBytes,
+        id: scan['id'],
+        position: scan['position'],
+        title: scan['title'],
+        upVote: scan['upvote'],
+        urgency: scan['urgency'],
+      );
+
+      loadedScans?.add(newScan);
+    });
+
+    _userScans = loadedScans!;
+
+    notifyListeners();
+  }
+
+  Future<void> getScans() async {
+    var token = await _secureStorage.read(key: "token");
+    final response = await http.post(Uri.parse('$starterUrl/api/scans/all'),
+        headers: {
+          "content-type": "application/json",
+          "TOKEN": token.toString()
+        },
+        body: json.encode({
+          "position": [20, 10]
+        }));
+
+    final extractedData = json.decode(response.body);
+    print('DATA!: $extractedData');
+    // if (extractedData == null || extractedData['error'] != null) {
+    //   return;
+    // }
+    final List<Scan>? loadedScans = [];
+    await Future.forEach(extractedData['repairs'], (dynamic scan) async {
       final imageResponse =
           await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
 //          "Content-Type": 'application/json',
@@ -47,10 +88,10 @@ class Scans extends ChangeNotifier {
       // final extractedImageResponse = json.decode(imageResponse.body);
       final Scan newScan = Scan(
         date: scan['scandate'],
-        des: scan['description'],
+        des: scan['des'],
         fileContents: imageResponse.bodyBytes,
         id: scan['id'],
-        address: scan['position'],
+        position: scan['position'],
         title: scan['title'],
         upVote: scan['upvote'],
         urgency: scan['urgency'],
@@ -68,7 +109,7 @@ class Scans extends ChangeNotifier {
       {required String title,
       required String? description,
       required int? urgency,
-      required String address,
+      required List<int> position,
       required Uint8List fileContents}) async {
     String url = "$starterUrl/api/scans/add";
     String imageUrl = "$starterUrl/api/scans/upload";
@@ -89,7 +130,7 @@ class Scans extends ChangeNotifier {
             "title": title,
             "urgency": urgency,
             "des": description,
-            "position": address,
+            "position": position,
             "filename": json.decode(imageResponse)['filename']
           }),
           headers: {
@@ -97,7 +138,7 @@ class Scans extends ChangeNotifier {
             "TOKEN": token.toString()
           });
 
-      getScans();
+      getUserScans();
       notifyListeners();
     } catch (e) {
       print(e.toString());

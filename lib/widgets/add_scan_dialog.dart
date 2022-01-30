@@ -18,7 +18,7 @@ class AddScanDialog extends StatefulWidget {
 class _AddScanDialogState extends State<AddScanDialog> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
+  // final TextEditingController _positionController = TextEditingController();
 
   int? valueItem = 1;
 
@@ -47,22 +47,22 @@ class _AddScanDialogState extends State<AddScanDialog> {
               ),
               TextFormField(
                 controller: _descController,
-                decoration: InputDecoration(hintText: 'Position'),
+                decoration: InputDecoration(hintText: 'Description'),
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'You need to put something';
                   }
                 },
               ),
-              TextFormField(
-                controller: _addressController,
-                decoration: InputDecoration(hintText: 'Address'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'You need to put something';
-                  }
-                },
-              ),
+              // TextFormField(
+              //   controller: _positionController,
+              //   decoration: InputDecoration(hintText: 'Position'),
+              //   validator: (value) {
+              //     if (value!.isEmpty) {
+              //       return 'You need to put something';
+              //     }
+              //   },
+              // ),
               DropdownButton<int>(
                 value: valueItem,
                 onChanged: (int? newValue) {
@@ -82,7 +82,7 @@ class _AddScanDialogState extends State<AddScanDialog> {
                   Provider.of<Scans>(context, listen: false).addScan(
                     title: _titleController.text,
                     fileContents: widget.image,
-                    address: _addressController.text,
+                    position: [20, 10],
                     urgency: valueItem,
                     description: _descController.text,
                   );
