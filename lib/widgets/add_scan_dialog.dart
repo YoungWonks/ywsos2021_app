@@ -18,6 +18,8 @@ class AddScanDialog extends StatefulWidget {
 class _AddScanDialogState extends State<AddScanDialog> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
+  final TextEditingController _latController = TextEditingController();
+  final TextEditingController _longController = TextEditingController();
   // final TextEditingController _positionController = TextEditingController();
 
   int? valueItem = 1;
@@ -77,12 +79,60 @@ class _AddScanDialogState extends State<AddScanDialog> {
                   );
                 }).toList(),
               ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Where is it?',
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 17),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 4,
+                    child: TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: _latController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'You need to put something';
+                        }
+                      },
+                      decoration: InputDecoration(hintText: 'Latitude'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width / 4,
+                    child: TextFormField(
+                      controller: _longController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(hintText: 'Longitude'),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'You need to put something';
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
                   Provider.of<Scans>(context, listen: false).addScan(
                     title: _titleController.text,
                     fileContents: widget.image,
-                    position: [20, 10],
+                    position: [
+                      int.parse(_latController.text),
+                      int.parse(_longController.text)
+                    ],
                     urgency: valueItem,
                     description: _descController.text,
                   );

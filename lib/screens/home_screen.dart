@@ -187,23 +187,33 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context, snapshot) {
                       return Container(
                           height: 210,
+                          // TODO: Don't show image if image is null
                           child: CarouselSlider.builder(
                             options: CarouselOptions(
                               enableInfiniteScroll: false,
                             ),
                             itemCount: scans.length,
                             itemBuilder: (context, index, realIndex) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: CarouselScannedItem(
-                                  title: scans[index].title,
-                                  image: scans[index].fileContents,
-                                  subTitle: scans[index].des != null
-                                      ? scans[index].des.toString()
-                                      : '',
-                                  daysAgo: scans[index].date.toString(),
-                                ),
-                              );
+                              return scans.length <= 0
+                                  ? Center(
+                                      child: Text(
+                                        'Why don\'t you add some scans to share?',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                            color: Colors.black87),
+                                      ),
+                                    )
+                                  : Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: CarouselScannedItem(
+                                        title: scans[index].title,
+                                        image: scans[index].fileContents,
+                                        subTitle: scans[index].des != null
+                                            ? scans[index].des.toString()
+                                            : '',
+                                        daysAgo: scans[index].date.toString(),
+                                      ));
                             },
                           ));
                     }),
