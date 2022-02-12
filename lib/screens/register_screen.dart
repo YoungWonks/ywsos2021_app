@@ -20,7 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _emailTextController = TextEditingController();
+  // final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
@@ -32,12 +32,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void postRegister() async {
     print("posting register info");
     print(_nameTextController.text);
-    print(_emailTextController.text);
     print(_passwordTextController.text);
     var header = {"Content-Type": "application/json;charset=UTF-8"};
     var body = {
       "username": _nameTextController.text,
-      "email": _emailTextController.text,
       "password": _passwordTextController.text
     };
     var response = await http.post(Uri.parse("${serverurl}api/auth/signup"),
@@ -146,7 +144,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           child: CreateAccountForm(
                               formKey: _formKey,
-                              emailTextController: _emailTextController,
                               passwordTextController: _passwordTextController,
                               confirmPasswordController:
                                   _confirmPasswordController,

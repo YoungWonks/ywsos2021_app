@@ -45,7 +45,27 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 32,
+              height: 16,
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(HomeScreen.routeName);
+              },
+              child: ListTile(
+                leading: Icon(
+                  Icons.home,
+                  color: Color(0xFFDFF6D8),
+                  size: 64,
+                ),
+                title: Text(
+                  'Home',
+                  style: drawerTextStyle,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 16,
             ),
             InkWell(
               onTap: () {},
@@ -113,26 +133,6 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 title: Text(
                   'Sign Out',
-                  style: drawerTextStyle,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 16,
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context)
-                    .pushReplacementNamed(HomeScreen.routeName);
-              },
-              child: ListTile(
-                leading: Icon(
-                  Icons.home,
-                  color: Color(0xFFDFF6D8),
-                  size: 64,
-                ),
-                title: Text(
-                  'Home',
                   style: drawerTextStyle,
                 ),
               ),

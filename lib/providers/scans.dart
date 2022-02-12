@@ -18,12 +18,12 @@ class Scans extends ChangeNotifier {
 
   //final starterUrl = 'http://127.0.0.1:5000';
 
-  final starterUrl = 'https://georepair.herokuapp.com';
+  final indexUrl = 'https://georepair.herokuapp.com';
 
   Future<void> getUserScans() async {
     var token = await _secureStorage.read(key: "token");
     final response = await http.post(
-      Uri.parse('$starterUrl/api/scans/gallery'),
+      Uri.parse('$indexUrl/api/scans/gallery'),
       headers: {"content-type": "application/json", "TOKEN": token.toString()},
     );
 
@@ -35,7 +35,7 @@ class Scans extends ChangeNotifier {
     final List<Scan>? loadedScans = [];
     await Future.forEach(extractedData['repairs'], (dynamic scan) async {
       final imageResponse =
-          await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
+          await http.get(Uri.parse('$indexUrl${scan['url']}'), headers: {
 //          "Content-Type": 'application/json',
         "TOKEN": token.toString()
       });
@@ -62,7 +62,7 @@ class Scans extends ChangeNotifier {
 
   Future<void> getScans() async {
     var token = await _secureStorage.read(key: "token");
-    final response = await http.post(Uri.parse('$starterUrl/api/scans/all'),
+    final response = await http.post(Uri.parse('$indexUrl/api/scans/all'),
         headers: {
           "content-type": "application/json",
           "TOKEN": token.toString()
@@ -79,7 +79,7 @@ class Scans extends ChangeNotifier {
     final List<Scan>? loadedScans = [];
     await Future.forEach(extractedData['repairs'], (dynamic scan) async {
       final imageResponse =
-          await http.get(Uri.parse('$starterUrl${scan['url']}'), headers: {
+          await http.get(Uri.parse('$indexUrl${scan['url']}'), headers: {
 //          "Content-Type": 'application/json',
         "TOKEN": token.toString()
 
@@ -111,8 +111,8 @@ class Scans extends ChangeNotifier {
       required int? urgency,
       required List<int> position,
       required Uint8List fileContents}) async {
-    String url = "$starterUrl/api/scans/add";
-    String imageUrl = "$starterUrl/api/scans/upload";
+    String url = "$indexUrl/api/scans/add";
+    String imageUrl = "$indexUrl/api/scans/upload";
     var token = await _secureStorage.read(key: "token");
     try {
       var request = http.MultipartRequest("POST", Uri.parse(imageUrl));
@@ -131,7 +131,7 @@ class Scans extends ChangeNotifier {
             "urgency": urgency,
             "des": description,
             "position": position,
-            "filename": json.decode(imageResponse)['filename']
+            "filename": json.decode(imageResponse)['filename'],
           }),
           headers: {
             "content-type": "application/json",

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class CreateAccountForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
-  final TextEditingController emailTextController;
   final TextEditingController passwordTextController;
   final TextEditingController nameTextController;
   final TextEditingController confirmPasswordController;
@@ -11,7 +10,6 @@ class CreateAccountForm extends StatefulWidget {
   CreateAccountForm({
     Key? key,
     required this.formKey,
-    required this.emailTextController,
     required this.passwordTextController,
     required this.nameTextController,
     required this.confirmPasswordController,
@@ -86,63 +84,63 @@ class _CreateAccountFormState extends State<CreateAccountForm> {
               ],
             ),
           ),
-          Container(
-            height: 50,
-            alignment: Alignment.center,
-            margin: EdgeInsets.all(
-              10.0,
-            ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset('./assets/images/email.png'),
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter an email';
-                          }
-                        },
-                        controller: widget.emailTextController,
-                        // decoration: buildInputDecoration(
-                        //     label: 'Enter Email', hintText: 'john@me.com'),
-                        decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Email/Username",
-                            hintStyle: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                  ],
-                ),
-                Positioned(
-                  bottom: -1,
-                  child: Container(
-                    alignment: Alignment.center,
-                    height: 5,
-                    width: MediaQuery.of(context).size.width - 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(10),
-                        bottomRight: Radius.circular(10),
-                      ),
-                      gradient: LinearGradient(
-                        colors: [
-                          Color.fromRGBO(151, 184, 141, 1),
-                          Color.fromRGBO(172, 201, 174, 1),
-                          Color.fromRGBO(100, 145, 155, 1),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Container(
+          //   height: 50,
+          //   alignment: Alignment.center,
+          //   margin: EdgeInsets.all(
+          //     10.0,
+          //   ),
+          //   child: Stack(
+          //     alignment: Alignment.center,
+          //     children: <Widget>[
+          //       Row(
+          //         children: [
+          //           Padding(
+          //             padding: const EdgeInsets.all(8.0),
+          //             child: Image.asset('./assets/images/email.png'),
+          //           ),
+          //           Expanded(
+          //             child: TextFormField(
+          //               validator: (value) {
+          //                 if (value!.isEmpty) {
+          //                   return 'Please enter an email';
+          //                 }
+          //               },
+          //               controller: widget.emailTextController,
+          //               // decoration: buildInputDecoration(
+          //               //     label: 'Enter Email', hintText: 'john@me.com'),
+          //               decoration: const InputDecoration(
+          //                   border: InputBorder.none,
+          //                   hintText: "Email/Username",
+          //                   hintStyle: TextStyle(color: Colors.white)),
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //       Positioned(
+          //         bottom: -1,
+          //         child: Container(
+          //           alignment: Alignment.center,
+          //           height: 5,
+          //           width: MediaQuery.of(context).size.width - 100,
+          //           decoration: BoxDecoration(
+          //             borderRadius: BorderRadius.only(
+          //               bottomLeft: Radius.circular(10),
+          //               bottomRight: Radius.circular(10),
+          //             ),
+          //             gradient: LinearGradient(
+          //               colors: [
+          //                 Color.fromRGBO(151, 184, 141, 1),
+          //                 Color.fromRGBO(172, 201, 174, 1),
+          //                 Color.fromRGBO(100, 145, 155, 1),
+          //               ],
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
 
           Container(
             height: 50,
