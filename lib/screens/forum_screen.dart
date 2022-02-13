@@ -1,5 +1,3 @@
-import 'dart:typed_data';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -182,15 +180,19 @@ class _ForumScreenState extends State<ForumScreen> {
                         itemCount: scans.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: CarouselScannedItem(
-                              title: scans[index].title,
-                              subTitle: scans[index].des.toString(),
-                              image: scans[index].fileContents,
-                              daysAgo: scans[index].date.toString(),
-                            ),
-                          );
+                          try {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CarouselScannedItem(
+                                title: scans[index].title,
+                                subTitle: scans[index].des.toString(),
+                                image: scans[index].fileContents,
+                                daysAgo: scans[index].date.toString(),
+                              ),
+                            );
+                          } finally {
+                            return Container();
+                          }
                         },
                       ),
                     );

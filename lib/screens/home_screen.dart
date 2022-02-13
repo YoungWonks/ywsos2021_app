@@ -187,7 +187,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     builder: (context, snapshot) {
                       return Container(
                           height: 210,
-                          // TODO: Don't show image if image is null
                           child: CarouselSlider.builder(
                             options: CarouselOptions(
                               enableInfiniteScroll: false,
