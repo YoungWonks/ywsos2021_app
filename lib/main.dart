@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/dashboard.dart';
 import 'package:ywsos2021_app/screens/forum_screen.dart';
 
 import 'package:ywsos2021_app/screens/home_screen.dart';
@@ -14,6 +15,8 @@ import 'screens/opening_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/take_picture_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/dashboard.dart';
+import 'screens/stats.dart';
 
 void main() async {
   runApp(MyApp());
@@ -32,7 +35,7 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme,
           ),
         ),
-        home: OpeningScreen(),
+        home: Dashboard(),
         routes: {
           LoginScreen.routeName: (_) => LoginScreen(),
           RegisterScreen.routeName: (_) => RegisterScreen(),
@@ -40,6 +43,9 @@ class MyApp extends StatelessWidget {
           TakePictureScreen.routeName: (_) => TakePictureScreen(),
           AddPhotoGalleryScreen.routeName: (_) => AddPhotoGalleryScreen(),
           ForumScreen.routeName: (_) => ForumScreen(),
+          Dashboard.routeName: (_) => Dashboard(),
+          stats.routeName: (_) => stats(),
+
         },
       ),
     );
