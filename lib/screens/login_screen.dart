@@ -45,7 +45,14 @@ class _LoginScreenState extends State<LoginScreen> {
       await _secureStorage.write(key: "token", value: decodedresponse["token"]);
       Navigator.pushReplacementNamed(context, '/home');
     } else {
-      print(decodedresponse["message"]);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(decodedresponse["message"]),
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 100,
+            right: 20,
+            left: 20),
+      ));
     }
   }
 
