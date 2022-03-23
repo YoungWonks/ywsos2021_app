@@ -40,6 +40,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
     };
     var response = await http.post(Uri.parse("${serverurl}api/auth/signup"),
         headers: header, body: jsonEncode(body));
+
+    var decodedresponse = jsonDecode(response.body);
+    if (decodedresponse["error"] == "0") {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(decodedresponse["message"]),
+        behavior: SnackBarBehavior.floating,
+        margin: EdgeInsets.only(
+            bottom: MediaQuery.of(context).size.height - 100,
+            right: 20,
+            left: 20),
+      ));
+    }
+
     print(response.statusCode);
   }
 
@@ -151,6 +166,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               onSubmit: () async {
                                 print("submitted");
                                 postRegister();
+                                Navigator.of(context)
+                                    .pushReplacementNamed(HomeScreen.routeName);
                               }),
                         ),
                       ),
