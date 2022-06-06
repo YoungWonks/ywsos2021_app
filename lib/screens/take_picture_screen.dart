@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/widgets/custom_appbar.dart';
 
 import '../widgets/add_scan_dialog.dart';
 
@@ -15,6 +16,8 @@ class TakePictureScreen extends StatefulWidget {
 class _TakePictureScreenState extends State<TakePictureScreen> {
   late CameraController _controller;
   late List<CameraDescription> cameras;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<void> setupCameras() async {
     try {
@@ -37,10 +40,7 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        elevation: 0,
-      ),
+      appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
       backgroundColor: Colors.black,
       // You must wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner until the

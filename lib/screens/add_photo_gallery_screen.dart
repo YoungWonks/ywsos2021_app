@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:ywsos2021_app/providers/scans.dart';
+import 'package:ywsos2021_app/widgets/custom_appbar.dart';
 import 'package:ywsos2021_app/widgets/custom_drawer.dart';
 
 import 'home_screen.dart';
@@ -43,57 +44,12 @@ class _AddPhotoGalleryScreenState extends State<AddPhotoGalleryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
+      key: _scaffoldKey,
       drawer: CustomDrawer(),
       backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: InkWell(
-            onTap: () {
-              if (_scaffoldKey.currentState!.isDrawerOpen) {
-                _scaffoldKey.currentState!.openEndDrawer();
-              } else {
-                _scaffoldKey.currentState!.openDrawer();
-              }
-            },
-            child: Image.asset('./assets/images/drawer_icon.png')),
-        elevation: 0,
-        centerTitle: true,
-        actions: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                'TATA',
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14.0,
-                    color: Colors.black),
-              ),
-              Text(
-                'Personal profile',
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 9.0,
-                  color: Colors.white.withOpacity(0.77),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            width: 15,
-          ),
-          Image.asset(
-            './assets/images/profile_pic.png',
-            width: 55,
-          ),
-          SizedBox(
-            width: 10,
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -135,161 +91,206 @@ class _AddPhotoGalleryScreenState extends State<AddPhotoGalleryScreen> {
               ],
             ),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Center(
-                child: GestureDetector(
-                  onTap: () async {
-                    _showImgFromGallery();
-                  },
-                  child: CircleAvatar(
-                    radius: 55,
-                    backgroundColor: Colors.white.withOpacity(.53),
-                    child: _image != null
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(50),
-                            child: Image.memory(
-                              convertedImage!,
-                              width: 100,
-                              height: 100,
-                              fit: BoxFit.fitHeight,
-                            ),
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(.6),
-                                borderRadius: BorderRadius.circular(50)),
-                            width: 100,
-                            height: 100,
-                            child: Icon(
-                              Icons.camera_alt,
-                              color: Colors.grey[800],
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                // mainAxisSize: MainAxisSize.min,
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                // shrinkWrap: true,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                //  itemExtent: MediaQuery.of(context).size.height / 7.5,
+                children: [
+                  Center(
+                    child: GestureDetector(
+                      onTap: () async {
+                        _showImgFromGallery();
+                      },
+                      child: CircleAvatar(
+                        radius: 55,
+                        backgroundColor: Colors.white.withOpacity(.53),
+                        child: _image != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Image.memory(
+                                  convertedImage!,
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.fitHeight,
+                                ),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(.6),
+                                    borderRadius: BorderRadius.circular(50)),
+                                width: 100,
+                                height: 100,
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.grey[800],
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                  TextFormField(
+                    controller: _titleController,
+                    cursorColor: Colors.white,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'You need to put something';
+                      }
+                    },
+                    decoration: InputDecoration(
+                      hintText: 'Title',
+                      hintStyle: TextStyle(color: Colors.white),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  TextFormField(
+                    controller: _descController,
+                    cursorColor: Colors.white,
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                    decoration: InputDecoration(
+                      hintText: 'Description',
+                      hintStyle: TextStyle(color: Colors.white),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                      ),
+                    ),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'You need to put something';
+                      }
+                    },
+                  ),
+                  // TextFormField(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Urgency: ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                      StatefulBuilder(builder: (context, snapshot) {
+                        return DropdownButton<int>(
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                          value: valueItem,
+                          onChanged: (int? newValue) {
+                            setState(() {
+                              valueItem = newValue;
+                            });
+                          },
+                          dropdownColor: Color(0xFF5C745C),
+                          iconEnabledColor: Colors.white,
+                          items: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                              .map<DropdownMenuItem<int>>((int value) {
+                            return DropdownMenuItem<int>(
+                              value: value,
+                              child: Text(value.toString()),
+                            );
+                          }).toList(),
+                        );
+                      }),
+                    ],
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 4,
+                        child: TextFormField(
+                          cursorColor: Colors.white,
+                          keyboardType: TextInputType.number,
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          controller: _latController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'You need to put something';
+                            }
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Latitude',
+                            hintStyle: TextStyle(color: Colors.white),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
                             ),
                           ),
-                  ),
-                ),
-              ),
-              TextFormField(
-                controller: _titleController,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'You need to put something';
-                  }
-                },
-                decoration: InputDecoration(hintText: 'Title'),
-              ),
-              TextFormField(
-                controller: _descController,
-                decoration: InputDecoration(hintText: 'Description'),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'You need to put something';
-                  }
-                },
-              ),
-              // TextFormField(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      'Urgency: ',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                        ),
                       ),
-                    ),
-                  ),
-                  StatefulBuilder(builder: (context, snapshot) {
-                    return DropdownButton<int>(
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                      SizedBox(
+                        width: 10,
                       ),
-                      value: valueItem,
-                      onChanged: (int? newValue) {
-                        setState(() {
-                          valueItem = newValue;
-                        });
-                      },
-                      dropdownColor: Color(0xFF5C745C),
-                      iconEnabledColor: Colors.white,
-                      items: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-                          .map<DropdownMenuItem<int>>((int value) {
-                        return DropdownMenuItem<int>(
-                          value: value,
-                          child: Text(value.toString()),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 4,
+                        child: TextFormField(
+                          cursorColor: Colors.white,
+                          controller: _longController,
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: 'Longitude',
+                            hintStyle: TextStyle(color: Colors.white),
+                            focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'You need to put something';
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Container(
+                    // height: 20,
+                    child: ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFF97AC94),
+                      ),
+                      onPressed: () async {
+                        Provider.of<Scans>(context, listen: false).addScan(
+                          title: _titleController.text,
+                          fileContents: await _image!.readAsBytes(),
+                          position: [
+                            int.parse(_latController.text),
+                            int.parse(_longController.text)
+                          ],
+                          urgency: valueItem,
+                          description: _descController.text,
                         );
-                      }).toList(),
-                    );
-                  }),
+                        Navigator.of(context)
+                            .pushReplacementNamed(HomeScreen.routeName);
+                      },
+                      icon: Icon(
+                        Icons.add_circle,
+                        color: Colors.white,
+                      ),
+                      label: Text('Submit'),
+                    ),
+                  )
                 ],
               ),
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 4,
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      controller: _latController,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'You need to put something';
-                        }
-                      },
-                      decoration: InputDecoration(hintText: 'Latitude'),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width / 4,
-                    child: TextFormField(
-                      controller: _longController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(hintText: 'Longitude'),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'You need to put something';
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-
-              Container(
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFF97AC94),
-                  ),
-                  onPressed: () async {
-                    Provider.of<Scans>(context, listen: false).addScan(
-                      title: _titleController.text,
-                      fileContents: await _image!.readAsBytes(),
-                      position: [
-                        int.parse(_latController.text),
-                        int.parse(_longController.text)
-                      ],
-                      urgency: valueItem,
-                      description: _descController.text,
-                    );
-                    Navigator.of(context)
-                        .pushReplacementNamed(HomeScreen.routeName);
-                  },
-                  icon: Icon(
-                    Icons.add_circle,
-                    color: Colors.white,
-                  ),
-                  label: Text('Submit'),
-                ),
-              )
-            ],
+            ),
           ),
         ),
       ),

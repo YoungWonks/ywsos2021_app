@@ -19,6 +19,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   bool isCreateAccountClicked = false;
   final _secureStorage = FlutterSecureStorage();
+
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _emailTextController = TextEditingController();
@@ -43,7 +44,9 @@ class _LoginScreenState extends State<LoginScreen> {
     var decodedresponse = jsonDecode(response.body);
     if (decodedresponse["error"] == "0") {
       await _secureStorage.write(key: "token", value: decodedresponse["token"]);
-      Navigator.pushReplacementNamed(context, '/home');
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text(decodedresponse["message"]),
@@ -54,6 +57,13 @@ class _LoginScreenState extends State<LoginScreen> {
             left: 20),
       ));
     }
+  }
+
+  @override
+  void dispose() {
+    _emailTextController.dispose();
+    _passwordTextController.dispose();
+    super.dispose();
   }
 
   void GoLogOn() async {

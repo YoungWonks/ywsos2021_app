@@ -28,12 +28,13 @@ class Scans extends ChangeNotifier {
     );
 
     final extractedData = json.decode(response.body);
-    print('DATA!: $extractedData');
+    // print('DATA!: $extractedData');
     if (extractedData == null || extractedData['error'] != null) {
       return;
     }
     final List<Scan>? loadedScans = [];
     await Future.forEach(extractedData['repairs'], (dynamic scan) async {
+      // print(scan['url']);
       final imageResponse =
           await http.get(Uri.parse('$indexUrl${scan['url']}'), headers: {
 //          "Content-Type": 'application/json',
@@ -43,7 +44,7 @@ class Scans extends ChangeNotifier {
       // final extractedImageResponse = json.decode(imageResponse.body);
       final Scan newScan = Scan(
         date: scan['scandate'],
-        des: scan['des'],
+        des: scan['description'],
         fileContents: imageResponse.bodyBytes,
         id: scan['id'],
         position: scan['position'],
@@ -83,11 +84,12 @@ class Scans extends ChangeNotifier {
 //          "Content-Type": 'application/json',
         "TOKEN": token.toString()
       });
+
       // print('http://10.0.2.2:5000${scan['url']}');
       // final extractedImageResponse = json.decode(imageResponse.body);
       final Scan newScan = Scan(
         date: scan['scandate'],
-        des: scan['des'],
+        des: scan['description'],
         fileContents: imageResponse.bodyBytes,
         id: scan['id'],
         position: scan['position'],
@@ -95,6 +97,9 @@ class Scans extends ChangeNotifier {
         upVote: scan['upvote'],
         urgency: scan['urgency'],
       );
+
+      debugPrint(imageResponse.body);
+      debugPrint(imageResponse.statusCode.toString());
 
       loadedScans?.add(newScan);
     });

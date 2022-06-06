@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:ywsos2021_app/screens/add_photo_gallery_screen.dart';
 import 'package:ywsos2021_app/screens/forum_screen.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
+import 'package:ywsos2021_app/screens/login_screen.dart';
 
 class CustomDrawer extends StatelessWidget {
   final TextStyle drawerTextStyle = TextStyle(
       fontWeight: FontWeight.w700, color: Colors.white, fontSize: 37.0);
+
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +128,11 @@ class CustomDrawer extends StatelessWidget {
               height: 16,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                _secureStorage.deleteAll();
+                Navigator.of(context)
+                    .pushReplacementNamed(LoginScreen.routeName);
+              },
               child: ListTile(
                 leading: Icon(
                   Icons.logout,

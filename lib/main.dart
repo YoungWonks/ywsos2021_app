@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+import 'package:ywsos2021_app/screens/dashboard_screen.dart';
 import 'package:ywsos2021_app/screens/forum_screen.dart';
 
 import 'package:ywsos2021_app/screens/home_screen.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           TakePictureScreen.routeName: (_) => TakePictureScreen(),
           AddPhotoGalleryScreen.routeName: (_) => AddPhotoGalleryScreen(),
           ForumScreen.routeName: (_) => ForumScreen(),
+          DashboardScreen.routeName: (_) => DashboardScreen(),
         },
       ),
     );
