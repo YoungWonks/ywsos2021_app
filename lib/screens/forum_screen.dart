@@ -62,7 +62,6 @@ class _ForumScreenState extends State<ForumScreen> {
       ),
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: CustomDrawer(),
         backgroundColor: Colors.transparent,
         appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
         body: Padding(

@@ -103,25 +103,21 @@ class _OpeningScreenState extends State<OpeningScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OpeningButton(
-                      child: Text(
-                        "Sign In",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20.0),
-                      ),
-                      onPressed: () => Navigator.of(context)
-                          .pushReplacementNamed(LoginScreen.routeName),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(LoginScreen.routeName);
+                      },
+                      text: "Sign In",
                     ),
                     SizedBox(
                       width: 16,
                     ),
                     OpeningButton(
-                      onPressed: () => Navigator.of(context)
-                          .pushReplacementNamed(RegisterScreen.routeName),
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20.0),
-                      ),
+                      text: "Sign Up",
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(RegisterScreen.routeName);
+                      },
                     ),
                   ],
                 )

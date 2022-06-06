@@ -15,6 +15,8 @@ import 'screens/opening_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/take_picture_screen.dart';
 import 'screens/login_screen.dart';
+import 'screens/dashboard_screen.dart';
+import 'screens/stats_screen.dart';
 
 void main() async {
   runApp(MyApp());
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
             Theme.of(context).textTheme,
           ),
         ),
-        home: OpeningScreen(),
+        home: DashboardScreen(),
         routes: {
           LoginScreen.routeName: (_) => LoginScreen(),
           RegisterScreen.routeName: (_) => RegisterScreen(),
@@ -42,6 +44,7 @@ class MyApp extends StatelessWidget {
           AddPhotoGalleryScreen.routeName: (_) => AddPhotoGalleryScreen(),
           ForumScreen.routeName: (_) => ForumScreen(),
           DashboardScreen.routeName: (_) => DashboardScreen(),
+          StatsScreen.routeName: (_) => StatsScreen(),
         },
       ),
     );
