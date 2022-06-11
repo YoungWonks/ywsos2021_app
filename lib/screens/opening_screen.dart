@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ywsos2021_app/screens/home_screen.dart';
 import 'package:ywsos2021_app/screens/login_screen.dart';
-
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'register_screen.dart';
 import '../widgets/opening_button.dart';
 
-class OpeningScreen extends StatelessWidget {
+class OpeningScreen extends StatefulWidget {
   const OpeningScreen({Key? key}) : super(key: key);
+
+  @override
+  State<OpeningScreen> createState() => _OpeningScreenState();
+}
+
+class _OpeningScreenState extends State<OpeningScreen> {
+  @override
+  void didChangeDependencies() async {
+    final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+    var _token = await _secureStorage.read(key: "token");
+    if (_token != null) {
+      bool hasExpired = JwtDecoder.isExpired(_token.toString());
+      if (!hasExpired) {
+        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+      }
+    }
+
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +84,6 @@ class OpeningScreen extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.95,
                   ),
                 ),
-
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -83,25 +103,21 @@ class OpeningScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     OpeningButton(
-                      child: Text(
-                        "Sign In",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20.0),
-                      ),
-                      onPressed: () => Navigator.of(context)
-                          .pushReplacementNamed(LoginScreen.routeName),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(LoginScreen.routeName);
+                      },
+                      text: "Sign In",
                     ),
                     SizedBox(
                       width: 16,
                     ),
                     OpeningButton(
-                      onPressed: () => Navigator.of(context)
-                          .pushReplacementNamed(RegisterScreen.routeName),
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 20.0),
-                      ),
+                      text: "Sign Up",
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushReplacementNamed(RegisterScreen.routeName);
+                      },
                     ),
                   ],
                 )

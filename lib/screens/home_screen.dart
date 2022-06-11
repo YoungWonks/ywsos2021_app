@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ywsos2021_app/models/scan.dart';
+import 'package:ywsos2021_app/widgets/custom_appbar.dart';
 
 import '../utils/variables.dart';
 import '../widgets/carousel_scanned_item.dart';
@@ -66,55 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
         key: _scaffoldKey,
         drawer: CustomDrawer(),
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          leading: InkWell(
-              onTap: () {
-                if (_scaffoldKey.currentState!.isDrawerOpen) {
-                  _scaffoldKey.currentState!.openEndDrawer();
-                } else {
-                  _scaffoldKey.currentState!.openDrawer();
-                }
-              },
-              child: Image.asset('./assets/images/drawer_icon.png')),
-          elevation: 0,
-          centerTitle: true,
-          actions: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'TATA',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.0,
-                      color: Colors.black),
-                ),
-                Text(
-                  'Personal profile',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 9.0,
-                    color: Colors.white.withOpacity(0.77),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Image.asset(
-              './assets/images/profile_pic.png',
-              width: 55,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-          ],
-        ),
+        appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
         body: Padding(
           padding: const EdgeInsets.all(22.0),
           child: SingleChildScrollView(
@@ -125,9 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     Text(
                       'GeoRepair',
                       style: TextStyle(
-                          fontSize: 45.0,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFFFFFFFF)),
+                        fontSize: 45.0,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFFFFFFFF),
+                      ),
                     ),
                     SizedBox(
                       width: 18.52,
@@ -183,39 +137,45 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 10,
                 ),
                 FutureBuilder(
-                    future: futureScans,
-                    builder: (context, snapshot) {
-                      return Container(
-                          height: 210,
-                          child: CarouselSlider.builder(
-                            options: CarouselOptions(
-                              enableInfiniteScroll: false,
-                            ),
-                            itemCount: scans.length,
-                            itemBuilder: (context, index, realIndex) {
-                              return scans.length <= 0
-                                  ? Center(
-                                      child: Text(
-                                        'Why don\'t you add some scans to share?',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                            color: Colors.black87),
-                                      ),
-                                    )
-                                  : Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: CarouselScannedItem(
-                                        title: scans[index].title,
-                                        image: scans[index].fileContents,
-                                        subTitle: scans[index].des != null
-                                            ? scans[index].des.toString()
-                                            : '',
-                                        daysAgo: scans[index].date.toString(),
-                                      ));
-                            },
-                          ));
-                    }),
+                  future: futureScans,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return CircularProgressIndicator.adaptive();
+                    }
+                    return Container(
+                      height: 210,
+                      child: CarouselSlider.builder(
+                        options: CarouselOptions(
+                          enableInfiniteScroll: false,
+                        ),
+                        itemCount: scans.length,
+                        itemBuilder: (context, index, realIndex) {
+                          return scans.length <= 0
+                              ? Center(
+                                  child: Text(
+                                    'Why don\'t you add some scans to share?',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.black87),
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: CarouselScannedItem(
+                                    title: scans[index].title,
+                                    image: scans[index].fileContents,
+                                    subTitle: scans[index].des != null
+                                        ? scans[index].des.toString()
+                                        : '',
+                                    daysAgo: scans[index].date.toString(),
+                                  ),
+                                );
+                        },
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),

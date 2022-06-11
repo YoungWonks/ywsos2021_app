@@ -23,6 +23,8 @@ class CarouselScannedItem extends StatefulWidget {
 class _CarouselScannedItemState extends State<CarouselScannedItem> {
   @override
   Widget build(BuildContext context) {
+    debugPrint(widget.image.lengthInBytes.toString());
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.0),
@@ -73,10 +75,12 @@ class _CarouselScannedItemState extends State<CarouselScannedItem> {
               SizedBox(
                 height: 10,
               ),
-              Image.memory(
-                widget.image,
-                height: 110,
-              ),
+              widget.image != null
+                  ? Image.memory(
+                      widget.image,
+                      height: 110,
+                    )
+                  : Text('image not available'),
               SizedBox(
                 height: 10,
               ),

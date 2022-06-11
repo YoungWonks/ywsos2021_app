@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/screens/add_photo_gallery_screen.dart';
+import 'package:ywsos2021_app/screens/dashboard_screen.dart';
 import 'package:ywsos2021_app/screens/forum_screen.dart';
 import 'package:ywsos2021_app/screens/take_picture_screen.dart';
 import 'package:ywsos2021_app/widgets/carosoul_action_item.dart';
@@ -23,7 +24,7 @@ final List<Widget> carouselItems = [
     onTap: (context) {
       Navigator.of(context).pushNamed(ForumScreen.routeName);
     },
-    title: 'Gallery',
+    title: 'Forum',
     subTitle: '',
     image: Image.asset(
       './assets/images/file_folder.png',
@@ -32,7 +33,7 @@ final List<Widget> carouselItems = [
   ),
   CarouselActionItem(
       onTap: (context) {
-        Navigator.of(context).pushNamed(AddPhotoGalleryScreen.routeName);
+        Navigator.of(context).pushReplacementNamed(DashboardScreen.routeName);
       },
       title: 'Dashboard',
       subTitle: '',

@@ -19,44 +19,51 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool isCreateAccountClicked = false;
 
   final _formKey = GlobalKey<FormState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  // final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _nameTextController = TextEditingController();
 
-  var click = 0;
-  var serverurl = "https://georepair.herokuapp.com/";
-
   void postRegister() async {
-    print("posting register info");
-    print(_nameTextController.text);
-    print(_passwordTextController.text);
     var header = {"Content-Type": "application/json;charset=UTF-8"};
     var body = {
       "username": _nameTextController.text,
       "password": _passwordTextController.text
     };
     var response = await http.post(Uri.parse("${serverurl}api/auth/signup"),
-        headers: header, body: jsonEncode(body));
+        headers: header, body: json.encode(body));
 
     var decodedresponse = jsonDecode(response.body);
     if (decodedresponse["error"] == "0") {
-      Navigator.pushReplacementNamed(context, '/home');
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+      }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(decodedresponse["message"]),
-        behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.height - 100,
-            right: 20,
-            left: 20),
-      ));
+      if (mounted) {
+        print(decodedresponse);
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(decodedresponse["message"]),
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(
+              bottom: MediaQuery.of(context).size.height - 100,
+              right: 20,
+              left: 20),
+        ));
+      }
     }
-
-    print(response.statusCode);
   }
+
+  @override
+  void dispose() {
+    _nameTextController.dispose();
+    _passwordTextController.dispose();
+    super.dispose();
+  }
+
+  var click = 0;
+  var serverurl = "https://georepair.herokuapp.com/";
 
   final Shader linearGradient = LinearGradient(
     colors: <Color>[
@@ -68,6 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
+        key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
         body: Container(
           decoration: BoxDecoration(
@@ -78,10 +86,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Color(0xFF64919F),
                 Color(0xFF5C745C),
                 Color(0xFF97AC94),
-
-                // Color(0xFFA2C08B),
-                // Color(0xFF82C1D6),
-                // Color(0xFF64919F),
               ],
             ),
           ),
@@ -101,15 +105,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
               ),
-              // Column(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   crossAxisAlignment: CrossAxisAlignment.center,
-              //   children: [
-              //     Image.asset(
-              //       './assets/images/',
-              //     ),
-              //   ],
-              // ),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -164,10 +159,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   _confirmPasswordController,
                               nameTextController: _nameTextController,
                               onSubmit: () async {
-                                print("submitted");
                                 postRegister();
-                                Navigator.of(context)
-                                    .pushReplacementNamed(HomeScreen.routeName);
                               }),
                         ),
                       ),
@@ -201,60 +193,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ],
               ),
-              //   Column(
-              //   children: [
-              //
-              //     Column(children: [
-              //       Text(
-              //         isCreateAccountClicked != true ? 'Sign In' : 'Sign Up',
-              //         style: Theme.of(context).textTheme.headline5,
-              //       ),
-              //       Column(
-              //         children: [
-              //           SizedBox(
-              //             width: 300,
-              //             height: 300,
-              //             child: isCreateAccountClicked != true
-              //                 ? LoginForm(
-              //                     formKey: _formKey,
-              //                     emailTextController: _emailTextController,
-              //                     passwordTextController: _passwordTextController,
-              //                   )
-              //                 : CreateAccountForm(
-              //                     formKey: _formKey,
-              //                     emailTextController: _emailTextController,
-              //                     passwordTextController: _passwordTextController,
-              //                   ),
-              //           ),
-              //           TextButton.icon(
-              //             icon: Icon(Icons.portrait_rounded),
-              //             style: TextButton.styleFrom(
-              //               primary: Colors.red,
-              //               textStyle: TextStyle(
-              //                 fontSize: 18,
-              //                 fontStyle: FontStyle.italic,
-              //               ),
-              //             ),
-              //             onPressed: () {
-              //               setState(() {
-              //                 if (!isCreateAccountClicked) {
-              //                   isCreateAccountClicked = true;
-              //                 } else
-              //                   isCreateAccountClicked = false;
-              //               });
-              //             },
-              //             label: Text(
-              //               isCreateAccountClicked
-              //                   ? 'Already have an account?'
-              //                   : 'Create Account',
-              //             ),
-              //           ),
-              //         ],
-              //       )
-              //     ]),
-              //
-              //   ],
-              // ),
             ],
           ),
         ),

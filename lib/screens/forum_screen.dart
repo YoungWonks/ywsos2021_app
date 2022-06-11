@@ -1,8 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ywsos2021_app/models/scan.dart';
 import 'package:ywsos2021_app/widgets/carousel_scanned_item.dart';
+import 'package:ywsos2021_app/widgets/custom_appbar.dart';
 import '../widgets/custom_drawer.dart';
 import '../providers/scans.dart';
 
@@ -22,7 +25,7 @@ class _ForumScreenState extends State<ForumScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future? futureScans;
-  late List<Scan> scans;
+  List<Scan>? scans;
 
   @override
   void dispose() {
@@ -33,9 +36,11 @@ class _ForumScreenState extends State<ForumScreen> {
   bool loading = true;
 
   @override
-  void didChangeDependencies() {
-    futureScans = Provider.of<Scans>(context, listen: false).getScans();
-    scans = Provider.of<Scans>(context).scans;
+  void didChangeDependencies() async {
+    if (scans == null) {
+      futureScans = Provider.of<Scans>(context, listen: false).getScans();
+      scans = Provider.of<Scans>(context).scans;
+    }
     super.didChangeDependencies();
   }
 
@@ -57,57 +62,8 @@ class _ForumScreenState extends State<ForumScreen> {
       ),
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: CustomDrawer(),
         backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          leading: InkWell(
-              onTap: () {
-                if (_scaffoldKey.currentState!.isDrawerOpen) {
-                  _scaffoldKey.currentState!.openEndDrawer();
-                } else {
-                  _scaffoldKey.currentState!.openDrawer();
-                }
-              },
-              child: Image.asset('./assets/images/drawer_icon.png')),
-          elevation: 0,
-          centerTitle: true,
-          actions: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  'TATA',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14.0,
-                      color: Colors.black),
-                ),
-                Text(
-                  'Personal profile',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w400,
-                    fontSize: 9.0,
-                    color: Colors.white.withOpacity(0.77),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: 15,
-            ),
-            Image.asset(
-              './assets/images/profile_pic.png',
-              width: 55,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-          ],
-        ),
+        appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
         body: Padding(
           padding: const EdgeInsets.all(22.0),
           child: SingleChildScrollView(
@@ -159,14 +115,15 @@ class _ForumScreenState extends State<ForumScreen> {
                   onChanged: (value) {
                     final allScans =
                         Provider.of<Scans>(context, listen: false).scans;
-                    scans = allScans.where((scan) {
-                      final titleLower = scan.title.toLowerCase();
-                      final searchLower = value.toLowerCase();
 
-                      return titleLower.contains(searchLower);
-                    }).toList();
+                    setState(() {
+                      scans = allScans.where((scan) {
+                        final titleLower = scan.title.toLowerCase();
+                        final searchLower = value.toLowerCase();
 
-                    setState(() {});
+                        return titleLower.contains(searchLower);
+                      }).toList();
+                    });
                   },
                 ),
                 SizedBox(
@@ -175,24 +132,37 @@ class _ForumScreenState extends State<ForumScreen> {
                 FutureBuilder(
                   future: futureScans,
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      );
+                    }
                     return SingleChildScrollView(
                       child: ListView.builder(
-                        itemCount: scans.length,
+                        itemCount: scans!.length,
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           try {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: CarouselScannedItem(
-                                title: scans[index].title,
-                                subTitle: scans[index].des.toString(),
-                                image: scans[index].fileContents,
-                                daysAgo: scans[index].date.toString(),
+                                title: scans![index].title,
+                                subTitle: scans![index].des.toString(),
+                                image: scans![index].fileContents,
+                                daysAgo: scans![index].date.toString(),
                               ),
                             );
-                          } finally {
-                            return Container();
-                          }
+                          } catch (e) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CarouselScannedItem(
+                                title: scans![index].title,
+                                subTitle: scans![index].des.toString(),
+                                image: Uint8List(0),
+                                daysAgo: scans![index].date.toString(),
+                              ),
+                            );
+                          } finally {}
                         },
                       ),
                     );
