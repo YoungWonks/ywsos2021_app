@@ -127,15 +127,15 @@ class _AddScanDialogState extends State<AddScanDialog> {
               ElevatedButton(
                 onPressed: () async {
                   Provider.of<Scans>(context, listen: false).addScan(
-                    title: _titleController.text,
-                    fileContents: widget.image,
-                    position: [
-                      int.parse(_latController.text),
-                      int.parse(_longController.text)
-                    ],
-                    urgency: valueItem,
-                    description: _descController.text,
-                  );
+                      title: _titleController.text,
+                      fileContents: widget.image,
+                      position: [
+                        int.parse(_latController.text),
+                        int.parse(_longController.text)
+                      ],
+                      urgency: valueItem,
+                      description: _descController.text,
+                      context: context);
                   Navigator.of(context)
                       .pushReplacementNamed(HomeScreen.routeName);
                 },

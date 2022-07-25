@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/screens/register_screen.dart';
+import 'package:ywsos2021_app/utils/variables.dart';
 
 import 'package:ywsos2021_app/widgets/login_form.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
@@ -26,7 +28,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordTextController = TextEditingController();
 
   var click = 0;
-  var serverurl = "https://georepair.herokuapp.com/";
 
   void postRegister() async {
     print("posting register info");
@@ -37,25 +38,27 @@ class _LoginScreenState extends State<LoginScreen> {
       "username": _emailTextController.text,
       "password": _passwordTextController.text
     };
-    print(body);
-    var response = await http.post(Uri.parse("${serverurl}api/auth/token"),
+    var response = await http.post(Uri.parse("$indexUrl/api/auth/token"),
         headers: header, body: jsonEncode(body));
-    print(response.body);
     var decodedresponse = jsonDecode(response.body);
     if (decodedresponse["error"] == "0") {
       await _secureStorage.write(key: "token", value: decodedresponse["token"]);
+      await _secureStorage.write(key: "username", value: body['username']);
       if (mounted) {
         Navigator.pushReplacementNamed(context, '/home');
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(decodedresponse["message"]),
-        behavior: SnackBarBehavior.floating,
-        margin: EdgeInsets.only(
-            bottom: MediaQuery.of(context).size.height - 100,
-            right: 20,
-            left: 20),
-      ));
+      Flushbar(
+        title: 'Error occured Logging in',
+        message: decodedresponse['message'],
+        icon: Icon(
+          Icons.info_outline,
+          size: 28.0,
+          color: Colors.red[300],
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.red[300],
+      )..show(context);
     }
   }
 
@@ -108,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: FittedBox(
                   fit: BoxFit.fill,
                   child: Image.asset(
-                    './assets/images/background_layer_2.png',
+                    'assets/images/background_layer_2.png',
                     // width: MediaQuery.of(context).size.width,
                     // height: MediaQuery.of(context).size.height,
                     // scale:
@@ -121,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
               //   crossAxisAlignment: CrossAxisAlignment.center,
               //   children: [
               //     Image.asset(
-              //       './assets/images/',
+              //       'assets/images/',
               //     ),
               //   ],
               // ),
