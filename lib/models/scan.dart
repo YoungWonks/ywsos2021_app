@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:geocoding/geocoding.dart';
+
 // class ScanPosition {
 //   final double lat;
 //   final double long;
@@ -11,33 +13,29 @@ import 'dart:typed_data';
 //   });
 // }
 
+enum ScansResolved { resolved, pending }
+
 class Scan {
   String? id;
-  final Uint8List fileContents;
-  final Map<String, dynamic> position;
+  final String fileContents;
+  final List<Placemark> location;
   int? upVote;
   String? date;
   final String title;
   final String? des;
   final int urgency;
-
-  // Scan.adding({
-  //   required this.title,
-  //   required this.urgency,
-  //   required this.address,
-  //   required this.des,
-  //   required this.fileContents,
-  // });
+  final bool status;
 
   Scan({
     required this.id,
     required this.fileContents,
-    required this.position,
+    required this.location,
     required this.upVote,
     required this.date,
     required this.title,
     required this.des,
     required this.urgency,
+    required this.status,
   });
 
   // [2, 23.5]

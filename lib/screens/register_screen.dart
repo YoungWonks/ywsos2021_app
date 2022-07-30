@@ -1,7 +1,9 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/screens/login_screen.dart';
+import 'package:ywsos2021_app/utils/variables.dart';
 
 import 'package:ywsos2021_app/widgets/create_account_form.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
@@ -32,7 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       "username": _nameTextController.text,
       "password": _passwordTextController.text
     };
-    var response = await http.post(Uri.parse("${serverurl}api/auth/signup"),
+    var response = await http.post(Uri.parse("$indexUrl/api/auth/signup"),
         headers: header, body: json.encode(body));
 
     var decodedresponse = jsonDecode(response.body);
@@ -42,15 +44,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } else {
       if (mounted) {
-        print(decodedresponse);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(decodedresponse["message"]),
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.only(
-              bottom: MediaQuery.of(context).size.height - 100,
-              right: 20,
-              left: 20),
-        ));
+        Flushbar(
+          title: 'Error occured registering',
+          message: decodedresponse['message'],
+          icon: Icon(
+            Icons.info_outline,
+            size: 28.0,
+            color: Colors.red[300],
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.red[300],
+        )..show(context);
       }
     }
   }
@@ -63,7 +67,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   var click = 0;
-  var serverurl = "https://georepair.herokuapp.com/";
 
   final Shader linearGradient = LinearGradient(
     colors: <Color>[
@@ -97,7 +100,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: FittedBox(
                   fit: BoxFit.fill,
                   child: Image.asset(
-                    './assets/images/background_layer_2.png',
+                    'assets/images/background_layer_2.png',
                     // width: MediaQuery.of(context).size.width,
                     // height: MediaQuery.of(context).size.height,
                     // scale:

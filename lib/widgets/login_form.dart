@@ -59,7 +59,7 @@ class _LoginFormState extends State<LoginForm> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Image.asset('./assets/images/email.png'),
+                      child: Image.asset('assets/images/email.png'),
                     ),
                     Expanded(
                       child: TextFormField(
@@ -72,9 +72,10 @@ class _LoginFormState extends State<LoginForm> {
                         // decoration: buildInputDecoration(
                         //     label: 'Enter Email', hintText: 'john@me.com'),
                         decoration: const InputDecoration(
-                            border: InputBorder.none,
-                            hintText: "Email/Username",
-                            hintStyle: TextStyle(color: Colors.white)),
+                          border: InputBorder.none,
+                          hintText: "Username",
+                          hintStyle: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
                   ],
@@ -117,7 +118,7 @@ class _LoginFormState extends State<LoginForm> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Image.asset('./assets/images/key.png'),
+                      child: Image.asset('assets/images/key.png'),
                     ),
                     Expanded(
                       child: TextFormField(
@@ -196,9 +197,9 @@ class _LoginFormState extends State<LoginForm> {
           // Row(
           //   mainAxisAlignment: MainAxisAlignment.center,
           //   children: [
-          //     Image.asset('./assets/images/line.png'),
+          //     Image.asset('assets/images/line.png'),
           //     Text("  OR  "),
-          //     Image.asset('./assets/images/line.png'),
+          //     Image.asset('assets/images/line.png'),
           //   ],
           // ),
           // Row(
@@ -206,15 +207,15 @@ class _LoginFormState extends State<LoginForm> {
           //   children: [
           //     Padding(
           //       padding: const EdgeInsets.all(7.0),
-          //       child: Image.asset('./assets/images/facebook.png'),
+          //       child: Image.asset('assets/images/facebook.png'),
           //     ),
           //     Padding(
           //       padding: const EdgeInsets.all(7.0),
-          //       child: Image.asset("./assets/images/google.png"),
+          //       child: Image.asset("assets/images/google.png"),
           //     ),
           //     Padding(
           //       padding: const EdgeInsets.all(7.0),
-          //       child: Image.asset("./assets/images/linkedin.png"),
+          //       child: Image.asset("assets/images/linkedin.png"),
           //     ),
           //   ],
           // ),

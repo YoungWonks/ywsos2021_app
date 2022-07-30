@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:ywsos2021_app/widgets/custom_appbar.dart';
@@ -25,7 +26,10 @@ class _TakePictureScreenState extends State<TakePictureScreen> {
       _controller = CameraController(cameras.first, ResolutionPreset.medium);
       await _controller.initialize();
     } catch (e) {
-      print(e);
+      Flushbar(
+        title: "An error occured",
+        message: "Cannot initialize camera",
+      );
     }
   }
 

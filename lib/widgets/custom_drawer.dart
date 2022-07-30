@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:ywsos2021_app/screens/account_settings_screen.dart';
 import 'package:ywsos2021_app/screens/add_photo_gallery_screen.dart';
 import 'package:ywsos2021_app/screens/forum_screen.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
@@ -41,7 +42,7 @@ class CustomDrawer extends StatelessWidget {
                     width: 18.0,
                   ),
                   Image.asset(
-                    './assets/hammer.png',
+                    'assets/hammer.png',
                     width: 45.96,
                     height: 44.35,
                   ),
@@ -72,14 +73,17 @@ class CustomDrawer extends StatelessWidget {
               height: 16,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed(EditProfileScreen.routeName);
+              },
               child: ListTile(
                 leading: Image.asset(
-                  './assets/images/profile_pic.png',
+                  'assets/images/profile_pic.png',
                   width: 64,
                 ),
                 title: Text(
-                  'Account',
+                  'Edit Profile',
                   style: drawerTextStyle,
                 ),
               ),

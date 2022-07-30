@@ -40,8 +40,6 @@ class OpeningButton extends StatelessWidget {
       child: Stack(
         children: [
           SizedBox(
-            height: 50,
-            width: 150,
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15.0),
@@ -53,15 +51,16 @@ class OpeningButton extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 40, top: 9),
-            child: Positioned(
-              bottom: 10,
-              child: Text(
-                text,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  alignment: Alignment.center,
+                  child: Text(
+                    text,
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
               ),
             ),
           ),

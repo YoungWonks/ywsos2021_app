@@ -25,7 +25,6 @@ class _ForumScreenState extends State<ForumScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future? futureScans;
-  List<Scan>? scans;
 
   @override
   void dispose() {
@@ -36,16 +35,15 @@ class _ForumScreenState extends State<ForumScreen> {
   bool loading = true;
 
   @override
-  void didChangeDependencies() async {
-    if (scans == null) {
-      futureScans = Provider.of<Scans>(context, listen: false).getScans();
-      scans = Provider.of<Scans>(context).scans;
-    }
-    super.didChangeDependencies();
+  void initState() {
+    futureScans = Provider.of<Scans>(context, listen: false).getScans(context);
+
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var scans = Provider.of<Scans>(context).scans;
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -63,6 +61,7 @@ class _ForumScreenState extends State<ForumScreen> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.transparent,
+        drawer: CustomDrawer(),
         appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
         body: Padding(
           padding: const EdgeInsets.all(22.0),
@@ -82,7 +81,7 @@ class _ForumScreenState extends State<ForumScreen> {
                       width: 18.52,
                     ),
                     Image.asset(
-                      './assets/hammer.png',
+                      'assets/hammer.png',
                       width: 45.96,
                       height: 44.35,
                     ),
@@ -139,27 +138,32 @@ class _ForumScreenState extends State<ForumScreen> {
                     }
                     return SingleChildScrollView(
                       child: ListView.builder(
-                        itemCount: scans!.length,
+                        itemCount: scans.length,
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           try {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: CarouselScannedItem(
-                                title: scans![index].title,
-                                subTitle: scans![index].des.toString(),
-                                image: scans![index].fileContents,
-                                daysAgo: scans![index].date.toString(),
+                                title: scans[index].title,
+                                subTitle: scans[index].des.toString(),
+                                image: scans[index].fileContents,
+                                daysAgo: scans[index].date.toString(),
+                                location: scans[index].location,
+                                status: scans[index].status,
                               ),
                             );
                           } catch (e) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: CarouselScannedItem(
-                                title: scans![index].title,
-                                subTitle: scans![index].des.toString(),
-                                image: Uint8List(0),
-                                daysAgo: scans![index].date.toString(),
+                                title: scans[index].title,
+                                subTitle: scans[index].des.toString(),
+                                image: '',
+                                location: scans[index].location,
+                                daysAgo: scans[index].date.toString(),
+                                status: scans[index].status,
                               ),
                             );
                           } finally {}

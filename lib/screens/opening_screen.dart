@@ -64,7 +64,7 @@ class _OpeningScreenState extends State<OpeningScreen> {
                 width: 10,
               ),
               Image.asset(
-                './assets/hammer.png',
+                'assets/hammer.png',
                 width: 45.96,
                 height: 44.35,
               ),
@@ -80,7 +80,7 @@ class _OpeningScreenState extends State<OpeningScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: Image.asset(
-                    './assets/images/full_image.png',
+                    'assets/images/full_image.png',
                     width: MediaQuery.of(context).size.width * 0.95,
                   ),
                 ),

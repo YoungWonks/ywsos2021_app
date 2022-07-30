@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
 import 'package:ywsos2021_app/models/scan.dart';
 import 'package:ywsos2021_app/widgets/custom_appbar.dart';
@@ -41,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    futureScans = Provider.of<Scans>(context, listen: false).getUserScans();
+    futureScans =
+        Provider.of<Scans>(context, listen: false).getUserScans(context);
     super.initState();
   }
 
@@ -70,115 +72,127 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
         body: Padding(
           padding: const EdgeInsets.all(22.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      'GeoRepair',
-                      style: TextStyle(
-                        fontSize: 45.0,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFFFFFFFF),
+          child: CustomScrollView(slivers: [
+            SliverFillRemaining(
+              child: Column(
+                mainAxisAlignment: scans.length <= 0
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'GeoRepair',
+                        style: TextStyle(
+                          fontSize: 45.0,
+                          fontWeight: FontWeight.w700,
+                          color: Color(0xFFFFFFFF),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 18.52,
-                    ),
-                    Image.asset(
-                      './assets/hammer.png',
-                      width: 45.96,
-                      height: 44.35,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  'Actions',
-                  style: TextStyle(
-                    fontSize: 19.77,
-                    fontWeight: FontWeight.w600,
+                      SizedBox(
+                        width: 18.52,
+                      ),
+                      Image.asset(
+                        'assets/hammer.png',
+                        width: 45.96,
+                        height: 44.35,
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                CarouselSlider(
-                  items: carouselItems,
-                  options: CarouselOptions(
-                    enableInfiniteScroll: false,
-                    onPageChanged: (index, reason) {
-                      setState(() {
-                        _currentAction = index;
-                      });
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Text(
+                    'Actions',
+                    style: TextStyle(
+                      fontSize: 19.77,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  CarouselSlider(
+                    items: carouselItems,
+                    options: CarouselOptions(
+                      enableInfiniteScroll: false,
+                      onPageChanged: (index, reason) {
+                        setState(() {
+                          _currentAction = index;
+                        });
+                      },
+                    ),
+                    carouselController: _carouselActionController,
+                  ),
+                  DotIndicator(
+                    carouselItems: carouselItems,
+                    controller: _carouselActionController,
+                    current: _currentAction,
+                  ),
+                  SizedBox(
+                    height: 16,
+                  ),
+                  Text(
+                    'Recently Scanned Items',
+                    style: TextStyle(
+                      fontSize: 19.77,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  FutureBuilder(
+                    future: futureScans,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator.adaptive();
+                      }
+                      return ListView.builder(
+                        controller: ScrollController(),
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: scans.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          getLocation(double lat, double long) async {
+                            final location =
+                                await placemarkFromCoordinates(lat, long);
+                            return location;
+                          }
+
+                          try {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CarouselScannedItem(
+                                title: scans[index].title,
+                                subTitle: scans[index].des.toString(),
+                                image: scans[index].fileContents,
+                                daysAgo: scans[index].date.toString(),
+                                location: scans[index].location,
+                                status: scans[index].status,
+                              ),
+                            );
+                          } catch (e) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: CarouselScannedItem(
+                                title: scans[index].title,
+                                subTitle: scans[index].des.toString(),
+                                image: '',
+                                daysAgo: scans[index].date.toString(),
+                                location: scans[index].location,
+                                status: scans[index].status,
+                              ),
+                            );
+                          } finally {}
+                        },
+                      );
                     },
                   ),
-                  carouselController: _carouselActionController,
-                ),
-                DotIndicator(
-                  carouselItems: carouselItems,
-                  controller: _carouselActionController,
-                  current: _currentAction,
-                ),
-                SizedBox(
-                  height: 16,
-                ),
-                Text(
-                  'Recently Scanned Items',
-                  style: TextStyle(
-                    fontSize: 19.77,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                FutureBuilder(
-                  future: futureScans,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return CircularProgressIndicator.adaptive();
-                    }
-                    return Container(
-                      height: 210,
-                      child: CarouselSlider.builder(
-                        options: CarouselOptions(
-                          enableInfiniteScroll: false,
-                        ),
-                        itemCount: scans.length,
-                        itemBuilder: (context, index, realIndex) {
-                          return scans.length <= 0
-                              ? Center(
-                                  child: Text(
-                                    'Why don\'t you add some scans to share?',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                        color: Colors.black87),
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: CarouselScannedItem(
-                                    title: scans[index].title,
-                                    image: scans[index].fileContents,
-                                    subTitle: scans[index].des != null
-                                        ? scans[index].des.toString()
-                                        : '',
-                                    daysAgo: scans[index].date.toString(),
-                                  ),
-                                );
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
+          ]),
         ),
       ),
     );
