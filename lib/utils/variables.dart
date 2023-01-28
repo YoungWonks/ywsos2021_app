@@ -44,12 +44,17 @@ final List<Widget> carouselItems = [
         size: 110,
       )),
   CarouselActionItem(
-      onTap: (context) {
-        Navigator.of(context).pushReplacementNamed(EditProfileScreen.routeName);
-      },
-      title: 'Edit Profile',
-      subTitle: '',
-      image: Image.asset("assets/images/profile_pic.png")),
+    onTap: (context) {
+      Navigator.of(context).pushReplacementNamed(EditProfileScreen.routeName);
+    },
+    title: 'Edit Profile',
+    subTitle: '',
+    image: Icon(
+      Icons.person,
+      color: Colors.white.withOpacity(.6),
+      size: 110,
+    ),
+  ),
   CarouselActionItem(
     title: 'Logout',
     subTitle: '',
@@ -65,4 +70,4 @@ final List<Widget> carouselItems = [
   )
 ];
 
-final indexUrl = "http://10.0.2.2:5000";
+final indexUrl = "http://georepair.herokuapp.com";

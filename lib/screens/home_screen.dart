@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +10,6 @@ import '../widgets/carousel_scanned_item.dart';
 import '../widgets/custom_drawer.dart';
 import '../widgets/dot_indicator.dart';
 import '../providers/scans.dart';
-import 'splash_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -27,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   CarouselController _carouselActionController = CarouselController();
 
   TextEditingController _searchEditingController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -40,17 +39,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   bool loading = true;
 
-  @override
-  void initState() {
-    futureScans =
-        Provider.of<Scans>(context, listen: false).getUserScans(context);
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   futureScans =
+  //       Provider.of<Scans>(context, listen: false).getUserScans(context);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    futureScans = Provider.of<Scans>(context).getUserScans(context);
     final scans = Provider.of<Scans>(context).userScans;
-
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -67,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: CustomDrawer(),
+        drawer: AppDrawer(),
         backgroundColor: Colors.transparent,
         appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
         body: Padding(
@@ -143,52 +142,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 10,
                   ),
                   FutureBuilder(
-                    future: futureScans,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator.adaptive();
-                      }
-                      return ListView.builder(
-                        controller: ScrollController(),
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: scans.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          getLocation(double lat, double long) async {
-                            final location =
-                                await placemarkFromCoordinates(lat, long);
-                            return location;
-                          }
-
-                          try {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CarouselScannedItem(
-                                title: scans[index].title,
-                                subTitle: scans[index].des.toString(),
-                                image: scans[index].fileContents,
-                                daysAgo: scans[index].date.toString(),
-                                location: scans[index].location,
-                                status: scans[index].status,
-                              ),
-                            );
-                          } catch (e) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CarouselScannedItem(
-                                title: scans[index].title,
-                                subTitle: scans[index].des.toString(),
-                                image: '',
-                                daysAgo: scans[index].date.toString(),
-                                location: scans[index].location,
-                                status: scans[index].status,
-                              ),
-                            );
-                          } finally {}
-                        },
-                      );
-                    },
-                  ),
+                      future: futureScans,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                              child: CircularProgressIndicator.adaptive());
+                        }
+                        return Expanded(
+                          child: ListView.builder(
+                              controller: _scrollController,
+                              itemCount: scans.length,
+                              itemBuilder: (context, index) {
+                                print(scans[index].isVoted);
+                                return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: CarouselScannedItem(
+                              
+                                      ifPersonUpVoted: scans[index].isVoted,
+                                      upVote: scans[index].upVote!.toInt(),
+                                      title: scans[index].title,
+                                      subTitle: scans[index].des.toString(),
+                                      image: scans[index].fileContents,
+                                      daysAgo: scans[index].date.toString(),
+                                      location: scans[index].location,
+                                      status: scans[index].status,
+                                      id: scans[index].id.toString(),
+                                    ));
+                              }),
+                        );
+                      }),
                 ],
               ),
             ),

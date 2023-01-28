@@ -41,12 +41,14 @@ class _LoginScreenState extends State<LoginScreen> {
     var response = await http.post(Uri.parse("$indexUrl/api/auth/token"),
         headers: header, body: jsonEncode(body));
     var decodedresponse = jsonDecode(response.body);
+    print(decodedresponse);
     if (decodedresponse["error"] == "0") {
       await _secureStorage.write(key: "token", value: decodedresponse["token"]);
       await _secureStorage.write(key: "username", value: body['username']);
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
+      Future.delayed(Duration.zero, () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            HomeScreen.routeName, (Route<dynamic> route) => false);
+      });
     } else {
       Flushbar(
         title: 'Error occured Logging in',

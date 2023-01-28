@@ -34,8 +34,19 @@ class Scans extends ChangeNotifier {
       );
 
       final extractedData = json.decode(response.body);
-      // print('DATA!: $extractedData');
+      print('DATA!: $extractedData');
       if (extractedData == null || extractedData['error'] != null) {
+        Flushbar(
+          title: 'An error occured getting votes',
+          message: 'an error occured',
+          icon: Icon(
+            Icons.info_outline,
+            size: 28.0,
+            color: Colors.red[300],
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.red[300],
+        )..show(context);
         return;
       }
       final List<Scan>? loadedScans = [];
@@ -50,6 +61,9 @@ class Scans extends ChangeNotifier {
         // final extractedImageResponse = json.decode(imageResponse.body);
         final location = await placemarkFromCoordinates(
             scan['position']['lat'], scan['position']['long']);
+        print('id of scan ${scan['id']}');
+        final isVoted = await getVotedScans(context, scan['id']);
+        print("Is Voted: $isVoted");
         final Scan newScan = Scan(
           date: scan['scandate'],
           des: scan['description'],
@@ -60,6 +74,7 @@ class Scans extends ChangeNotifier {
           upVote: scan['upvote'],
           urgency: scan['urgency'],
           status: scan['status'],
+          isVoted: isVoted,
         );
 
         loadedScans?.add(newScan);
@@ -95,8 +110,20 @@ class Scans extends ChangeNotifier {
       );
 
       final extractedData = json.decode(response.body);
+      print('Extracted data error is: ' + extractedData['error']);
       // print('DATA!: $extractedData');
-      if (extractedData == null || extractedData['error'] != null) {
+      if (extractedData == null || extractedData['error'] != "0") {
+        Flushbar(
+          title: 'An error occured getting votes',
+          message: 'An error occured',
+          icon: Icon(
+            Icons.info_outline,
+            size: 28.0,
+            color: Colors.red[300],
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.red[300],
+        )..show(context);
         return;
       }
       final List<Scan>? loadedScans = [];
@@ -112,6 +139,10 @@ class Scans extends ChangeNotifier {
         final location = await placemarkFromCoordinates(
             scan['position']['lat'], scan['position']['long']);
 
+        final isVoted = await getVotedScans(context, scan['id']);
+
+        print(isVoted);
+
         final Scan newScan = Scan(
           date: scan['scandate'],
           des: scan['description'],
@@ -122,6 +153,7 @@ class Scans extends ChangeNotifier {
           upVote: scan['upvote'],
           urgency: scan['urgency'],
           status: scan['status'],
+          isVoted: isVoted,
         );
 
         loadedScans?.add(newScan);
@@ -197,5 +229,109 @@ class Scans extends ChangeNotifier {
     }
   }
 
-  void getStats() async {}
+  Future<void> upvotePost(String id, BuildContext context) async {
+    try {
+      var token = await _secureStorage.read(key: "token");
+      final response = await http.post(Uri.parse('$indexUrl/api/vote/voting'),
+          body: json.encode({
+            "scan_id": id,
+          }),
+          headers: {
+            "content-type": "application/json",
+            "TOKEN": token.toString(),
+          });
+      final extractedData = json.decode(response.body);
+
+      if (extractedData == null || extractedData['error'] != "0") {
+        Flushbar(
+          title: 'An error occured getting votes',
+          message: extractedData['error'],
+          icon: Icon(
+            Icons.info_outline,
+            size: 28.0,
+            color: Colors.red[300],
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.red[300],
+        )..show(context);
+        return;
+      }
+      Flushbar(
+        title: 'Successfully upvoted/downvoted!',
+        message: 'You have successfully upvoted/downvoted this post',
+        icon: Icon(
+          Icons.info_outline,
+          size: 28.0,
+          color: Colors.green[300],
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.green[300],
+      )..show(context);
+
+      return;
+    } catch (e) {
+      Flushbar(
+        title: 'An error occured upvoting',
+        message:
+            'Something went wrong. Please come back later to see if it has been resolved.',
+        icon: Icon(
+          Icons.info_outline,
+          size: 28.0,
+          color: Colors.red[300],
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.red[300],
+      )..show(context);
+    }
+    notifyListeners();
+  }
+
+  Future<bool?> getVotedScans(BuildContext context, String id) async {
+    try {
+      var token = await _secureStorage.read(key: "token");
+      final response = await http.post(Uri.parse('$indexUrl/api/vote/voted'),
+          body: json.encode({
+            "scan_id": id,
+          }),
+          headers: {
+            "content-type": "application/json",
+            "TOKEN": token.toString(),
+          });
+      print('BODY: ${response.body}');
+      final extractedData = json.decode(response.body);
+      print('Error is: ' + extractedData['error']);
+
+      if (extractedData == null || extractedData['error'] != "0") {
+        Flushbar(
+          title: 'An error occured getting votes',
+          message: 'An error occured',
+          icon: Icon(
+            Icons.info_outline,
+            size: 28.0,
+            color: Colors.red[300],
+          ),
+          duration: Duration(seconds: 3),
+          leftBarIndicatorColor: Colors.red[300],
+        )..show(context);
+      }
+      print('data: $extractedData');
+      notifyListeners();
+      return extractedData['voted'];
+    } catch (e) {
+      print(e.toString());
+      Flushbar(
+        title: 'An error occured getting votes',
+        message:
+            'Something went wrong. Please come back later to see if it has been resolved.',
+        icon: Icon(
+          Icons.info_outline,
+          size: 28.0,
+          color: Colors.red[300],
+        ),
+        duration: Duration(seconds: 3),
+        leftBarIndicatorColor: Colors.red[300],
+      )..show(context);
+      return false;
+    }
+  }
 }

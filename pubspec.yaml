@@ -2,22 +2,14 @@
 name: ywsos2021_app
 description: A new Flutter project.
 publish_to: none
-version: 1.0.0+1
+version: 1.0.0
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 dependencies:
-  camera:
-    git:
-      url: https://github.com/flutter/plugins
-      path: packages/camera/camera
-      ref: 9e46048ad2e1f085c1e8f6c77391fa52025e681f
-  carousel_slider: ^4.0.0
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
   font_awesome_flutter: ^9.1.0
-  gradient_widgets: ^0.6.0
-
   google_fonts: ^2.1.0
   flutter_secure_storage: ^4.2.1
   image_picker: ^0.8.2
@@ -26,9 +18,10 @@ dependencies:
   provider: ^5.0.0
   timeago: ^3.1.0
   jwt_decoder: ^2.0.1
-  another_flushbar: ^1.10.29
-  flutter_geocoding: ^0.0.1
   geocoding: ^2.0.4
+  carousel_slider: ^4.1.1
+  camera: ^0.10.0+1
+  another_flushbar: ^1.12.29
 
 dev_dependencies:
   analyzer: ^1.7.1

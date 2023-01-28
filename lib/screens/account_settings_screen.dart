@@ -224,7 +224,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
-      drawer: CustomDrawer(),
+      drawer: AppDrawer(),
       backgroundColor: Colors.transparent,
       appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
       body: Container(
@@ -258,182 +258,190 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 hasScrollBody: false,
                 child: Container(
                   height: MediaQuery.of(context).size.height / 1.2,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Form(
-                          key: _usernameFormKey,
-                          child: Column(
-                            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Change Username',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              TextFormField(
-                                controller: _changeUsernameController,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Please type something as a username';
-                                  }
-                                },
-                                decoration: InputDecoration(
-                                  hintText: 'Change Username',
-                                  hintStyle: TextStyle(color: Colors.white),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Form(
+                            key: _usernameFormKey,
+                            child: Column(
+                              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Change Username',
+                                  style: TextStyle(fontSize: 18),
                                 ),
-                              ),
-                              SizedBox(height: 20),
-                              OpeningButton(
-                                text: 'Change Username',
-                                onPressed: () {
-                                  changeUsername(
-                                      _changeUsernameController.text);
-                                },
-                              )
-                            ],
-                          )),
-                      const Divider(
-                        thickness: 2,
-                        height: 20,
-                      ),
-                      Form(
-                          key: _passwordFormKey,
-                          child: Column(
-                            children: [
-                              Text('Current Password'),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextFormField(
-                                controller: _currentPasswordController,
-                                decoration: InputDecoration(
-                                  hintText: 'Current Password',
-                                  hintStyle: TextStyle(color: Colors.white),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text('New Password'),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextFormField(
-                                controller: _newPasswordController,
-                                decoration: InputDecoration(
-                                  hintText: 'New Password',
-                                  hintStyle: TextStyle(color: Colors.white),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text('Confirm New Password'),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              TextFormField(
-                                controller: _confirmNewPasswordController,
-                                decoration: InputDecoration(
-                                  hintText: 'Confirm Password',
-                                  hintStyle: TextStyle(color: Colors.white),
-                                  focusedBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.white),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              OpeningButton(
-                                  text: 'Change Password',
-                                  onPressed: () {
-                                    changePassword(
-                                        _currentPasswordController.text,
-                                        _newPasswordController.text);
-                                  })
-                            ],
-                          )),
-                      const Divider(
-                        thickness: 2, // thickness of the line
-
-                        height: 20, // The divider's height extent.
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      if (_confirmDeleteController.text ==
-                                          'Delete') {
-                                        deleteAccount();
-                                        return;
-                                      }
-                                      Flushbar(
-                                        title: 'Please type the word "Delete"',
-                                      )..show(context);
-                                    },
-                                    child: Text(
-                                      'Delete',
-                                      style: TextStyle(color: Colors.red),
+                                TextFormField(
+                                  controller: _changeUsernameController,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please type something as a username';
+                                    }
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Change Username',
+                                    hintStyle: TextStyle(color: Colors.white),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
                                     ),
                                   ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Cancel'),
+                                ),
+                                SizedBox(height: 20),
+                                OpeningButton(
+                                  text: 'Change Username',
+                                  onPressed: () {
+                                    changeUsername(
+                                        _changeUsernameController.text);
+                                  },
+                                )
+                              ],
+                            )),
+                        const Divider(
+                          thickness: 2,
+                          height: 20,
+                        ),
+                        Form(
+                            key: _passwordFormKey,
+                            child: Column(
+                              children: [
+                                Text('Current Password'),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  controller: _currentPasswordController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Current Password',
+                                    hintStyle: TextStyle(color: Colors.white),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                    ),
                                   ),
-                                ],
-                                content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        'Are you sure you want to delete your account? If yes, please type the word "Delete"',
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text('New Password'),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  controller: _newPasswordController,
+                                  decoration: InputDecoration(
+                                    hintText: 'New Password',
+                                    hintStyle: TextStyle(color: Colors.white),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text('Confirm New Password'),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                TextFormField(
+                                  controller: _confirmNewPasswordController,
+                                  decoration: InputDecoration(
+                                    hintText: 'Confirm Password',
+                                    hintStyle: TextStyle(color: Colors.white),
+                                    focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                OpeningButton(
+                                    text: 'Change Password',
+                                    onPressed: () {
+                                      changePassword(
+                                          _currentPasswordController.text,
+                                          _newPasswordController.text);
+                                    })
+                              ],
+                            )),
+                        const Divider(
+                          thickness: 2, // thickness of the line
+
+                          height: 20, // The divider's height extent.
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        if (_confirmDeleteController.text ==
+                                            'Delete') {
+                                          deleteAccount();
+                                          return;
+                                        }
+                                        Flushbar(
+                                          title:
+                                              'Please type the word "Delete"',
+                                        )..show(context);
+                                      },
+                                      child: Text(
+                                        'Delete',
                                         style: TextStyle(color: Colors.red),
                                       ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      TextField(
-                                        controller: _confirmDeleteController,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(),
-                                          hintText: '',
-                                          hintStyle:
-                                              TextStyle(color: Colors.white),
-                                          focusedBorder: UnderlineInputBorder(
-                                            borderSide:
-                                                BorderSide(color: Colors.white),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text('Cancel'),
+                                    ),
+                                  ],
+                                  content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'Are you sure you want to delete your account? If yes, please type the word "Delete"',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                        TextField(
+                                          controller: _confirmDeleteController,
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(),
+                                            hintText: '',
+                                            hintStyle:
+                                                TextStyle(color: Colors.white),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.white),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ]),
-                              );
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.red, elevation: 5),
-                        child: Text(
-                          'Delete Account',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      )
-                    ],
+                                      ]),
+                                );
+                              },
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red, elevation: 5),
+                          child: Text(
+                            'Delete Account',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

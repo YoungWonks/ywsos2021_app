@@ -25,6 +25,7 @@ class Scan {
   final String? des;
   final int urgency;
   final bool status;
+  bool? isVoted;
 
   Scan({
     required this.id,
@@ -36,6 +37,7 @@ class Scan {
     required this.des,
     required this.urgency,
     required this.status,
+    required this.isVoted,
   });
 
   // [2, 23.5]

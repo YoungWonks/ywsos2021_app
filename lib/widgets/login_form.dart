@@ -175,7 +175,11 @@ class _LoginFormState extends State<LoginForm> {
           ),
           GestureDetector(
             onTap: () {
-              widget.onSubmit();
+              try {
+                widget.onSubmit();
+              } catch (e) {
+                print(e.toString());
+              }
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 62),

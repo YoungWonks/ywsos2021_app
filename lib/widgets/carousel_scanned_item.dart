@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:provider/provider.dart';
+import 'package:ywsos2021_app/providers/scans.dart';
 
 class CarouselScannedItem extends StatefulWidget {
   final String title;
@@ -10,6 +13,9 @@ class CarouselScannedItem extends StatefulWidget {
   final String daysAgo;
   final List<Placemark> location;
   final bool status;
+  final int upVote;
+  final bool? ifPersonUpVoted;
+  final String id;
   const CarouselScannedItem({
     Key? key,
     required this.title,
@@ -18,6 +24,9 @@ class CarouselScannedItem extends StatefulWidget {
     required this.daysAgo,
     required this.location,
     required this.status,
+    required this.upVote,
+    required this.ifPersonUpVoted,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -48,82 +57,99 @@ class _CarouselScannedItemState extends State<CarouselScannedItem> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                widget.title,
-                style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 25.0,
-                ),
-              ),
-              Text(
-                widget.subTitle,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-              ),
-              Row(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
-                    Icons.timer,
-                    size: 14.0,
+                  Text(
+                    widget.title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 25.0,
+                    ),
                   ),
                   Text(
-                    widget.daysAgo,
+                    widget.subTitle,
                     style: TextStyle(
-                      fontSize: 14.0,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 10.0,
+                      color: Color(0xFF979797),
                     ),
                   ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(Icons.pin_drop),
-                            Text(
-                              '${widget.location[0].locality}, ${widget.location[0].country}',
-                            ),
-                          ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.timer,
+                        size: 14.0,
+                        color: Color(0xFF6C9794),
+                      ),
+                      Text(
+                        widget.daysAgo,
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          color: Color(0xFF6C9794),
                         ),
-                        !widget.status
-                            ? Text(
-                                'Status: Pending',
-                                style: TextStyle(color: Colors.red),
-                              )
-                            : Text(
-                                'Status: Resolved',
-                                style: TextStyle(color: Colors.green),
-                              )
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Icon(Icons.pin_drop),
+                      Expanded(
+                        child: Text(
+                          '${widget.location[0].name}, ${widget.location[0].country}',
+                        ),
+                      ),
+                    ],
+                  ),
+                  !widget.status
+                      ? Text(
+                          'Status: Pending',
+                          style: TextStyle(color: Colors.red),
+                        )
+                      : Text(
+                          'Status: Resolved',
+                          style: TextStyle(color: Colors.green),
+                        ),
+                  InkWell(
+                    onTap: () {
+                      Provider.of<Scans>(context, listen: false)
+                          .upvotePost(widget.id, context);
+                      Provider.of<Scans>(context, listen: false)
+                          .getUserScans(context);
+                      setState(() {});
+                    },
+                    child: Row(
+                      children: [
+                        widget.ifPersonUpVoted!
+                            ? Icon(Icons.thumb_up)
+                            : Icon(Icons.thumb_up_outlined),
+                        Text(' ${widget.upVote} Upvotes')
                       ],
                     ),
-                  ),
-                  Image.memory(
-                    Base64Codec().decode(widget.image),
-                    height: 110,
-                  ),
+                  )
                 ],
               ),
-              SizedBox(
-                height: 10,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Image.memory(
+                  Base64Codec().decode(widget.image),
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
