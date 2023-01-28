@@ -6,9 +6,12 @@ import 'package:ywsos2021_app/screens/forum_screen.dart';
 import 'package:ywsos2021_app/screens/home_screen.dart';
 import 'package:ywsos2021_app/screens/login_screen.dart';
 
-class CustomDrawer extends StatelessWidget {
+class AppDrawer extends StatelessWidget {
   final TextStyle drawerTextStyle = TextStyle(
-      fontWeight: FontWeight.w700, color: Colors.white, fontSize: 37.0);
+    fontWeight: FontWeight.w700,
+    color: Colors.white,
+    fontSize: 37.0,
+  );
 
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
@@ -78,9 +81,10 @@ class CustomDrawer extends StatelessWidget {
                     .pushReplacementNamed(EditProfileScreen.routeName);
               },
               child: ListTile(
-                leading: Image.asset(
-                  'assets/images/profile_pic.png',
-                  width: 64,
+                leading: Icon(
+                  Icons.person,
+                  color: Color(0xFFDFF6D8),
+                  size: 64,
                 ),
                 title: Text(
                   'Edit Profile',
@@ -123,7 +127,7 @@ class CustomDrawer extends StatelessWidget {
                   color: Color(0xFFDFF6D8),
                 ),
                 title: Text(
-                  'Gallery',
+                  'Forum',
                   style: drawerTextStyle,
                 ),
               ),

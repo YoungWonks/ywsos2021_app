@@ -61,7 +61,7 @@ class _ForumScreenState extends State<ForumScreen> {
       child: Scaffold(
         key: _scaffoldKey,
         backgroundColor: Colors.transparent,
-        drawer: CustomDrawer(),
+        drawer: AppDrawer(),
         appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
         body: Padding(
           padding: const EdgeInsets.all(22.0),
@@ -142,31 +142,20 @@ class _ForumScreenState extends State<ForumScreen> {
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
-                          try {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CarouselScannedItem(
-                                title: scans[index].title,
-                                subTitle: scans[index].des.toString(),
-                                image: scans[index].fileContents,
-                                daysAgo: scans[index].date.toString(),
-                                location: scans[index].location,
-                                status: scans[index].status,
-                              ),
-                            );
-                          } catch (e) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CarouselScannedItem(
-                                title: scans[index].title,
-                                subTitle: scans[index].des.toString(),
-                                image: '',
-                                location: scans[index].location,
-                                daysAgo: scans[index].date.toString(),
-                                status: scans[index].status,
-                              ),
-                            );
-                          } finally {}
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CarouselScannedItem(
+                              ifPersonUpVoted: scans[index].isVoted,
+                              upVote: scans[index].upVote!.toInt(),
+                              title: scans[index].title,
+                              subTitle: scans[index].des.toString(),
+                              image: scans[index].fileContents,
+                              daysAgo: scans[index].date.toString(),
+                              location: scans[index].location,
+                              status: scans[index].status,
+                              id: scans[index].id.toString(),
+                            ),
+                          );
                         },
                       ),
                     );

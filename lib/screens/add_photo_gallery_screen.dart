@@ -48,7 +48,7 @@ class _AddPhotoGalleryScreenState extends State<AddPhotoGalleryScreen> {
       extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       key: _scaffoldKey,
-      drawer: CustomDrawer(),
+      drawer: AppDrawer(),
       backgroundColor: Colors.transparent,
       appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
       body: Container(

@@ -10,9 +10,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'providers/scans.dart';
 import 'screens/add_photo_gallery_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/opening_screen.dart';
-import 'screens/register_screen.dart';
 import 'screens/take_picture_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/stats_screen.dart';

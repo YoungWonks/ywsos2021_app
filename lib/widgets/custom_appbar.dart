@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:ywsos2021_app/screens/account_settings_screen.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -74,9 +75,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
         SizedBox(
           width: 15,
         ),
-        Image.asset(
-          'assets/images/profile_pic.png',
-          width: 55,
+        InkWell(
+          onTap: () {
+            Navigator.of(context)
+                .pushReplacementNamed(EditProfileScreen.routeName);
+          },
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Icon(
+              Icons.person,
+              size: 35,
+              color: Color(0xFFDFF6D8),
+            ),
+          ),
         ),
         SizedBox(
           width: 10,

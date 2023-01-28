@@ -47,12 +47,13 @@ class _StatsScreenState extends State<StatsScreen> {
         backgroundColor: Colors.transparent,
         // extendB odyBehindAppBar: true,
         appBar: CustomAppBar(scaffoldKey: _scaffoldKey),
-        // drawer: CustomDrawer(),
+
+        drawer: AppDrawer(),
         body: SafeArea(
           child: Column(
             children: [
               Text(
-                "Dashboard",
+                "Stats",
                 style: TextStyle(
                   fontSize: 45.83,
                   fontFamily: "Inter",
@@ -75,57 +76,41 @@ class _StatsScreenState extends State<StatsScreen> {
                         ],
                       ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 70, top: 90),
-                      child: Column(
-                        children: [
-                          Text(
-                            "Number of Scans Pending: ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: "Inter",
-                              fontWeight: FontWeight.w700,
-                            ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Number of Scans Pending: 3",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: "Inter",
+                            fontWeight: FontWeight.w700,
                           ),
-                          Padding(padding: const EdgeInsets.only(top: 165)),
-                          Text(
-                            "Number of Scans Resolved: ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: "Inter",
-                              fontWeight: FontWeight.w700,
-                            ),
+                        ),
+                        Padding(padding: const EdgeInsets.only(top: 165)),
+                        Text(
+                          "Number of Scans Resolved: 3",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: "Inter",
+                            fontWeight: FontWeight.w700,
                           ),
-                          Padding(padding: const EdgeInsets.only(top: 165)),
-                          Text(
-                            "Number of Upvotes: ",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: "Inter",
-                              fontWeight: FontWeight.w700,
-                            ),
+                        ),
+                        Padding(padding: const EdgeInsets.only(top: 165)),
+                        Text(
+                          "Number of Upvotes: 0",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: "Inter",
+                            fontWeight: FontWeight.w700,
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  OpeningButton(
-                    text: "Stats",
-                    onPressed: () {
-                      Navigator.of(context)
-                          .pushReplacementNamed(StatsScreen.routeName);
-                    },
-                  ),
-                ],
-              )
             ],
           ),
         ),
